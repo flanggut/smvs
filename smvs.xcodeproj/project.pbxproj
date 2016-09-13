@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		130053371BBEF5D100A98180 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1300532A1BBEF47D00A98180 /* libmve_util.a */; };
-		130053381BBEF5D100A98180 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 130053281BBEF47D00A98180 /* libmve.a */; };
-		1303B43D1BC0246A00E5972A /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A6574C1BC01B5200B509FE /* gtest_main.a */; };
 		13151FB81C7CA43300CC005C /* gtest_spherical_harmonics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13151FB71C7CA43300CC005C /* gtest_spherical_harmonics.cc */; };
 		131FC8F21D4A4F3C007E51AA /* smvsrecon.cc in Sources */ = {isa = PBXBuildFile; fileRef = 131FC8F11D4A4F3C007E51AA /* smvsrecon.cc */; };
 		131FC8F61D4A4F6E007E51AA /* bicubic_patch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A657251BC0131200B509FE /* bicubic_patch.cc */; };
@@ -44,15 +41,14 @@
 		131FC9131D4A4F6E007E51AA /* thread_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A6571B1BBFF83000B509FE /* thread_pool.h */; };
 		131FC9141D4A4F6E007E51AA /* view_selection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13778D961D4A1E2300AEA81A /* view_selection.cc */; };
 		131FC9151D4A4F6E007E51AA /* view_selection.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D971D4A1E2300AEA81A /* view_selection.h */; };
-		1329244F1C03186F007756D0 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1300532A1BBEF47D00A98180 /* libmve_util.a */; };
-		132924501C03186F007756D0 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 130053281BBEF47D00A98180 /* libmve.a */; };
 		132924511C0332C9007756D0 /* gtest_correspondence.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1352AF8B1BFA2B220023D277 /* gtest_correspondence.cc */; };
 		1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
-		1329245D1C0332D1007756D0 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1300532A1BBEF47D00A98180 /* libmve_util.a */; };
-		1329245E1C0332D1007756D0 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 130053281BBEF47D00A98180 /* libmve.a */; };
 		132924641C0332F1007756D0 /* test_optimization.cc in Sources */ = {isa = PBXBuildFile; fileRef = 132924471C031843007756D0 /* test_optimization.cc */; };
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
+		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
+		13A5BF701D883863007B5AA3 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF611D883729007B5AA3 /* libmve_util.a */; };
+		13A5BF711D883863007B5AA3 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF5F1D883729007B5AA3 /* libmve.a */; };
 		13A657341BC018E700B509FE /* gtest_bicubic_patch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A657271BC0187500B509FE /* gtest_bicubic_patch.cc */; };
 		13A6573E1BC0193500B509FE /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		13ADF1721C0E2BD500CADB5E /* gtest_matrix_vector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13ADF1711C0E2BD500CADB5E /* gtest_matrix_vector.cc */; };
@@ -62,82 +58,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		130053271BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB6E5181D6B6100CEDCDF;
-			remoteInfo = mve;
-		};
-		130053291BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7BB181D74A800CEDCDF;
-			remoteInfo = mve_util;
-		};
-		1300532B1BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7D5181D768900CEDCDF;
-			remoteInfo = mve_ogl;
-		};
-		1300532D1BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7F4181D772B00CEDCDF;
-			remoteInfo = mve_dmrecon;
-		};
-		1300532F1BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 13DEB45C1A126E5700D30789;
-			remoteInfo = mve_sfm;
-		};
-		130053311BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 133191401B88B88500754C51;
-			remoteInfo = mve_fssr;
-		};
-		130053331BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1331905F1B88B3BF00754C51;
-			remoteInfo = tests;
-		};
-		130053351BBEF47D00A98180 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 13CDB6411BA35F3100EA54EF;
-			remoteInfo = sfmrecon;
-		};
 		132924541C0332D1007756D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 130053061BBEF40900A98180 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13A657381BC0191500B509FE;
 			remoteInfo = smvs;
-		};
-		132924561C0332D1007756D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 137BB6E4181D6B6100CEDCDF;
-			remoteInfo = mve;
-		};
-		132924581C0332D1007756D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 137BB7BA181D74A800CEDCDF;
-			remoteInfo = mve_util;
 		};
 		1379AA771BC2D91900A53173 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -146,19 +72,61 @@
 			remoteGlobalIDString = 13A657381BC0191500B509FE;
 			remoteInfo = smvs;
 		};
-		1379AA791BC2D91900A53173 /* PBXContainerItemProxy */ = {
+		13A5BF5E1D883729007B5AA3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 137BB6E4181D6B6100CEDCDF;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 137BB6E5181D6B6100CEDCDF;
 			remoteInfo = mve;
 		};
-		1379AA7B1BC2D91900A53173 /* PBXContainerItemProxy */ = {
+		13A5BF601D883729007B5AA3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 137BB7BA181D74A800CEDCDF;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 137BB7BB181D74A800CEDCDF;
 			remoteInfo = mve_util;
+		};
+		13A5BF621D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 137BB7D5181D768900CEDCDF;
+			remoteInfo = mve_ogl;
+		};
+		13A5BF641D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 137BB7F4181D772B00CEDCDF;
+			remoteInfo = mve_dmrecon;
+		};
+		13A5BF661D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13DEB45C1A126E5700D30789;
+			remoteInfo = mve_sfm;
+		};
+		13A5BF681D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 133191401B88B88500754C51;
+			remoteInfo = mve_fssr;
+		};
+		13A5BF6A1D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1331905F1B88B3BF00754C51;
+			remoteInfo = tests;
+		};
+		13A5BF6C1D883729007B5AA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13CDB6411BA35F3100EA54EF;
+			remoteInfo = sfmrecon;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -195,7 +163,6 @@
 
 /* Begin PBXFileReference section */
 		1300530E1BBEF40900A98180 /* smvsrecon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smvsrecon; sourceTree = BUILT_PRODUCTS_DIR; };
-		1300531C1BBEF47D00A98180 /* mve.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mve.xcodeproj; path = ../../mve/mve.xcodeproj; sourceTree = "<group>"; };
 		13151FB71C7CA43300CC005C /* gtest_spherical_harmonics.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_spherical_harmonics.cc; path = tests/gtest_spherical_harmonics.cc; sourceTree = SOURCE_ROOT; };
 		131FC8EF1D4A40B3007E51AA /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defines.h; path = lib/defines.h; sourceTree = SOURCE_ROOT; };
 		131FC8F11D4A4F3C007E51AA /* smvsrecon.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = smvsrecon.cc; path = app/smvsrecon.cc; sourceTree = SOURCE_ROOT; };
@@ -208,7 +175,6 @@
 		135E702F1C5B8DB100D3017A /* mesh_generator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh_generator.cc; path = lib/mesh_generator.cc; sourceTree = SOURCE_ROOT; };
 		135E70301C5B8DB100D3017A /* mesh_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh_generator.h; path = lib/mesh_generator.h; sourceTree = SOURCE_ROOT; };
 		135F57381C7B6A44000289DE /* surface_derivative.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = surface_derivative.cc; path = lib/surface_derivative.cc; sourceTree = SOURCE_ROOT; };
-		136B3CF91D3FDB1B00B7A7EB /* backup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = backup.h; path = lib/backup.h; sourceTree = SOURCE_ROOT; };
 		13778D8D1D48AFBC00AEA81A /* conjugate_gradient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = conjugate_gradient.h; path = lib/conjugate_gradient.h; sourceTree = SOURCE_ROOT; };
 		13778D941D48DD7E00AEA81A /* ldl_decomposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ldl_decomposition.h; path = lib/ldl_decomposition.h; sourceTree = SOURCE_ROOT; };
 		13778D961D4A1E2300AEA81A /* view_selection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view_selection.cc; path = lib/view_selection.cc; sourceTree = SOURCE_ROOT; };
@@ -223,13 +189,14 @@
 		138D57B31C6789B600C8B11E /* sgm_stereo.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sgm_stereo.cc; path = lib/sgm_stereo.cc; sourceTree = SOURCE_ROOT; };
 		138D57B41C6789B600C8B11E /* sgm_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sgm_stereo.h; path = lib/sgm_stereo.h; sourceTree = SOURCE_ROOT; };
 		139562EC1CBD254B0098E420 /* block_sparse_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = block_sparse_matrix.h; path = lib/block_sparse_matrix.h; sourceTree = SOURCE_ROOT; };
+		13A5BF531D883728007B5AA3 /* mve.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mve.xcodeproj; path = ../mve/mve.xcodeproj; sourceTree = "<group>"; };
+		13A5BF6E1D883743007B5AA3 /* gtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gtest_main.a; path = ../gtest/make/gtest_main.a; sourceTree = "<group>"; };
 		13A6571B1BBFF83000B509FE /* thread_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thread_pool.h; path = lib/thread_pool.h; sourceTree = SOURCE_ROOT; };
 		13A657241BBFF9A300B509FE /* bicubic_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bicubic_patch.h; path = lib/bicubic_patch.h; sourceTree = SOURCE_ROOT; };
 		13A657251BC0131200B509FE /* bicubic_patch.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bicubic_patch.cc; path = lib/bicubic_patch.cc; sourceTree = SOURCE_ROOT; };
 		13A657271BC0187500B509FE /* gtest_bicubic_patch.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_bicubic_patch.cc; path = tests/gtest_bicubic_patch.cc; sourceTree = SOURCE_ROOT; };
 		13A657331BC0189700B509FE /* tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A657391BC0191500B509FE /* libsmvs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsmvs.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		13A6574C1BC01B5200B509FE /* gtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gtest_main.a; path = ../../gtest/make/gtest_main.a; sourceTree = "<group>"; };
 		13ADF1671C0DC38A00CADB5E /* sse_vector.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sse_vector.cc; path = lib/sse_vector.cc; sourceTree = SOURCE_ROOT; };
 		13ADF1681C0DC38A00CADB5E /* sse_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sse_vector.h; path = lib/sse_vector.h; sourceTree = SOURCE_ROOT; };
 		13ADF1711C0E2BD500CADB5E /* gtest_matrix_vector.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_matrix_vector.cc; path = tests/gtest_matrix_vector.cc; sourceTree = SOURCE_ROOT; };
@@ -249,9 +216,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13A5BF701D883863007B5AA3 /* libmve_util.a in Frameworks */,
+				13A5BF711D883863007B5AA3 /* libmve.a in Frameworks */,
+				13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */,
 				1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */,
-				130053371BBEF5D100A98180 /* libmve_util.a in Frameworks */,
-				130053381BBEF5D100A98180 /* libmve.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,8 +228,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */,
-				1329245D1C0332D1007756D0 /* libmve_util.a in Frameworks */,
-				1329245E1C0332D1007756D0 /* libmve.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,9 +235,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1329244F1C03186F007756D0 /* libmve_util.a in Frameworks */,
-				132924501C03186F007756D0 /* libmve.a in Frameworks */,
-				1303B43D1BC0246A00E5972A /* gtest_main.a in Frameworks */,
 				13A6573E1BC0193500B509FE /* libsmvs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,10 +252,10 @@
 		130053051BBEF40900A98180 = {
 			isa = PBXGroup;
 			children = (
-				1300531C1BBEF47D00A98180 /* mve.xcodeproj */,
+				13A5BF531D883728007B5AA3 /* mve.xcodeproj */,
 				130053101BBEF40900A98180 /* smvs */,
 				1300530F1BBEF40900A98180 /* Products */,
-				13A6574C1BC01B5200B509FE /* gtest_main.a */,
+				13A5BF6E1D883743007B5AA3 /* gtest_main.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -328,7 +291,6 @@
 		130053191BBEF45800A98180 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				136B3CF91D3FDB1B00B7A7EB /* backup.h */,
 				13A657251BC0131200B509FE /* bicubic_patch.cc */,
 				13A657241BBFF9A300B509FE /* bicubic_patch.h */,
 				139562EC1CBD254B0098E420 /* block_sparse_matrix.h */,
@@ -367,21 +329,6 @@
 			name = lib;
 			sourceTree = "<group>";
 		};
-		1300531D1BBEF47D00A98180 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				130053281BBEF47D00A98180 /* libmve.a */,
-				1300532A1BBEF47D00A98180 /* libmve_util.a */,
-				1300532C1BBEF47D00A98180 /* libmve_ogl.a */,
-				1300532E1BBEF47D00A98180 /* libmve_dmrecon.a */,
-				130053301BBEF47D00A98180 /* libmve_sfm.a */,
-				130053321BBEF47D00A98180 /* libmve_fssr.a */,
-				130053341BBEF47D00A98180 /* tests */,
-				130053361BBEF47D00A98180 /* sfmrecon */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		130053391BBEF63A00A98180 /* tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +340,21 @@
 				13151FB71C7CA43300CC005C /* gtest_spherical_harmonics.cc */,
 			);
 			name = tests;
+			sourceTree = "<group>";
+		};
+		13A5BF541D883728007B5AA3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13A5BF5F1D883729007B5AA3 /* libmve.a */,
+				13A5BF611D883729007B5AA3 /* libmve_util.a */,
+				13A5BF631D883729007B5AA3 /* libmve_ogl.a */,
+				13A5BF651D883729007B5AA3 /* libmve_dmrecon.a */,
+				13A5BF671D883729007B5AA3 /* libmve_sfm.a */,
+				13A5BF691D883729007B5AA3 /* libmve_fssr.a */,
+				13A5BF6B1D883729007B5AA3 /* tests */,
+				13A5BF6D1D883729007B5AA3 /* sfmrecon */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -440,8 +402,6 @@
 			);
 			dependencies = (
 				1379AA781BC2D91900A53173 /* PBXTargetDependency */,
-				1379AA7A1BC2D91900A53173 /* PBXTargetDependency */,
-				1379AA7C1BC2D91900A53173 /* PBXTargetDependency */,
 			);
 			name = smvsrecon;
 			productName = smvs;
@@ -460,8 +420,6 @@
 			);
 			dependencies = (
 				132924531C0332D1007756D0 /* PBXTargetDependency */,
-				132924551C0332D1007756D0 /* PBXTargetDependency */,
-				132924571C0332D1007756D0 /* PBXTargetDependency */,
 			);
 			name = test_opt;
 			productName = smvs;
@@ -532,8 +490,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 1300531D1BBEF47D00A98180 /* Products */;
-					ProjectRef = 1300531C1BBEF47D00A98180 /* mve.xcodeproj */;
+					ProductGroup = 13A5BF541D883728007B5AA3 /* Products */;
+					ProjectRef = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -547,60 +505,60 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		130053281BBEF47D00A98180 /* libmve.a */ = {
+		13A5BF5F1D883729007B5AA3 /* libmve.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve.a;
-			remoteRef = 130053271BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF5E1D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1300532A1BBEF47D00A98180 /* libmve_util.a */ = {
+		13A5BF611D883729007B5AA3 /* libmve_util.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve_util.a;
-			remoteRef = 130053291BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF601D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1300532C1BBEF47D00A98180 /* libmve_ogl.a */ = {
+		13A5BF631D883729007B5AA3 /* libmve_ogl.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve_ogl.a;
-			remoteRef = 1300532B1BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF621D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1300532E1BBEF47D00A98180 /* libmve_dmrecon.a */ = {
+		13A5BF651D883729007B5AA3 /* libmve_dmrecon.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve_dmrecon.a;
-			remoteRef = 1300532D1BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF641D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		130053301BBEF47D00A98180 /* libmve_sfm.a */ = {
+		13A5BF671D883729007B5AA3 /* libmve_sfm.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve_sfm.a;
-			remoteRef = 1300532F1BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF661D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		130053321BBEF47D00A98180 /* libmve_fssr.a */ = {
+		13A5BF691D883729007B5AA3 /* libmve_fssr.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libmve_fssr.a;
-			remoteRef = 130053311BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF681D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		130053341BBEF47D00A98180 /* tests */ = {
+		13A5BF6B1D883729007B5AA3 /* tests */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = tests;
-			remoteRef = 130053331BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF6A1D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		130053361BBEF47D00A98180 /* sfmrecon */ = {
+		13A5BF6D1D883729007B5AA3 /* sfmrecon */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = sfmrecon;
-			remoteRef = 130053351BBEF47D00A98180 /* PBXContainerItemProxy */;
+			remoteRef = 13A5BF6C1D883729007B5AA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -663,30 +621,10 @@
 			target = 13A657381BC0191500B509FE /* smvs */;
 			targetProxy = 132924541C0332D1007756D0 /* PBXContainerItemProxy */;
 		};
-		132924551C0332D1007756D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = mve;
-			targetProxy = 132924561C0332D1007756D0 /* PBXContainerItemProxy */;
-		};
-		132924571C0332D1007756D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = mve_util;
-			targetProxy = 132924581C0332D1007756D0 /* PBXContainerItemProxy */;
-		};
 		1379AA781BC2D91900A53173 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 13A657381BC0191500B509FE /* smvs */;
 			targetProxy = 1379AA771BC2D91900A53173 /* PBXContainerItemProxy */;
-		};
-		1379AA7A1BC2D91900A53173 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = mve;
-			targetProxy = 1379AA791BC2D91900A53173 /* PBXContainerItemProxy */;
-		};
-		1379AA7C1BC2D91900A53173 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = mve_util;
-			targetProxy = 1379AA7B1BC2D91900A53173 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -732,7 +670,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../mve/libs";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../mve/libs";
 			};
 			name = Debug;
 		};
@@ -770,7 +708,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../mve/libs";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../mve/libs";
 			};
 			name = Release;
 		};
@@ -873,7 +811,6 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = /usr/local/include/eigen3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -883,7 +820,6 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = /usr/local/include/eigen3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

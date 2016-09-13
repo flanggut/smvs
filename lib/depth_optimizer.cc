@@ -105,8 +105,8 @@ DepthOptimizer::optimize (void)
         /* fill non-existing patches from initialization */
         this->surface->fill_patches_from_depth();
 
-        /* use lighting */
-        if (this->opts.use_lighting && this->surface->get_scale() < 4)
+        /* use shading */
+        if (this->opts.use_shading && this->surface->get_scale() < 4)
         {
             if (this->opts.debug_lvl > 0)
                 std::cout << "######## with Lighting ########" << std::endl;

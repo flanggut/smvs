@@ -46,7 +46,7 @@ struct AppSettings
     std::size_t num_neighbors;
     std::size_t min_neighbors;
     std::size_t num_threads;
-    bool use_lighting;
+    bool use_shading;
     float light_surf_regularization;
     bool gamma_correction;
     bool recon_only;
@@ -77,7 +77,7 @@ struct AppSettings
     {
         num_threads = std::thread::hardware_concurrency();
         recon_only = false;
-        use_lighting = false;
+        use_shading = false;
         use_sgm = true;
         force_recon = false;
         force_sgm = false;
@@ -116,7 +116,7 @@ args_to_settings(int argc, char** argv)
     args.add_option('d', "debug-lvl", true, "Debug level [0]");
     args.add_option('r', "recon-only", false, "Generate only depth maps "
         "and no output ply. [off]");
-    args.add_option('L', "lighting", false, "Use lighting based regularizer. "
+    args.add_option('S', "shading", false, "Use shading-based optimization. "
         "[off]");
     args.add_option('R', "regularize-lighting", true, "Use additional basic "
         "surface regularization when lighting is turned on. This is untested "
@@ -177,8 +177,8 @@ args_to_settings(int argc, char** argv)
             conf.min_neighbors = arg->get_arg<std::size_t>();
         else if (arg->opt->lopt == "simplify")
             conf.simplify = arg->get_arg<float>();
-        else if (arg->opt->lopt == "lighting")
-            conf.use_lighting = true;
+        else if (arg->opt->lopt == "shading")
+            conf.use_shading = true;
         else if (arg->opt->lopt == "regularize-lighting")
             conf.light_surf_regularization = arg->get_arg<float>();
         else if (arg->opt->lopt == "gamma-srgb")
@@ -289,7 +289,7 @@ void generate_mesh (AppSettings const& conf, mve::Scene::Ptr scene,
         mesh->recalc_normals();
 
     std::string meshname;
-    if (conf.use_lighting)
+    if (conf.use_shading)
         meshname =
             util::fs::join_path(scene->get_path(), "smvs-S.ply");
     else
@@ -457,7 +457,7 @@ main (int argc, char** argv)
     std::cout << "Input embedding: " << input_name << std::endl;
 
     std::string output_name;
-    if (conf.use_lighting)
+    if (conf.use_shading)
         output_name = "smvs-S" + util::string::get(conf.input_scale);
     else
         output_name = "smvs-B" + util::string::get(conf.input_scale);
@@ -588,7 +588,7 @@ main (int argc, char** argv)
             do_opts.num_iterations = 5;
             do_opts.debug_lvl = conf.debug_lvl;
             do_opts.min_scale = conf.output_scale;
-            do_opts.use_lighting = conf.use_lighting;
+            do_opts.use_shading = conf.use_shading;
             do_opts.output_name = output_name;
             do_opts.use_sgm = conf.use_sgm;
             do_opts.light_surf_regularization = conf.light_surf_regularization;

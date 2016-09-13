@@ -38,7 +38,7 @@ public:
         int min_scale;
         int debug_lvl;
 
-        bool use_lighting;
+        bool use_shading;
         bool use_sgm;
         std::string output_name;
     };
@@ -157,7 +157,7 @@ DepthOptimizer::Options::Options (void)
     , num_iterations(10)
     , min_scale(1)
     , debug_lvl(0)
-    , use_lighting(false)
+    , use_shading(false)
     , use_sgm(false)
     , output_name("smvs")
 {
