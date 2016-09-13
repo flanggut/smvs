@@ -31,3 +31,9 @@
 # Xcode
 *xcworkspace
 *xcuserdata
+
+# Other
+*.dep
+app/smvsrecon
+smvsrecon
+tests/test
