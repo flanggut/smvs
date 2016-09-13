@@ -3,11 +3,11 @@
 
 *developing...*
 
-This repository contains an implementation of 'Shading-aware Muli-view Stereo' [1]. The framework itself is based on 'A New Variational Framework for Multiview Surface Reconstruction' [2].
+This repository contains an implementation of 'Shading-aware Multi-view Stereo' [1]. The framework itself is based on 'A New Variational Framework for Multiview Surface Reconstruction' [2].
 
 ### How to compile
 
-The code only depends on [MVE](https://github.com/simonfuhrmann/mve) and compilation is supported on Unix and macOS systems:
+The code only depends on [MVE](https://github.com/simonfuhrmann/mve), libjpeg, libpng, and libtiff. Compilation is supported on Unix and macOS systems:
 
 	git clone https://github.com/simonfuhrmann/mve.git
 	git clone https://github.com/flanggut/smvs
