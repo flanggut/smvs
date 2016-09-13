@@ -10,7 +10,7 @@ This repository contains an implementation of 'Shading-aware Multi-view Stereo' 
 The code only depends on [MVE](https://github.com/simonfuhrmann/mve), libjpeg, libpng, and libtiff. Compilation is supported on Unix and macOS systems:
 
 	git clone https://github.com/simonfuhrmann/mve.git
-	git clone https://github.com/flanggut/smvs
+	git clone https://github.com/flanggut/smvs.git
 	make -C mve
 	make -C smvs
 
