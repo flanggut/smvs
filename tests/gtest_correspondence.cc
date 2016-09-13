@@ -298,8 +298,8 @@ void compare_jacobian_deriv_grad(math::Matrix2d const& jac_base, double delta,
     math::Matrix2d diff = (jac_new - jac_base) / delta;
     math::Vec2d diff_grad = diff * grad;
 
-    EXPECT_NEAR(jac_grad_analytic[0], diff_grad[0], 1e-5);
-    EXPECT_NEAR(jac_grad_analytic[1], diff_grad[1], 1e-5);
+    EXPECT_NEAR(jac_grad_analytic[0], diff_grad[0], 1e-4);
+    EXPECT_NEAR(jac_grad_analytic[1], diff_grad[1], 1e-4);
 }
 
 
