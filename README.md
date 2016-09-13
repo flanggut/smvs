@@ -1,6 +1,6 @@
-# smvs
+# Shading-aware Multi-view Stereo
 
-*We are currently preparing the open source release and will publish the code in the next weeks (in time for ECCV).*
+*developing...*
 
 This repository contains an implementation of 'Shading-aware Muli-view Stereo' [1]. The framework itself is based on 'A New Variational Framework for Multiview Surface Reconstruction' [2].
 
