@@ -47,8 +47,154 @@
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
-		13A5BF701D883863007B5AA3 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF611D883729007B5AA3 /* libmve_util.a */; };
-		13A5BF711D883863007B5AA3 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF5F1D883729007B5AA3 /* libmve.a */; };
+		13A5BFBF1D883F0E007B5AA3 /* surface_patch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13F220D41BD519360091B9CE /* surface_patch.cc */; };
+		13A5BFC01D883F0E007B5AA3 /* global_lighting.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1386AE3E1C620CE00094CE4D /* global_lighting.cc */; };
+		13A5BFC11D883F0E007B5AA3 /* stereo_view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13D2449A1BD7AB52000E50FB /* stereo_view.cc */; };
+		13A5BFC21D883F0E007B5AA3 /* bicubic_patch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A657251BC0131200B509FE /* bicubic_patch.cc */; };
+		13A5BFC31D883F0E007B5AA3 /* mesh_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 135E702F1C5B8DB100D3017A /* mesh_generator.cc */; };
+		13A5BFC41D883F0E007B5AA3 /* depth_optimizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13D2448F1BD68DB0000E50FB /* depth_optimizer.cc */; };
+		13A5BFC51D883F0E007B5AA3 /* light_optimizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1386AE301C6208FE0094CE4D /* light_optimizer.cc */; };
+		13A5BFC61D883F0E007B5AA3 /* correspondence.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1352AF951BFB3F800023D277 /* correspondence.cc */; };
+		13A5BFC71D883F0E007B5AA3 /* sse_vector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13ADF1671C0DC38A00CADB5E /* sse_vector.cc */; };
+		13A5BFC81D883F0E007B5AA3 /* mesh_simplifier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13C685EB1D64692A00396036 /* mesh_simplifier.cc */; };
+		13A5BFC91D883F0E007B5AA3 /* surface_derivative.cc in Sources */ = {isa = PBXBuildFile; fileRef = 135F57381C7B6A44000289DE /* surface_derivative.cc */; };
+		13A5BFCA1D883F0E007B5AA3 /* sgm_stereo.cc in Sources */ = {isa = PBXBuildFile; fileRef = 138D57B31C6789B600C8B11E /* sgm_stereo.cc */; };
+		13A5BFCB1D883F0E007B5AA3 /* view_selection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13778D961D4A1E2300AEA81A /* view_selection.cc */; };
+		13A5BFCC1D883F0E007B5AA3 /* surface.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1379AA6A1BC2BF1A00A53173 /* surface.cc */; };
+		13A5BFCF1D883F0E007B5AA3 /* thread_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A6571B1BBFF83000B509FE /* thread_pool.h */; };
+		13A5BFD01D883F0E007B5AA3 /* sse_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 13ADF1681C0DC38A00CADB5E /* sse_vector.h */; };
+		13A5BFD11D883F0E007B5AA3 /* sgm_stereo.h in Headers */ = {isa = PBXBuildFile; fileRef = 138D57B41C6789B600C8B11E /* sgm_stereo.h */; };
+		13A5BFD21D883F0E007B5AA3 /* correspondence.h in Headers */ = {isa = PBXBuildFile; fileRef = 1352AF961BFB3F800023D277 /* correspondence.h */; };
+		13A5BFD31D883F0E007B5AA3 /* ldl_decomposition.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D941D48DD7E00AEA81A /* ldl_decomposition.h */; };
+		13A5BFD41D883F0E007B5AA3 /* bicubic_patch.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A657241BBFF9A300B509FE /* bicubic_patch.h */; };
+		13A5BFD51D883F0E007B5AA3 /* stereo_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 13D2449B1BD7AB52000E50FB /* stereo_view.h */; };
+		13A5BFD61D883F0E007B5AA3 /* depth_optimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13D244901BD68DB0000E50FB /* depth_optimizer.h */; };
+		13A5BFD71D883F0E007B5AA3 /* spherical_harmonics.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE3C1C620C460094CE4D /* spherical_harmonics.h */; };
+		13A5BFD81D883F0E007B5AA3 /* light_optimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE311C6208FE0094CE4D /* light_optimizer.h */; };
+		13A5BFD91D883F0E007B5AA3 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 131FC8EF1D4A40B3007E51AA /* defines.h */; };
+		13A5BFDA1D883F0E007B5AA3 /* conjugate_gradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D8D1D48AFBC00AEA81A /* conjugate_gradient.h */; };
+		13A5BFDB1D883F0E007B5AA3 /* global_lighting.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE3A1C6209A00094CE4D /* global_lighting.h */; };
+		13A5BFDC1D883F0E007B5AA3 /* view_selection.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D971D4A1E2300AEA81A /* view_selection.h */; };
+		13A5BFDD1D883F0E007B5AA3 /* surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 1379AA6B1BC2BF1A00A53173 /* surface.h */; };
+		13A5BFDE1D883F0E007B5AA3 /* block_sparse_matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 139562EC1CBD254B0098E420 /* block_sparse_matrix.h */; };
+		13A5BFDF1D883F0E007B5AA3 /* mesh_simplifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C685EC1D64692A00396036 /* mesh_simplifier.h */; };
+		13A5BFE01D883F0E007B5AA3 /* surface_patch.h in Headers */ = {isa = PBXBuildFile; fileRef = 13F220D51BD519360091B9CE /* surface_patch.h */; };
+		13A5BFE11D883F0E007B5AA3 /* surface_derivative.h in Headers */ = {isa = PBXBuildFile; fileRef = 1352AF991C00BF330023D277 /* surface_derivative.h */; };
+		13A5BFE21D883F0E007B5AA3 /* mesh_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = 135E70301C5B8DB100D3017A /* mesh_generator.h */; };
+		13A5C0191D883F2B007B5AA3 /* bundle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFE81D883F2B007B5AA3 /* bundle.cc */; };
+		13A5C01A1D883F2B007B5AA3 /* bundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFE91D883F2B007B5AA3 /* bundle.h */; };
+		13A5C01B1D883F2B007B5AA3 /* bundle_io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFEA1D883F2B007B5AA3 /* bundle_io.cc */; };
+		13A5C01C1D883F2B007B5AA3 /* bundle_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFEB1D883F2B007B5AA3 /* bundle_io.h */; };
+		13A5C01D1D883F2B007B5AA3 /* camera.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFEC1D883F2B007B5AA3 /* camera.cc */; };
+		13A5C01E1D883F2B007B5AA3 /* camera.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFED1D883F2B007B5AA3 /* camera.h */; };
+		13A5C01F1D883F2B007B5AA3 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFEE1D883F2B007B5AA3 /* defines.h */; };
+		13A5C0201D883F2B007B5AA3 /* depthmap.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFEF1D883F2B007B5AA3 /* depthmap.cc */; };
+		13A5C0211D883F2B007B5AA3 /* depthmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF01D883F2B007B5AA3 /* depthmap.h */; };
+		13A5C0221D883F2B007B5AA3 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF11D883F2B007B5AA3 /* image.h */; };
+		13A5C0231D883F2B007B5AA3 /* image_base.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF21D883F2B007B5AA3 /* image_base.h */; };
+		13A5C0241D883F2B007B5AA3 /* image_color.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF31D883F2B007B5AA3 /* image_color.h */; };
+		13A5C0251D883F2B007B5AA3 /* image_drawing.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF41D883F2B007B5AA3 /* image_drawing.h */; };
+		13A5C0261D883F2B007B5AA3 /* image_exif.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFF51D883F2B007B5AA3 /* image_exif.cc */; };
+		13A5C0271D883F2B007B5AA3 /* image_exif.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF61D883F2B007B5AA3 /* image_exif.h */; };
+		13A5C0281D883F2B007B5AA3 /* image_io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFF71D883F2B007B5AA3 /* image_io.cc */; };
+		13A5C0291D883F2B007B5AA3 /* image_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF81D883F2B007B5AA3 /* image_io.h */; };
+		13A5C02A1D883F2B007B5AA3 /* image_tools.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFF91D883F2B007B5AA3 /* image_tools.cc */; };
+		13A5C02B1D883F2B007B5AA3 /* image_tools.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFA1D883F2B007B5AA3 /* image_tools.h */; };
+		13A5C02D1D883F2B007B5AA3 /* marching.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFFC1D883F2B007B5AA3 /* marching.cc */; };
+		13A5C02E1D883F2B007B5AA3 /* marching_cubes.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFD1D883F2B007B5AA3 /* marching_cubes.h */; };
+		13A5C02F1D883F2B007B5AA3 /* marching_tets.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFE1D883F2B007B5AA3 /* marching_tets.h */; };
+		13A5C0301D883F2B007B5AA3 /* mesh.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFFF1D883F2B007B5AA3 /* mesh.cc */; };
+		13A5C0311D883F2B007B5AA3 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0001D883F2B007B5AA3 /* mesh.h */; };
+		13A5C0321D883F2B007B5AA3 /* mesh_info.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0011D883F2B007B5AA3 /* mesh_info.cc */; };
+		13A5C0331D883F2B007B5AA3 /* mesh_info.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0021D883F2B007B5AA3 /* mesh_info.h */; };
+		13A5C0341D883F2B007B5AA3 /* mesh_io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0031D883F2B007B5AA3 /* mesh_io.cc */; };
+		13A5C0351D883F2B007B5AA3 /* mesh_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0041D883F2B007B5AA3 /* mesh_io.h */; };
+		13A5C0361D883F2B007B5AA3 /* mesh_io_npts.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0051D883F2B007B5AA3 /* mesh_io_npts.cc */; };
+		13A5C0371D883F2B007B5AA3 /* mesh_io_npts.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0061D883F2B007B5AA3 /* mesh_io_npts.h */; };
+		13A5C0381D883F2B007B5AA3 /* mesh_io_obj.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0071D883F2B007B5AA3 /* mesh_io_obj.cc */; };
+		13A5C0391D883F2B007B5AA3 /* mesh_io_obj.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0081D883F2B007B5AA3 /* mesh_io_obj.h */; };
+		13A5C03A1D883F2B007B5AA3 /* mesh_io_off.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0091D883F2B007B5AA3 /* mesh_io_off.cc */; };
+		13A5C03B1D883F2B007B5AA3 /* mesh_io_off.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00A1D883F2B007B5AA3 /* mesh_io_off.h */; };
+		13A5C03C1D883F2B007B5AA3 /* mesh_io_pbrt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C00B1D883F2B007B5AA3 /* mesh_io_pbrt.cc */; };
+		13A5C03D1D883F2B007B5AA3 /* mesh_io_pbrt.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00C1D883F2B007B5AA3 /* mesh_io_pbrt.h */; };
+		13A5C03E1D883F2B007B5AA3 /* mesh_io_ply.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C00D1D883F2B007B5AA3 /* mesh_io_ply.cc */; };
+		13A5C03F1D883F2B007B5AA3 /* mesh_io_ply.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00E1D883F2B007B5AA3 /* mesh_io_ply.h */; };
+		13A5C0401D883F2B007B5AA3 /* mesh_io_smf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C00F1D883F2B007B5AA3 /* mesh_io_smf.cc */; };
+		13A5C0411D883F2B007B5AA3 /* mesh_io_smf.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0101D883F2B007B5AA3 /* mesh_io_smf.h */; };
+		13A5C0421D883F2B007B5AA3 /* mesh_tools.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0111D883F2B007B5AA3 /* mesh_tools.cc */; };
+		13A5C0431D883F2B007B5AA3 /* mesh_tools.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0121D883F2B007B5AA3 /* mesh_tools.h */; };
+		13A5C0441D883F2B007B5AA3 /* scene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0131D883F2B007B5AA3 /* scene.cc */; };
+		13A5C0451D883F2B007B5AA3 /* scene.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0141D883F2B007B5AA3 /* scene.h */; };
+		13A5C0461D883F2B007B5AA3 /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0151D883F2B007B5AA3 /* view.cc */; };
+		13A5C0471D883F2B007B5AA3 /* view.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0161D883F2B007B5AA3 /* view.h */; };
+		13A5C0481D883F2B007B5AA3 /* volume.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0171D883F2B007B5AA3 /* volume.cc */; };
+		13A5C0491D883F2B007B5AA3 /* volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0181D883F2B007B5AA3 /* volume.h */; };
+		13A5C04A1D883F57007B5AA3 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BFE61D883F0E007B5AA3 /* libmve.a */; };
+		13A5C0721D883F66007B5AA3 /* thread_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A6571B1BBFF83000B509FE /* thread_pool.h */; };
+		13A5C0731D883F66007B5AA3 /* mesh_info.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0021D883F2B007B5AA3 /* mesh_info.h */; };
+		13A5C0741D883F66007B5AA3 /* bundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFE91D883F2B007B5AA3 /* bundle.h */; };
+		13A5C0751D883F66007B5AA3 /* mesh_io_pbrt.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00C1D883F2B007B5AA3 /* mesh_io_pbrt.h */; };
+		13A5C0761D883F66007B5AA3 /* camera.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFED1D883F2B007B5AA3 /* camera.h */; };
+		13A5C0771D883F66007B5AA3 /* depthmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF01D883F2B007B5AA3 /* depthmap.h */; };
+		13A5C0781D883F66007B5AA3 /* volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0181D883F2B007B5AA3 /* volume.h */; };
+		13A5C0791D883F66007B5AA3 /* bundle_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFEB1D883F2B007B5AA3 /* bundle_io.h */; };
+		13A5C07A1D883F66007B5AA3 /* sse_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 13ADF1681C0DC38A00CADB5E /* sse_vector.h */; };
+		13A5C07B1D883F66007B5AA3 /* sgm_stereo.h in Headers */ = {isa = PBXBuildFile; fileRef = 138D57B41C6789B600C8B11E /* sgm_stereo.h */; };
+		13A5C07C1D883F66007B5AA3 /* marching_tets.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFE1D883F2B007B5AA3 /* marching_tets.h */; };
+		13A5C07D1D883F66007B5AA3 /* correspondence.h in Headers */ = {isa = PBXBuildFile; fileRef = 1352AF961BFB3F800023D277 /* correspondence.h */; };
+		13A5C07E1D883F66007B5AA3 /* mesh_io_npts.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0061D883F2B007B5AA3 /* mesh_io_npts.h */; };
+		13A5C07F1D883F66007B5AA3 /* image_color.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF31D883F2B007B5AA3 /* image_color.h */; };
+		13A5C0801D883F66007B5AA3 /* mesh_io_ply.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00E1D883F2B007B5AA3 /* mesh_io_ply.h */; };
+		13A5C0811D883F66007B5AA3 /* ldl_decomposition.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D941D48DD7E00AEA81A /* ldl_decomposition.h */; };
+		13A5C0821D883F66007B5AA3 /* marching_cubes.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFD1D883F2B007B5AA3 /* marching_cubes.h */; };
+		13A5C0831D883F66007B5AA3 /* mesh_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0041D883F2B007B5AA3 /* mesh_io.h */; };
+		13A5C0841D883F66007B5AA3 /* bicubic_patch.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A657241BBFF9A300B509FE /* bicubic_patch.h */; };
+		13A5C0851D883F66007B5AA3 /* stereo_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 13D2449B1BD7AB52000E50FB /* stereo_view.h */; };
+		13A5C0861D883F66007B5AA3 /* view.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0161D883F2B007B5AA3 /* view.h */; };
+		13A5C0871D883F66007B5AA3 /* mesh_io_off.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C00A1D883F2B007B5AA3 /* mesh_io_off.h */; };
+		13A5C0881D883F66007B5AA3 /* depth_optimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13D244901BD68DB0000E50FB /* depth_optimizer.h */; };
+		13A5C0891D883F66007B5AA3 /* scene.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0141D883F2B007B5AA3 /* scene.h */; };
+		13A5C08A1D883F66007B5AA3 /* spherical_harmonics.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE3C1C620C460094CE4D /* spherical_harmonics.h */; };
+		13A5C08B1D883F66007B5AA3 /* light_optimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE311C6208FE0094CE4D /* light_optimizer.h */; };
+		13A5C08C1D883F66007B5AA3 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFEE1D883F2B007B5AA3 /* defines.h */; };
+		13A5C08D1D883F66007B5AA3 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 131FC8EF1D4A40B3007E51AA /* defines.h */; };
+		13A5C08E1D883F66007B5AA3 /* mesh_io_obj.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0081D883F2B007B5AA3 /* mesh_io_obj.h */; };
+		13A5C08F1D883F66007B5AA3 /* conjugate_gradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D8D1D48AFBC00AEA81A /* conjugate_gradient.h */; };
+		13A5C0901D883F66007B5AA3 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0001D883F2B007B5AA3 /* mesh.h */; };
+		13A5C0911D883F66007B5AA3 /* global_lighting.h in Headers */ = {isa = PBXBuildFile; fileRef = 1386AE3A1C6209A00094CE4D /* global_lighting.h */; };
+		13A5C0921D883F66007B5AA3 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF11D883F2B007B5AA3 /* image.h */; };
+		13A5C0931D883F66007B5AA3 /* image_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF81D883F2B007B5AA3 /* image_io.h */; };
+		13A5C0941D883F66007B5AA3 /* view_selection.h in Headers */ = {isa = PBXBuildFile; fileRef = 13778D971D4A1E2300AEA81A /* view_selection.h */; };
+		13A5C0951D883F66007B5AA3 /* image_tools.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFFA1D883F2B007B5AA3 /* image_tools.h */; };
+		13A5C0961D883F66007B5AA3 /* surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 1379AA6B1BC2BF1A00A53173 /* surface.h */; };
+		13A5C0971D883F66007B5AA3 /* image_exif.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF61D883F2B007B5AA3 /* image_exif.h */; };
+		13A5C0981D883F66007B5AA3 /* mesh_tools.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0121D883F2B007B5AA3 /* mesh_tools.h */; };
+		13A5C0991D883F66007B5AA3 /* block_sparse_matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 139562EC1CBD254B0098E420 /* block_sparse_matrix.h */; };
+		13A5C09A1D883F66007B5AA3 /* image_drawing.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF41D883F2B007B5AA3 /* image_drawing.h */; };
+		13A5C09B1D883F66007B5AA3 /* mesh_simplifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C685EC1D64692A00396036 /* mesh_simplifier.h */; };
+		13A5C09C1D883F66007B5AA3 /* mesh_io_smf.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0101D883F2B007B5AA3 /* mesh_io_smf.h */; };
+		13A5C09D1D883F66007B5AA3 /* surface_patch.h in Headers */ = {isa = PBXBuildFile; fileRef = 13F220D51BD519360091B9CE /* surface_patch.h */; };
+		13A5C09E1D883F66007B5AA3 /* image_base.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFF21D883F2B007B5AA3 /* image_base.h */; };
+		13A5C09F1D883F66007B5AA3 /* surface_derivative.h in Headers */ = {isa = PBXBuildFile; fileRef = 1352AF991C00BF330023D277 /* surface_derivative.h */; };
+		13A5C0A01D883F66007B5AA3 /* mesh_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = 135E70301C5B8DB100D3017A /* mesh_generator.h */; };
+		13A5C0B81D883FA4007B5AA3 /* aligned_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0A61D883FA4007B5AA3 /* aligned_allocator.h */; };
+		13A5C0B91D883FA4007B5AA3 /* aligned_memory.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0A71D883FA4007B5AA3 /* aligned_memory.h */; };
+		13A5C0BA1D883FA4007B5AA3 /* arguments.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0A81D883FA4007B5AA3 /* arguments.cc */; };
+		13A5C0BB1D883FA4007B5AA3 /* arguments.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0A91D883FA4007B5AA3 /* arguments.h */; };
+		13A5C0BC1D883FA4007B5AA3 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AA1D883FA4007B5AA3 /* defines.h */; };
+		13A5C0BD1D883FA4007B5AA3 /* endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AB1D883FA4007B5AA3 /* endian.h */; };
+		13A5C0BE1D883FA4007B5AA3 /* exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AC1D883FA4007B5AA3 /* exception.h */; };
+		13A5C0BF1D883FA4007B5AA3 /* file_system.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0AD1D883FA4007B5AA3 /* file_system.cc */; };
+		13A5C0C01D883FA5007B5AA3 /* file_system.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AE1D883FA4007B5AA3 /* file_system.h */; };
+		13A5C0C11D883FA5007B5AA3 /* frame_timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AF1D883FA4007B5AA3 /* frame_timer.h */; };
+		13A5C0C21D883FA5007B5AA3 /* ini_parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0B01D883FA4007B5AA3 /* ini_parser.cc */; };
+		13A5C0C31D883FA5007B5AA3 /* ini_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B11D883FA4007B5AA3 /* ini_parser.h */; };
+		13A5C0C51D883FA5007B5AA3 /* string.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B31D883FA4007B5AA3 /* string.h */; };
+		13A5C0C61D883FA5007B5AA3 /* system.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0B41D883FA4007B5AA3 /* system.cc */; };
+		13A5C0C71D883FA5007B5AA3 /* system.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B51D883FA4007B5AA3 /* system.h */; };
+		13A5C0C81D883FA5007B5AA3 /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B61D883FA4007B5AA3 /* timer.h */; };
+		13A5C0C91D883FA5007B5AA3 /* tokenizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B71D883FA4007B5AA3 /* tokenizer.h */; };
+		13A5C0CA1D883FB1007B5AA3 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5C0A41D883F66007B5AA3 /* libmve_util.a */; };
 		13A657341BC018E700B509FE /* gtest_bicubic_patch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A657271BC0187500B509FE /* gtest_bicubic_patch.cc */; };
 		13A6573E1BC0193500B509FE /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		13ADF1721C0E2BD500CADB5E /* gtest_matrix_vector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13ADF1711C0E2BD500CADB5E /* gtest_matrix_vector.cc */; };
@@ -71,62 +217,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13A657381BC0191500B509FE;
 			remoteInfo = smvs;
-		};
-		13A5BF5E1D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB6E5181D6B6100CEDCDF;
-			remoteInfo = mve;
-		};
-		13A5BF601D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7BB181D74A800CEDCDF;
-			remoteInfo = mve_util;
-		};
-		13A5BF621D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7D5181D768900CEDCDF;
-			remoteInfo = mve_ogl;
-		};
-		13A5BF641D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 137BB7F4181D772B00CEDCDF;
-			remoteInfo = mve_dmrecon;
-		};
-		13A5BF661D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 13DEB45C1A126E5700D30789;
-			remoteInfo = mve_sfm;
-		};
-		13A5BF681D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 133191401B88B88500754C51;
-			remoteInfo = mve_fssr;
-		};
-		13A5BF6A1D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1331905F1B88B3BF00754C51;
-			remoteInfo = tests;
-		};
-		13A5BF6C1D883729007B5AA3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 13CDB6411BA35F3100EA54EF;
-			remoteInfo = sfmrecon;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -189,8 +279,74 @@
 		138D57B31C6789B600C8B11E /* sgm_stereo.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sgm_stereo.cc; path = lib/sgm_stereo.cc; sourceTree = SOURCE_ROOT; };
 		138D57B41C6789B600C8B11E /* sgm_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sgm_stereo.h; path = lib/sgm_stereo.h; sourceTree = SOURCE_ROOT; };
 		139562EC1CBD254B0098E420 /* block_sparse_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = block_sparse_matrix.h; path = lib/block_sparse_matrix.h; sourceTree = SOURCE_ROOT; };
-		13A5BF531D883728007B5AA3 /* mve.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mve.xcodeproj; path = ../mve/mve.xcodeproj; sourceTree = "<group>"; };
 		13A5BF6E1D883743007B5AA3 /* gtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gtest_main.a; path = ../gtest/make/gtest_main.a; sourceTree = "<group>"; };
+		13A5BFE61D883F0E007B5AA3 /* libmve.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmve.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		13A5BFE81D883F2B007B5AA3 /* bundle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bundle.cc; sourceTree = "<group>"; };
+		13A5BFE91D883F2B007B5AA3 /* bundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bundle.h; sourceTree = "<group>"; };
+		13A5BFEA1D883F2B007B5AA3 /* bundle_io.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bundle_io.cc; sourceTree = "<group>"; };
+		13A5BFEB1D883F2B007B5AA3 /* bundle_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bundle_io.h; sourceTree = "<group>"; };
+		13A5BFEC1D883F2B007B5AA3 /* camera.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cc; sourceTree = "<group>"; };
+		13A5BFED1D883F2B007B5AA3 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		13A5BFEE1D883F2B007B5AA3 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		13A5BFEF1D883F2B007B5AA3 /* depthmap.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = depthmap.cc; sourceTree = "<group>"; };
+		13A5BFF01D883F2B007B5AA3 /* depthmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = depthmap.h; sourceTree = "<group>"; };
+		13A5BFF11D883F2B007B5AA3 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		13A5BFF21D883F2B007B5AA3 /* image_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_base.h; sourceTree = "<group>"; };
+		13A5BFF31D883F2B007B5AA3 /* image_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_color.h; sourceTree = "<group>"; };
+		13A5BFF41D883F2B007B5AA3 /* image_drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_drawing.h; sourceTree = "<group>"; };
+		13A5BFF51D883F2B007B5AA3 /* image_exif.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image_exif.cc; sourceTree = "<group>"; };
+		13A5BFF61D883F2B007B5AA3 /* image_exif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_exif.h; sourceTree = "<group>"; };
+		13A5BFF71D883F2B007B5AA3 /* image_io.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image_io.cc; sourceTree = "<group>"; };
+		13A5BFF81D883F2B007B5AA3 /* image_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_io.h; sourceTree = "<group>"; };
+		13A5BFF91D883F2B007B5AA3 /* image_tools.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image_tools.cc; sourceTree = "<group>"; };
+		13A5BFFA1D883F2B007B5AA3 /* image_tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_tools.h; sourceTree = "<group>"; };
+		13A5BFFC1D883F2B007B5AA3 /* marching.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = marching.cc; sourceTree = "<group>"; };
+		13A5BFFD1D883F2B007B5AA3 /* marching_cubes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = marching_cubes.h; sourceTree = "<group>"; };
+		13A5BFFE1D883F2B007B5AA3 /* marching_tets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = marching_tets.h; sourceTree = "<group>"; };
+		13A5BFFF1D883F2B007B5AA3 /* mesh.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh.cc; sourceTree = "<group>"; };
+		13A5C0001D883F2B007B5AA3 /* mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
+		13A5C0011D883F2B007B5AA3 /* mesh_info.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_info.cc; sourceTree = "<group>"; };
+		13A5C0021D883F2B007B5AA3 /* mesh_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_info.h; sourceTree = "<group>"; };
+		13A5C0031D883F2B007B5AA3 /* mesh_io.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io.cc; sourceTree = "<group>"; };
+		13A5C0041D883F2B007B5AA3 /* mesh_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io.h; sourceTree = "<group>"; };
+		13A5C0051D883F2B007B5AA3 /* mesh_io_npts.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_npts.cc; sourceTree = "<group>"; };
+		13A5C0061D883F2B007B5AA3 /* mesh_io_npts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_npts.h; sourceTree = "<group>"; };
+		13A5C0071D883F2B007B5AA3 /* mesh_io_obj.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_obj.cc; sourceTree = "<group>"; };
+		13A5C0081D883F2B007B5AA3 /* mesh_io_obj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_obj.h; sourceTree = "<group>"; };
+		13A5C0091D883F2B007B5AA3 /* mesh_io_off.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_off.cc; sourceTree = "<group>"; };
+		13A5C00A1D883F2B007B5AA3 /* mesh_io_off.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_off.h; sourceTree = "<group>"; };
+		13A5C00B1D883F2B007B5AA3 /* mesh_io_pbrt.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_pbrt.cc; sourceTree = "<group>"; };
+		13A5C00C1D883F2B007B5AA3 /* mesh_io_pbrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_pbrt.h; sourceTree = "<group>"; };
+		13A5C00D1D883F2B007B5AA3 /* mesh_io_ply.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_ply.cc; sourceTree = "<group>"; };
+		13A5C00E1D883F2B007B5AA3 /* mesh_io_ply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_ply.h; sourceTree = "<group>"; };
+		13A5C00F1D883F2B007B5AA3 /* mesh_io_smf.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_io_smf.cc; sourceTree = "<group>"; };
+		13A5C0101D883F2B007B5AA3 /* mesh_io_smf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_io_smf.h; sourceTree = "<group>"; };
+		13A5C0111D883F2B007B5AA3 /* mesh_tools.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_tools.cc; sourceTree = "<group>"; };
+		13A5C0121D883F2B007B5AA3 /* mesh_tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh_tools.h; sourceTree = "<group>"; };
+		13A5C0131D883F2B007B5AA3 /* scene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cc; sourceTree = "<group>"; };
+		13A5C0141D883F2B007B5AA3 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		13A5C0151D883F2B007B5AA3 /* view.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view.cc; sourceTree = "<group>"; };
+		13A5C0161D883F2B007B5AA3 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
+		13A5C0171D883F2B007B5AA3 /* volume.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volume.cc; sourceTree = "<group>"; };
+		13A5C0181D883F2B007B5AA3 /* volume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volume.h; sourceTree = "<group>"; };
+		13A5C0A41D883F66007B5AA3 /* libmve_util.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmve_util.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		13A5C0A61D883FA4007B5AA3 /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aligned_allocator.h; sourceTree = "<group>"; };
+		13A5C0A71D883FA4007B5AA3 /* aligned_memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aligned_memory.h; sourceTree = "<group>"; };
+		13A5C0A81D883FA4007B5AA3 /* arguments.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cc; sourceTree = "<group>"; };
+		13A5C0A91D883FA4007B5AA3 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
+		13A5C0AA1D883FA4007B5AA3 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		13A5C0AB1D883FA4007B5AA3 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		13A5C0AC1D883FA4007B5AA3 /* exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exception.h; sourceTree = "<group>"; };
+		13A5C0AD1D883FA4007B5AA3 /* file_system.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_system.cc; sourceTree = "<group>"; };
+		13A5C0AE1D883FA4007B5AA3 /* file_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_system.h; sourceTree = "<group>"; };
+		13A5C0AF1D883FA4007B5AA3 /* frame_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_timer.h; sourceTree = "<group>"; };
+		13A5C0B01D883FA4007B5AA3 /* ini_parser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ini_parser.cc; sourceTree = "<group>"; };
+		13A5C0B11D883FA4007B5AA3 /* ini_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ini_parser.h; sourceTree = "<group>"; };
+		13A5C0B31D883FA4007B5AA3 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
+		13A5C0B41D883FA4007B5AA3 /* system.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system.cc; sourceTree = "<group>"; };
+		13A5C0B51D883FA4007B5AA3 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
+		13A5C0B61D883FA4007B5AA3 /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
+		13A5C0B71D883FA4007B5AA3 /* tokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tokenizer.h; sourceTree = "<group>"; };
 		13A6571B1BBFF83000B509FE /* thread_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thread_pool.h; path = lib/thread_pool.h; sourceTree = SOURCE_ROOT; };
 		13A657241BBFF9A300B509FE /* bicubic_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bicubic_patch.h; path = lib/bicubic_patch.h; sourceTree = SOURCE_ROOT; };
 		13A657251BC0131200B509FE /* bicubic_patch.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bicubic_patch.cc; path = lib/bicubic_patch.cc; sourceTree = SOURCE_ROOT; };
@@ -216,8 +372,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13A5BF701D883863007B5AA3 /* libmve_util.a in Frameworks */,
-				13A5BF711D883863007B5AA3 /* libmve.a in Frameworks */,
+				13A5C0CA1D883FB1007B5AA3 /* libmve_util.a in Frameworks */,
+				13A5C04A1D883F57007B5AA3 /* libmve.a in Frameworks */,
 				13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */,
 				1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */,
 			);
@@ -228,6 +384,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13A5BFCD1D883F0E007B5AA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13A5C0701D883F66007B5AA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +422,7 @@
 		130053051BBEF40900A98180 = {
 			isa = PBXGroup;
 			children = (
-				13A5BF531D883728007B5AA3 /* mve.xcodeproj */,
+				13A5BF731D883EA7007B5AA3 /* mvelibs */,
 				130053101BBEF40900A98180 /* smvs */,
 				1300530F1BBEF40900A98180 /* Products */,
 				13A5BF6E1D883743007B5AA3 /* gtest_main.a */,
@@ -266,6 +436,8 @@
 				13A657331BC0189700B509FE /* tests */,
 				13A657391BC0191500B509FE /* libsmvs.a */,
 				132924631C0332D1007756D0 /* test_opt */,
+				13A5BFE61D883F0E007B5AA3 /* libmve.a */,
+				13A5C0A41D883F66007B5AA3 /* libmve_util.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -342,24 +514,220 @@
 			name = tests;
 			sourceTree = "<group>";
 		};
-		13A5BF541D883728007B5AA3 /* Products */ = {
+		13A5BF731D883EA7007B5AA3 /* mvelibs */ = {
 			isa = PBXGroup;
 			children = (
-				13A5BF5F1D883729007B5AA3 /* libmve.a */,
-				13A5BF611D883729007B5AA3 /* libmve_util.a */,
-				13A5BF631D883729007B5AA3 /* libmve_ogl.a */,
-				13A5BF651D883729007B5AA3 /* libmve_dmrecon.a */,
-				13A5BF671D883729007B5AA3 /* libmve_sfm.a */,
-				13A5BF691D883729007B5AA3 /* libmve_fssr.a */,
-				13A5BF6B1D883729007B5AA3 /* tests */,
-				13A5BF6D1D883729007B5AA3 /* sfmrecon */,
+				13A5C0A51D883FA4007B5AA3 /* util */,
+				13A5BFE71D883F2B007B5AA3 /* mve */,
 			);
-			name = Products;
+			name = mvelibs;
+			sourceTree = "<group>";
+		};
+		13A5BFE71D883F2B007B5AA3 /* mve */ = {
+			isa = PBXGroup;
+			children = (
+				13A5BFE81D883F2B007B5AA3 /* bundle.cc */,
+				13A5BFE91D883F2B007B5AA3 /* bundle.h */,
+				13A5BFEA1D883F2B007B5AA3 /* bundle_io.cc */,
+				13A5BFEB1D883F2B007B5AA3 /* bundle_io.h */,
+				13A5BFEC1D883F2B007B5AA3 /* camera.cc */,
+				13A5BFED1D883F2B007B5AA3 /* camera.h */,
+				13A5BFEE1D883F2B007B5AA3 /* defines.h */,
+				13A5BFEF1D883F2B007B5AA3 /* depthmap.cc */,
+				13A5BFF01D883F2B007B5AA3 /* depthmap.h */,
+				13A5BFF11D883F2B007B5AA3 /* image.h */,
+				13A5BFF21D883F2B007B5AA3 /* image_base.h */,
+				13A5BFF31D883F2B007B5AA3 /* image_color.h */,
+				13A5BFF41D883F2B007B5AA3 /* image_drawing.h */,
+				13A5BFF51D883F2B007B5AA3 /* image_exif.cc */,
+				13A5BFF61D883F2B007B5AA3 /* image_exif.h */,
+				13A5BFF71D883F2B007B5AA3 /* image_io.cc */,
+				13A5BFF81D883F2B007B5AA3 /* image_io.h */,
+				13A5BFF91D883F2B007B5AA3 /* image_tools.cc */,
+				13A5BFFA1D883F2B007B5AA3 /* image_tools.h */,
+				13A5BFFC1D883F2B007B5AA3 /* marching.cc */,
+				13A5BFFD1D883F2B007B5AA3 /* marching_cubes.h */,
+				13A5BFFE1D883F2B007B5AA3 /* marching_tets.h */,
+				13A5BFFF1D883F2B007B5AA3 /* mesh.cc */,
+				13A5C0001D883F2B007B5AA3 /* mesh.h */,
+				13A5C0011D883F2B007B5AA3 /* mesh_info.cc */,
+				13A5C0021D883F2B007B5AA3 /* mesh_info.h */,
+				13A5C0031D883F2B007B5AA3 /* mesh_io.cc */,
+				13A5C0041D883F2B007B5AA3 /* mesh_io.h */,
+				13A5C0051D883F2B007B5AA3 /* mesh_io_npts.cc */,
+				13A5C0061D883F2B007B5AA3 /* mesh_io_npts.h */,
+				13A5C0071D883F2B007B5AA3 /* mesh_io_obj.cc */,
+				13A5C0081D883F2B007B5AA3 /* mesh_io_obj.h */,
+				13A5C0091D883F2B007B5AA3 /* mesh_io_off.cc */,
+				13A5C00A1D883F2B007B5AA3 /* mesh_io_off.h */,
+				13A5C00B1D883F2B007B5AA3 /* mesh_io_pbrt.cc */,
+				13A5C00C1D883F2B007B5AA3 /* mesh_io_pbrt.h */,
+				13A5C00D1D883F2B007B5AA3 /* mesh_io_ply.cc */,
+				13A5C00E1D883F2B007B5AA3 /* mesh_io_ply.h */,
+				13A5C00F1D883F2B007B5AA3 /* mesh_io_smf.cc */,
+				13A5C0101D883F2B007B5AA3 /* mesh_io_smf.h */,
+				13A5C0111D883F2B007B5AA3 /* mesh_tools.cc */,
+				13A5C0121D883F2B007B5AA3 /* mesh_tools.h */,
+				13A5C0131D883F2B007B5AA3 /* scene.cc */,
+				13A5C0141D883F2B007B5AA3 /* scene.h */,
+				13A5C0151D883F2B007B5AA3 /* view.cc */,
+				13A5C0161D883F2B007B5AA3 /* view.h */,
+				13A5C0171D883F2B007B5AA3 /* volume.cc */,
+				13A5C0181D883F2B007B5AA3 /* volume.h */,
+			);
+			name = mve;
+			path = ../mve/libs/mve;
+			sourceTree = "<group>";
+		};
+		13A5C0A51D883FA4007B5AA3 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				13A5C0A61D883FA4007B5AA3 /* aligned_allocator.h */,
+				13A5C0A71D883FA4007B5AA3 /* aligned_memory.h */,
+				13A5C0A81D883FA4007B5AA3 /* arguments.cc */,
+				13A5C0A91D883FA4007B5AA3 /* arguments.h */,
+				13A5C0AA1D883FA4007B5AA3 /* defines.h */,
+				13A5C0AB1D883FA4007B5AA3 /* endian.h */,
+				13A5C0AC1D883FA4007B5AA3 /* exception.h */,
+				13A5C0AD1D883FA4007B5AA3 /* file_system.cc */,
+				13A5C0AE1D883FA4007B5AA3 /* file_system.h */,
+				13A5C0AF1D883FA4007B5AA3 /* frame_timer.h */,
+				13A5C0B01D883FA4007B5AA3 /* ini_parser.cc */,
+				13A5C0B11D883FA4007B5AA3 /* ini_parser.h */,
+				13A5C0B31D883FA4007B5AA3 /* string.h */,
+				13A5C0B41D883FA4007B5AA3 /* system.cc */,
+				13A5C0B51D883FA4007B5AA3 /* system.h */,
+				13A5C0B61D883FA4007B5AA3 /* timer.h */,
+				13A5C0B71D883FA4007B5AA3 /* tokenizer.h */,
+			);
+			name = util;
+			path = ../mve/libs/util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		13A5BFCE1D883F0E007B5AA3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13A5BFCF1D883F0E007B5AA3 /* thread_pool.h in Headers */,
+				13A5C0331D883F2B007B5AA3 /* mesh_info.h in Headers */,
+				13A5C01A1D883F2B007B5AA3 /* bundle.h in Headers */,
+				13A5C03D1D883F2B007B5AA3 /* mesh_io_pbrt.h in Headers */,
+				13A5C01E1D883F2B007B5AA3 /* camera.h in Headers */,
+				13A5C0211D883F2B007B5AA3 /* depthmap.h in Headers */,
+				13A5C0491D883F2B007B5AA3 /* volume.h in Headers */,
+				13A5C01C1D883F2B007B5AA3 /* bundle_io.h in Headers */,
+				13A5BFD01D883F0E007B5AA3 /* sse_vector.h in Headers */,
+				13A5BFD11D883F0E007B5AA3 /* sgm_stereo.h in Headers */,
+				13A5C02F1D883F2B007B5AA3 /* marching_tets.h in Headers */,
+				13A5BFD21D883F0E007B5AA3 /* correspondence.h in Headers */,
+				13A5C0371D883F2B007B5AA3 /* mesh_io_npts.h in Headers */,
+				13A5C0241D883F2B007B5AA3 /* image_color.h in Headers */,
+				13A5C03F1D883F2B007B5AA3 /* mesh_io_ply.h in Headers */,
+				13A5BFD31D883F0E007B5AA3 /* ldl_decomposition.h in Headers */,
+				13A5C02E1D883F2B007B5AA3 /* marching_cubes.h in Headers */,
+				13A5C0351D883F2B007B5AA3 /* mesh_io.h in Headers */,
+				13A5BFD41D883F0E007B5AA3 /* bicubic_patch.h in Headers */,
+				13A5BFD51D883F0E007B5AA3 /* stereo_view.h in Headers */,
+				13A5C0471D883F2B007B5AA3 /* view.h in Headers */,
+				13A5C03B1D883F2B007B5AA3 /* mesh_io_off.h in Headers */,
+				13A5BFD61D883F0E007B5AA3 /* depth_optimizer.h in Headers */,
+				13A5C0451D883F2B007B5AA3 /* scene.h in Headers */,
+				13A5BFD71D883F0E007B5AA3 /* spherical_harmonics.h in Headers */,
+				13A5BFD81D883F0E007B5AA3 /* light_optimizer.h in Headers */,
+				13A5C01F1D883F2B007B5AA3 /* defines.h in Headers */,
+				13A5BFD91D883F0E007B5AA3 /* defines.h in Headers */,
+				13A5C0391D883F2B007B5AA3 /* mesh_io_obj.h in Headers */,
+				13A5BFDA1D883F0E007B5AA3 /* conjugate_gradient.h in Headers */,
+				13A5C0311D883F2B007B5AA3 /* mesh.h in Headers */,
+				13A5BFDB1D883F0E007B5AA3 /* global_lighting.h in Headers */,
+				13A5C0221D883F2B007B5AA3 /* image.h in Headers */,
+				13A5C0291D883F2B007B5AA3 /* image_io.h in Headers */,
+				13A5BFDC1D883F0E007B5AA3 /* view_selection.h in Headers */,
+				13A5C02B1D883F2B007B5AA3 /* image_tools.h in Headers */,
+				13A5BFDD1D883F0E007B5AA3 /* surface.h in Headers */,
+				13A5C0271D883F2B007B5AA3 /* image_exif.h in Headers */,
+				13A5C0431D883F2B007B5AA3 /* mesh_tools.h in Headers */,
+				13A5BFDE1D883F0E007B5AA3 /* block_sparse_matrix.h in Headers */,
+				13A5C0251D883F2B007B5AA3 /* image_drawing.h in Headers */,
+				13A5BFDF1D883F0E007B5AA3 /* mesh_simplifier.h in Headers */,
+				13A5C0411D883F2B007B5AA3 /* mesh_io_smf.h in Headers */,
+				13A5BFE01D883F0E007B5AA3 /* surface_patch.h in Headers */,
+				13A5C0231D883F2B007B5AA3 /* image_base.h in Headers */,
+				13A5BFE11D883F0E007B5AA3 /* surface_derivative.h in Headers */,
+				13A5BFE21D883F0E007B5AA3 /* mesh_generator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13A5C0711D883F66007B5AA3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13A5C0721D883F66007B5AA3 /* thread_pool.h in Headers */,
+				13A5C0BC1D883FA4007B5AA3 /* defines.h in Headers */,
+				13A5C0731D883F66007B5AA3 /* mesh_info.h in Headers */,
+				13A5C0BE1D883FA4007B5AA3 /* exception.h in Headers */,
+				13A5C0741D883F66007B5AA3 /* bundle.h in Headers */,
+				13A5C0751D883F66007B5AA3 /* mesh_io_pbrt.h in Headers */,
+				13A5C0C11D883FA5007B5AA3 /* frame_timer.h in Headers */,
+				13A5C0761D883F66007B5AA3 /* camera.h in Headers */,
+				13A5C0771D883F66007B5AA3 /* depthmap.h in Headers */,
+				13A5C0781D883F66007B5AA3 /* volume.h in Headers */,
+				13A5C0791D883F66007B5AA3 /* bundle_io.h in Headers */,
+				13A5C07A1D883F66007B5AA3 /* sse_vector.h in Headers */,
+				13A5C0C91D883FA5007B5AA3 /* tokenizer.h in Headers */,
+				13A5C07B1D883F66007B5AA3 /* sgm_stereo.h in Headers */,
+				13A5C07C1D883F66007B5AA3 /* marching_tets.h in Headers */,
+				13A5C0C01D883FA5007B5AA3 /* file_system.h in Headers */,
+				13A5C07D1D883F66007B5AA3 /* correspondence.h in Headers */,
+				13A5C0C51D883FA5007B5AA3 /* string.h in Headers */,
+				13A5C07E1D883F66007B5AA3 /* mesh_io_npts.h in Headers */,
+				13A5C07F1D883F66007B5AA3 /* image_color.h in Headers */,
+				13A5C0801D883F66007B5AA3 /* mesh_io_ply.h in Headers */,
+				13A5C0811D883F66007B5AA3 /* ldl_decomposition.h in Headers */,
+				13A5C0821D883F66007B5AA3 /* marching_cubes.h in Headers */,
+				13A5C0831D883F66007B5AA3 /* mesh_io.h in Headers */,
+				13A5C0841D883F66007B5AA3 /* bicubic_patch.h in Headers */,
+				13A5C0C81D883FA5007B5AA3 /* timer.h in Headers */,
+				13A5C0851D883F66007B5AA3 /* stereo_view.h in Headers */,
+				13A5C0861D883F66007B5AA3 /* view.h in Headers */,
+				13A5C0871D883F66007B5AA3 /* mesh_io_off.h in Headers */,
+				13A5C0B91D883FA4007B5AA3 /* aligned_memory.h in Headers */,
+				13A5C0881D883F66007B5AA3 /* depth_optimizer.h in Headers */,
+				13A5C0891D883F66007B5AA3 /* scene.h in Headers */,
+				13A5C08A1D883F66007B5AA3 /* spherical_harmonics.h in Headers */,
+				13A5C0C31D883FA5007B5AA3 /* ini_parser.h in Headers */,
+				13A5C08B1D883F66007B5AA3 /* light_optimizer.h in Headers */,
+				13A5C08C1D883F66007B5AA3 /* defines.h in Headers */,
+				13A5C08D1D883F66007B5AA3 /* defines.h in Headers */,
+				13A5C08E1D883F66007B5AA3 /* mesh_io_obj.h in Headers */,
+				13A5C08F1D883F66007B5AA3 /* conjugate_gradient.h in Headers */,
+				13A5C0901D883F66007B5AA3 /* mesh.h in Headers */,
+				13A5C0911D883F66007B5AA3 /* global_lighting.h in Headers */,
+				13A5C0921D883F66007B5AA3 /* image.h in Headers */,
+				13A5C0931D883F66007B5AA3 /* image_io.h in Headers */,
+				13A5C0BB1D883FA4007B5AA3 /* arguments.h in Headers */,
+				13A5C0941D883F66007B5AA3 /* view_selection.h in Headers */,
+				13A5C0C71D883FA5007B5AA3 /* system.h in Headers */,
+				13A5C0951D883F66007B5AA3 /* image_tools.h in Headers */,
+				13A5C0961D883F66007B5AA3 /* surface.h in Headers */,
+				13A5C0971D883F66007B5AA3 /* image_exif.h in Headers */,
+				13A5C0981D883F66007B5AA3 /* mesh_tools.h in Headers */,
+				13A5C0991D883F66007B5AA3 /* block_sparse_matrix.h in Headers */,
+				13A5C09A1D883F66007B5AA3 /* image_drawing.h in Headers */,
+				13A5C09B1D883F66007B5AA3 /* mesh_simplifier.h in Headers */,
+				13A5C09C1D883F66007B5AA3 /* mesh_io_smf.h in Headers */,
+				13A5C09D1D883F66007B5AA3 /* surface_patch.h in Headers */,
+				13A5C09E1D883F66007B5AA3 /* image_base.h in Headers */,
+				13A5C0B81D883FA4007B5AA3 /* aligned_allocator.h in Headers */,
+				13A5C0BD1D883FA4007B5AA3 /* endian.h in Headers */,
+				13A5C09F1D883F66007B5AA3 /* surface_derivative.h in Headers */,
+				13A5C0A01D883F66007B5AA3 /* mesh_generator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		13A657371BC0191500B509FE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -426,6 +794,40 @@
 			productReference = 132924631C0332D1007756D0 /* test_opt */;
 			productType = "com.apple.product-type.tool";
 		};
+		13A5BFBD1D883F0E007B5AA3 /* mve */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13A5BFE31D883F0E007B5AA3 /* Build configuration list for PBXNativeTarget "mve" */;
+			buildPhases = (
+				13A5BFBE1D883F0E007B5AA3 /* Sources */,
+				13A5BFCD1D883F0E007B5AA3 /* Frameworks */,
+				13A5BFCE1D883F0E007B5AA3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mve;
+			productName = smvs;
+			productReference = 13A5BFE61D883F0E007B5AA3 /* libmve.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		13A5C04B1D883F66007B5AA3 /* mve_util */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13A5C0A11D883F66007B5AA3 /* Build configuration list for PBXNativeTarget "mve_util" */;
+			buildPhases = (
+				13A5C04C1D883F66007B5AA3 /* Sources */,
+				13A5C0701D883F66007B5AA3 /* Frameworks */,
+				13A5C0711D883F66007B5AA3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mve_util;
+			productName = smvs;
+			productReference = 13A5C0A41D883F66007B5AA3 /* libmve_util.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		13A657281BC0189700B509FE /* tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13A657301BC0189700B509FE /* Build configuration list for PBXNativeTarget "tests" */;
@@ -488,80 +890,17 @@
 			mainGroup = 130053051BBEF40900A98180;
 			productRefGroup = 1300530F1BBEF40900A98180 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 13A5BF541D883728007B5AA3 /* Products */;
-					ProjectRef = 13A5BF531D883728007B5AA3 /* mve.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1300530D1BBEF40900A98180 /* smvsrecon */,
 				13A657281BC0189700B509FE /* tests */,
 				13A657381BC0191500B509FE /* smvs */,
 				132924521C0332D1007756D0 /* test_opt */,
+				13A5BFBD1D883F0E007B5AA3 /* mve */,
+				13A5C04B1D883F66007B5AA3 /* mve_util */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		13A5BF5F1D883729007B5AA3 /* libmve.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve.a;
-			remoteRef = 13A5BF5E1D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF611D883729007B5AA3 /* libmve_util.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve_util.a;
-			remoteRef = 13A5BF601D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF631D883729007B5AA3 /* libmve_ogl.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve_ogl.a;
-			remoteRef = 13A5BF621D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF651D883729007B5AA3 /* libmve_dmrecon.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve_dmrecon.a;
-			remoteRef = 13A5BF641D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF671D883729007B5AA3 /* libmve_sfm.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve_sfm.a;
-			remoteRef = 13A5BF661D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF691D883729007B5AA3 /* libmve_fssr.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmve_fssr.a;
-			remoteRef = 13A5BF681D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF6B1D883729007B5AA3 /* tests */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = tests;
-			remoteRef = 13A5BF6A1D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		13A5BF6D1D883729007B5AA3 /* sfmrecon */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = sfmrecon;
-			remoteRef = 13A5BF6C1D883729007B5AA3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1300530A1BBEF40900A98180 /* Sources */ = {
@@ -577,6 +916,59 @@
 			buildActionMask = 2147483647;
 			files = (
 				132924641C0332F1007756D0 /* test_optimization.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13A5BFBE1D883F0E007B5AA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13A5C0381D883F2B007B5AA3 /* mesh_io_obj.cc in Sources */,
+				13A5C03A1D883F2B007B5AA3 /* mesh_io_off.cc in Sources */,
+				13A5C0341D883F2B007B5AA3 /* mesh_io.cc in Sources */,
+				13A5C0301D883F2B007B5AA3 /* mesh.cc in Sources */,
+				13A5C0461D883F2B007B5AA3 /* view.cc in Sources */,
+				13A5C0441D883F2B007B5AA3 /* scene.cc in Sources */,
+				13A5BFBF1D883F0E007B5AA3 /* surface_patch.cc in Sources */,
+				13A5C01B1D883F2B007B5AA3 /* bundle_io.cc in Sources */,
+				13A5BFC01D883F0E007B5AA3 /* global_lighting.cc in Sources */,
+				13A5C03E1D883F2B007B5AA3 /* mesh_io_ply.cc in Sources */,
+				13A5C02A1D883F2B007B5AA3 /* image_tools.cc in Sources */,
+				13A5C0191D883F2B007B5AA3 /* bundle.cc in Sources */,
+				13A5C01D1D883F2B007B5AA3 /* camera.cc in Sources */,
+				13A5C0401D883F2B007B5AA3 /* mesh_io_smf.cc in Sources */,
+				13A5BFC11D883F0E007B5AA3 /* stereo_view.cc in Sources */,
+				13A5BFC21D883F0E007B5AA3 /* bicubic_patch.cc in Sources */,
+				13A5C03C1D883F2B007B5AA3 /* mesh_io_pbrt.cc in Sources */,
+				13A5BFC31D883F0E007B5AA3 /* mesh_generator.cc in Sources */,
+				13A5C0201D883F2B007B5AA3 /* depthmap.cc in Sources */,
+				13A5C0281D883F2B007B5AA3 /* image_io.cc in Sources */,
+				13A5BFC41D883F0E007B5AA3 /* depth_optimizer.cc in Sources */,
+				13A5BFC51D883F0E007B5AA3 /* light_optimizer.cc in Sources */,
+				13A5C0321D883F2B007B5AA3 /* mesh_info.cc in Sources */,
+				13A5BFC61D883F0E007B5AA3 /* correspondence.cc in Sources */,
+				13A5BFC71D883F0E007B5AA3 /* sse_vector.cc in Sources */,
+				13A5C0261D883F2B007B5AA3 /* image_exif.cc in Sources */,
+				13A5C02D1D883F2B007B5AA3 /* marching.cc in Sources */,
+				13A5BFC81D883F0E007B5AA3 /* mesh_simplifier.cc in Sources */,
+				13A5BFC91D883F0E007B5AA3 /* surface_derivative.cc in Sources */,
+				13A5BFCA1D883F0E007B5AA3 /* sgm_stereo.cc in Sources */,
+				13A5BFCB1D883F0E007B5AA3 /* view_selection.cc in Sources */,
+				13A5C0361D883F2B007B5AA3 /* mesh_io_npts.cc in Sources */,
+				13A5C0481D883F2B007B5AA3 /* volume.cc in Sources */,
+				13A5BFCC1D883F0E007B5AA3 /* surface.cc in Sources */,
+				13A5C0421D883F2B007B5AA3 /* mesh_tools.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13A5C04C1D883F66007B5AA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13A5C0BF1D883FA4007B5AA3 /* file_system.cc in Sources */,
+				13A5C0BA1D883FA4007B5AA3 /* arguments.cc in Sources */,
+				13A5C0C21D883FA5007B5AA3 /* ini_parser.cc in Sources */,
+				13A5C0C61D883FA5007B5AA3 /* system.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +1058,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -705,6 +1098,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -770,6 +1164,42 @@
 					"-ljpeg",
 					"-lpng",
 				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		13A5BFE41D883F0E007B5AA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		13A5BFE51D883F0E007B5AA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		13A5C0A21D883F66007B5AA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		13A5C0A31D883F66007B5AA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -850,6 +1280,24 @@
 			buildConfigurations = (
 				132924611C0332D1007756D0 /* Debug */,
 				132924621C0332D1007756D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		13A5BFE31D883F0E007B5AA3 /* Build configuration list for PBXNativeTarget "mve" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13A5BFE41D883F0E007B5AA3 /* Debug */,
+				13A5BFE51D883F0E007B5AA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		13A5C0A11D883F66007B5AA3 /* Build configuration list for PBXNativeTarget "mve_util" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13A5C0A21D883F66007B5AA3 /* Debug */,
+				13A5C0A31D883F66007B5AA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
