@@ -25,6 +25,7 @@ before_script:
    - git clone https://github.com/simonfuhrmann/mve ../mve
 
 script:
+    - make -C ../mve
     - make
     - make test
     - ./tests/test
