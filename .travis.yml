@@ -1,0 +1,30 @@
+os: linux
+language: cpp
+compiler: gcc
+sudo: false
+
+branches:
+   only:
+     - master
+
+before_install:
+   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
+
+addons:
+   apt:
+     sources:
+       - ubuntu-toolchain-r-test
+     packages:
+       - g++-4.8
+
+before_script:
+   - wget https://github.com/google/googletest/archive/master.zip -O /tmp/gtest.zip
+   - unzip /tmp/gtest.zip
+   - make -C $PWD/googletest-master/googletest/make
+   - export GTEST_PATH=$PWD/googletest-master/googletest
+   - git clone https://github.com/simonfuhrmann/mve ../mve
+
+script:
+    - make
+    - make test
+    - ./tests/test
