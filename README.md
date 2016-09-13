@@ -1,4 +1,5 @@
-# Shading-aware Multi-view Stereo
+# Shading-aware Multi-view Stereo 
+![Travis CI](https://travis-ci.org/flanggut/smvs.svg?branch=master)
 
 *developing...*
 
