@@ -14,6 +14,10 @@
 
 #include "util/aligned_memory.h"
 
+#include "defines.h"
+
+SMVS_NAMESPACE_BEGIN
+
 class SSEVector
 {
 public:
@@ -142,5 +146,6 @@ SSEVector::square_norm (void) const
     return this->dot(*this);
 }
 
+SMVS_NAMESPACE_END
 
 #endif /* SSE_VECTOR_HEADER */

@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+SMVS_NAMESPACE_BEGIN
+
 /** 
  * Combines Matrix L and diagonal vector D to LDL = L*D*L^T
  */
@@ -89,5 +91,6 @@ ldl_inverse(T * A, int const size)
     delete[] D;
 }
 
+SMVS_NAMESPACE_END
 
 #endif /* LDL_DECOMPOSITION_HEADER */

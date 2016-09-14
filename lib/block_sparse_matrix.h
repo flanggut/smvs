@@ -19,6 +19,8 @@
 #include "conjugate_gradient.h"
 #include "ldl_decomposition.h"
 
+SMVS_NAMESPACE_BEGIN
+
 /**
  *  Block Sparse matrix class.
  *  Note: Blocks are stored column-major, but blocks themselfes are row-major.
@@ -362,5 +364,7 @@ BlockSparseMatrix<N>::output_size (void) const
 {
     return this->rows;
 }
+
+SMVS_NAMESPACE_END
 
 #endif /* SMVS_BLOCK_SPARSE_MATRIX_HEADER */

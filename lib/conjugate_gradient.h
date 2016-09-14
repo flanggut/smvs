@@ -12,6 +12,8 @@
 
 #include "sse_vector.h"
 
+SMVS_NAMESPACE_BEGIN
+
 class ConjugateGradient
 {
 public:
@@ -213,6 +215,6 @@ ConjugateGradient::solve(Functor const& A, Vector const& b, Vector* x,
     return this->status;
 }
 
-/* ---------------------------------------------------------------- */
+SMVS_NAMESPACE_END
 
 #endif /* SMVS_CONJUGATE_GRADIENT_HEADER */

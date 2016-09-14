@@ -14,6 +14,8 @@
 
 #define ENABLE_SSE_VECTOR 1
 
+SMVS_NAMESPACE_BEGIN
+
 double
 SSEVector::dot (SSEVector const& rhs) const
 {
@@ -144,3 +146,5 @@ SSEVector::negate_self (void)
         this->values[i] = -this->values[i];
     return *this;
 }
+
+SMVS_NAMESPACE_END
