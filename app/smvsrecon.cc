@@ -37,54 +37,33 @@
 struct AppSettings
 {
     std::string scene_dname;
-    std::string image_embedding;
     std::vector<int> view_ids;
-    float regularization;
-    int output_scale;
-    int input_scale;
-    int debug_lvl;
-    std::size_t num_neighbors;
-    std::size_t min_neighbors;
+    std::string image_embedding = "undistorted";
+    float regularization = 1.0;
+    int output_scale = 2;
+    int input_scale = -1;
+    int debug_lvl = 0;
+    std::size_t num_neighbors = 6;
+    std::size_t min_neighbors = 3;
     std::size_t num_threads;
-    bool use_shading;
-    float light_surf_regularization;
-    bool gamma_correction;
-    bool recon_only;
-    bool cut_surface;
-    float simplify;
-    bool create_triangle_mesh;
-    bool use_sgm;
-    float sgm_min;
-    float sgm_max;
-    std::string sgm_range;
-    bool force_recon;
-    bool force_sgm;
-    bool clean_scene;
+    bool use_shading = false;
+    float light_surf_regularization = 0.0f;
+    bool gamma_correction = false;
+    bool recon_only = false;
+    bool cut_surface = true;
+    float simplify = 0.0f;
+    bool create_triangle_mesh = false;
+    bool use_sgm = true;
+    float sgm_min = 0.0f;
+    float sgm_max = 0.0f;
+    std::string sgm_range = "";
+    bool force_recon = false;
+    bool force_sgm = false;
+    bool clean_scene = false;
 
     AppSettings()
-        : image_embedding("undistorted")
-        , regularization(1.0f)
-        , output_scale(2)
-        , input_scale(-1)
-        , debug_lvl(0)
-        , num_neighbors(6)
-        , min_neighbors(3)
-        , light_surf_regularization(0)
-        , simplify(0.0f)
-        , sgm_min(0.0f)
-        , sgm_max(0.0f)
-        , sgm_range("")
     {
         num_threads = std::thread::hardware_concurrency();
-        recon_only = false;
-        use_shading = false;
-        use_sgm = true;
-        force_recon = false;
-        force_sgm = false;
-        cut_surface = true;
-        gamma_correction = false;
-        clean_scene = false;
-        create_triangle_mesh = false;
     }
 };
 

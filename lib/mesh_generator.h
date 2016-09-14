@@ -23,16 +23,13 @@ public:
     struct Options
     {
         std::size_t num_threads;
-        bool cut_surfaces;
-        bool create_triangle_mesh;
-        float simplify;
+        bool cut_surfaces = false;
+        bool create_triangle_mesh = false;
+        float simplify = 0.0f;
 
         Options (void)
-            : simplify(0.0f)
         {
             num_threads = std::thread::hardware_concurrency();
-            cut_surfaces = false;
-            create_triangle_mesh = false;
         }
     };
 

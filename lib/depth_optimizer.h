@@ -30,17 +30,18 @@ class DepthOptimizer
 public:
     struct Options
     {
-        Options (void);
+        double regularization = 0.001;
+        double light_surf_regularization = 0.0;
+        int num_iterations = 10;
+        int min_scale = 1;
+        int debug_lvl = 0;
+        bool use_shading = false;
+        bool use_sgm = false;
+        std::string output_name = "smvs";
 
-        double regularization;
-        double light_surf_regularization;
-        int num_iterations;
-        int min_scale;
-        int debug_lvl;
-
-        bool use_shading;
-        bool use_sgm;
-        std::string output_name;
+        Options (void)
+        {
+        }
     };
 
     typedef SSEVector DenseVector;
@@ -148,19 +149,6 @@ DepthOptimizer::DepthOptimizer (StereoView::Ptr main_view,
 {
     this->prepare_correspondences();
     this->bundle = nullptr;
-}
-
-inline
-DepthOptimizer::Options::Options (void)
-    : regularization(0.001)
-    , light_surf_regularization(0)
-    , num_iterations(10)
-    , min_scale(1)
-    , debug_lvl(0)
-    , use_shading(false)
-    , use_sgm(false)
-    , output_name("smvs")
-{
 }
 
 inline
