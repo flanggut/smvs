@@ -28,16 +28,16 @@ public:
 
     struct Options
     {
-        Options (void);
-        int max_iterations;
-        double error_tolerance;
-        double q_tolerance;
+        Options (void) = default;
+        int max_iterations = 1000;
+        double error_tolerance = 1e-20;
+        double q_tolerance = 1e-3;
     };
 
     struct Status
     {
-        Status (void);
-        int num_iterations;
+        Status (void) = default;
+        int num_iterations = 0;
         ReturnInfo info;
     };
 
@@ -61,20 +61,6 @@ private:
 };
 
 /* ------------------------ Implementation ------------------------ */
-
-inline
-ConjugateGradient::Options::Options (void)
-: max_iterations(1000)
-, error_tolerance(1e-20)
-, q_tolerance(1e-3)
-{
-}
-
-inline
-ConjugateGradient::Status::Status (void)
-: num_iterations(0)
-{
-}
 
 inline
 ConjugateGradient::ConjugateGradient

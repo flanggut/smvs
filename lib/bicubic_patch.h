@@ -27,13 +27,13 @@ public:
         typedef std::shared_ptr<Node const> ConstPtr;
 
         /* Function value */
-        double f;
+        double f = 0.0;
         /* Derivative in x-direction */
-        double dx;
+        double dx = 0.0;
         /* Derivative in y-direction */
-        double dy;
+        double dy = 0.0;
         /* Mixed second derivative */
-        double dxy;
+        double dxy = 0.0;
 
         static Node::Ptr create (void)
         {
@@ -41,10 +41,7 @@ public:
         }
         
     private:
-        Node (void)
-            : f(0), dx(0), dy(0), dxy(0)
-        {
-        }
+        Node (void) = default;
     };
 
 public:

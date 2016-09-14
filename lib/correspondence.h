@@ -20,7 +20,6 @@ SMVS_NAMESPACE_BEGIN
 class Correspondence
 {
 public:
-    Correspondence (void) = default;
     Correspondence (math::Matrix3d const& M, math::Vec3d const& t,
         double u, double v, double w, double w_dx = 0, double w_dy = 0);
     
@@ -60,6 +59,9 @@ public:
         double const* dn, math::Vec2d * jac_dn) const;
 
     double get_depth (void) const;
+
+private:
+    Correspondence (void);
 
 private:
     double p;

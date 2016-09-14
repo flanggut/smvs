@@ -23,7 +23,6 @@
 #include "util/tokenizer.h"
 #include "util/system.h"
 #include "util/timer.h"
-#include "math/octree_tools.h"
 
 #include "thread_pool.h"
 #include "stereo_view.h"
@@ -61,7 +60,7 @@ struct AppSettings
     bool force_sgm = false;
     bool clean_scene = false;
 
-    AppSettings()
+    AppSettings (void)
     {
         num_threads = std::thread::hardware_concurrency();
     }

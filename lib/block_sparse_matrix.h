@@ -43,7 +43,6 @@ public:
     /** List of blocks. */
     typedef std::vector<Block> Blocks;
 
-
     /** Triplet helper for debugging */
     struct Triplet
     {

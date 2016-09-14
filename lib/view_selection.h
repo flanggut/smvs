@@ -21,9 +21,9 @@ class ViewSelection
 public:
     struct Options
     {
-        Options (void);
-        std::size_t num_neighbors;
-        std::string embedding;
+        Options (void) = default;
+        std::size_t num_neighbors = 6;
+        std::string embedding = "undistorted";
     };
 
 public:
@@ -41,12 +41,6 @@ private:
     mve::Scene::ViewList const& views;
     mve::Bundle::ConstPtr bundle;
 };
-
-inline
-ViewSelection::Options::Options (void)
-    : num_neighbors(6), embedding("undistorted")
-{
-}
 
 inline
 ViewSelection::ViewSelection (ViewSelection::Options const& opts,

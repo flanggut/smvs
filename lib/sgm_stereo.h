@@ -23,15 +23,14 @@ class SGMStereo
 public:
     struct Options
     {
-        Options (void);
-
-        int debug_lvl;
-        int scale;
-        int num_steps;
-        float min_depth;
-        float max_depth;
-        uint16_t penalty1;
-        uint16_t penalty2;
+        Options (void) = default;
+        int debug_lvl = 0;
+        int scale = 1;
+        int num_steps = 64;
+        float min_depth = 0.0f;
+        float max_depth = 0.0f;
+        uint16_t penalty1 = 24;
+        uint16_t penalty2 = 1000;
     };
 
     SGMStereo (Options const& opts,
@@ -83,18 +82,6 @@ private:
     util::AlignedMemory<uint16_t> cost_updates;
     util::AlignedMemory<uint16_t> mins;
 };
-
-inline
-SGMStereo::Options::Options (void)
-    : debug_lvl(0)
-    , scale(2)
-    , num_steps(64)
-    , min_depth(0.0f)
-    , max_depth(0.0f)
-    , penalty1(24)
-    , penalty2(1000)
-{
-}
 
 SMVS_NAMESPACE_END
 

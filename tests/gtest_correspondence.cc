@@ -69,7 +69,7 @@ TEST(CorrespondenceTest, Derivatives)
     C.get_derivative(d_00, d_10, d_01, d_11,
         c_dn00, c_dn10, c_dn01, c_dn11);
 
-    Correspondence C_new;
+    Correspondence C_new(M, t, pu, pv, 0.0);
     math::Vec2d corr_new;
     math::Vec2d diff;
 
@@ -351,7 +351,7 @@ TEST(CorrespondenceJacobianTest, ValuesAndDerivatives)
     math::Matrix2d corr_jac;
     C.fill_jacobian(*corr_jac);
 
-    Correspondence C_new;
+    Correspondence C_new(M, t, x, y, 0.0);
     math::Vec2d diff;
     math::Vec2d corr_new;
     double delta = 1e-9;

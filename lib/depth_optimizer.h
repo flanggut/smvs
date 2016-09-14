@@ -30,6 +30,7 @@ class DepthOptimizer
 public:
     struct Options
     {
+        Options (void) = default;
         double regularization = 0.001;
         double light_surf_regularization = 0.0;
         int num_iterations = 10;
@@ -38,10 +39,6 @@ public:
         bool use_shading = false;
         bool use_sgm = false;
         std::string output_name = "smvs";
-
-        Options (void)
-        {
-        }
     };
 
     typedef SSEVector DenseVector;
