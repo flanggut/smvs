@@ -44,6 +44,7 @@
 		132924511C0332C9007756D0 /* gtest_correspondence.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1352AF8B1BFA2B220023D277 /* gtest_correspondence.cc */; };
 		1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		132924641C0332F1007756D0 /* test_optimization.cc in Sources */ = {isa = PBXBuildFile; fileRef = 132924471C031843007756D0 /* test_optimization.cc */; };
+		132A32931D896FE70059D63F /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
@@ -405,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13A6573E1BC0193500B509FE /* libsmvs.a in Frameworks */,
+				132A32931D896FE70059D63F /* gtest_main.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,7 +1208,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../gtest/include";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
@@ -1222,7 +1224,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../gtest/include";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,

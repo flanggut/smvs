@@ -20,17 +20,17 @@ TEST(SphericalHarmonicsTest, Derivatives4)
     normal.normalize();
 
     math::Vector<double, 16> base_values;
-    sh::evaluate_4_band(*normal, *base_values);
+    smvs::sh::evaluate_4_band(*normal, *base_values);
 
     double delta = 1e-7;
     math::Vector<double, 16> test_values;
 
     double analytic_deriv[48];
-    sh::derivative_4_band(*normal, analytic_deriv);
+    smvs::sh::derivative_4_band(*normal, analytic_deriv);
 
     double backup = normal[0];
     normal[0] += delta;
-    sh::evaluate_4_band(*normal, *test_values);
+    smvs::sh::evaluate_4_band(*normal, *test_values);
     for(int i = 0; i < 16; ++i)
     {
         double numeric = (test_values[i] - base_values[i]) / delta;
@@ -40,7 +40,7 @@ TEST(SphericalHarmonicsTest, Derivatives4)
 
     backup = normal[1];
     normal[1] += delta;
-    sh::evaluate_4_band(*normal, *test_values);
+    smvs::sh::evaluate_4_band(*normal, *test_values);
     for(int i = 0; i < 16; ++i)
     {
         double numeric = (test_values[i] - base_values[i]) / delta;
@@ -50,7 +50,7 @@ TEST(SphericalHarmonicsTest, Derivatives4)
 
     backup = normal[2];
     normal[2] += delta;
-    sh::evaluate_4_band(*normal, *test_values);
+    smvs::sh::evaluate_4_band(*normal, *test_values);
     for(int i = 0; i < 16; ++i)
     {
         double numeric = (test_values[i] - base_values[i]) / delta;

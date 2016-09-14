@@ -16,7 +16,7 @@
 TEST(LDLDecompositionTest, inverse)
 {
     double A[9] {2, -1, 0, -1, 2, -1, 0 , -1, 1};
-    ldl_inverse(A, 3);
+    smvs::ldl_inverse(A, 3);
 
     EXPECT_NEAR(1, A[0], 1e-15);
     EXPECT_NEAR(1, A[1], 1e-15);
@@ -31,8 +31,8 @@ TEST(LDLDecompositionTest, inverse)
 
 TEST(SSEVectorTest, dot)
 {
-    SSEVector a(5);
-    SSEVector b(5);
+    smvs::SSEVector a(5);
+    smvs::SSEVector b(5);
 
     a[0] = 1.0;
     a[1] = 2.0;
@@ -52,8 +52,8 @@ TEST(SSEVectorTest, dot)
 
 TEST(SSEVectorTest, add)
 {
-    SSEVector a(5);
-    SSEVector b(5);
+    smvs::SSEVector a(5);
+    smvs::SSEVector b(5);
 
     a[0] = 4.0;
     a[1] = 2.0;
@@ -67,7 +67,7 @@ TEST(SSEVectorTest, add)
     b[3] = 8.0;
     b[4] = 2.0;
 
-    SSEVector c = a.add(b);
+    smvs::SSEVector c = a.add(b);
     EXPECT_NEAR(a[0] + b[0], c[0], 1e-20);
     EXPECT_NEAR(a[1] + b[1], c[1], 1e-20);
     EXPECT_NEAR(a[2] + b[2], c[2], 1e-20);
@@ -77,8 +77,8 @@ TEST(SSEVectorTest, add)
 
 TEST(SSEVectorTest, subtract)
 {
-    SSEVector a(5);
-    SSEVector b(5);
+    smvs::SSEVector a(5);
+    smvs::SSEVector b(5);
 
     a[0] = 1.0;
     a[1] = 2.0;
@@ -92,7 +92,7 @@ TEST(SSEVectorTest, subtract)
     b[3] = 1.0;
     b[4] = 29.0;
 
-    SSEVector c = a.subtract(b);
+    smvs::SSEVector c = a.subtract(b);
     EXPECT_NEAR(a[0] - b[0], c[0], 1e-20);
     EXPECT_NEAR(a[1] - b[1], c[1], 1e-20);
     EXPECT_NEAR(a[2] - b[2], c[2], 1e-20);
@@ -102,7 +102,7 @@ TEST(SSEVectorTest, subtract)
 
 TEST(SSEVectorTest, multiply)
 {
-    SSEVector a(5);
+    smvs::SSEVector a(5);
 
     a[0] = 12.0;
     a[1] = 2.0;
@@ -112,7 +112,7 @@ TEST(SSEVectorTest, multiply)
 
     double rhs = 4.3;
 
-    SSEVector c = a.multiply(rhs);
+    smvs::SSEVector c = a.multiply(rhs);
     EXPECT_NEAR(a[0] * rhs, c[0], 1e-20);
     EXPECT_NEAR(a[1] * rhs, c[1], 1e-20);
     EXPECT_NEAR(a[2] * rhs, c[2], 1e-20);
@@ -122,13 +122,13 @@ TEST(SSEVectorTest, multiply)
 
 TEST (BlockSparseMatrixTest, Create)
 {
-    BlockSparseMatrix<4> bs_matrix;
-    BlockSparseMatrix<4> bs_matrix2(100,100);
+    smvs::BlockSparseMatrix<4> bs_matrix;
+    smvs::BlockSparseMatrix<4> bs_matrix2(100,100);
 }
 
 TEST (BlockSparseMatrixTest, SetFromBlocks)
 {
-    typedef BlockSparseMatrix<2> BSMatrix;
+    typedef smvs::BlockSparseMatrix<2> BSMatrix;
     BSMatrix bs_matrix(4, 4);
     double values1[4] = {1, 2, 3, 4};
     double values2[4] = {4, 3, 2, 1};
@@ -149,7 +149,7 @@ TEST (BlockSparseMatrixTest, SetFromBlocks)
 
 TEST (BlockSparseMatrixTest, SetFromTriplets)
 {
-    typedef BlockSparseMatrix<2> BSMatrix;
+    typedef smvs::BlockSparseMatrix<2> BSMatrix;
     
     BSMatrix::Triplets triplets;
     triplets.emplace_back(0, 0, 11);
@@ -180,7 +180,7 @@ TEST (BlockSparseMatrixTest, SetFromTriplets)
 
 TEST (BlockSparseMatrixTest, Multiply)
 {
-    typedef BlockSparseMatrix<2> BSMatrix;
+    typedef smvs::BlockSparseMatrix<2> BSMatrix;
     BSMatrix bs_matrix(4, 4);
     double values1[4] = {1, 2, 3, 4};
     double values2[4] = {5, 3, 2, 0};
@@ -188,8 +188,8 @@ TEST (BlockSparseMatrixTest, Multiply)
     blocks.emplace_back(0, 0, values1);
     blocks.emplace_back(2, 2, values2);
     bs_matrix.set_from_blocks(blocks);
-    SSEVector x(4, 1);
-    SSEVector rhs;
+    smvs::SSEVector x(4, 1);
+    smvs::SSEVector rhs;
     rhs = bs_matrix.multiply(x);
     EXPECT_EQ(3, rhs[0]);
     EXPECT_EQ(7, rhs[1]);
@@ -220,7 +220,7 @@ TEST (BlockSparseMatrixTest, Multiply)
 
 TEST (BlockSparseMatrixTest, SetFromTripletsMultiply)
 {
-    typedef BlockSparseMatrix<2> BSMatrix;
+    typedef smvs::BlockSparseMatrix<2> BSMatrix;
     
     BSMatrix::Triplets triplets;
     triplets.emplace_back(0, 0, 1);
@@ -235,8 +235,8 @@ TEST (BlockSparseMatrixTest, SetFromTripletsMultiply)
     
     BSMatrix bs_matrix(4, 4);
     bs_matrix.set_from_triplets(triplets);
-    SSEVector x(4, 1);
-    SSEVector rhs;
+    smvs::SSEVector x(4, 1);
+    smvs::SSEVector rhs;
     rhs = bs_matrix.multiply(x);
     EXPECT_EQ(3, rhs[0]);
     EXPECT_EQ(7, rhs[1]);
@@ -252,7 +252,7 @@ TEST (BlockSparseMatrixTest, SetFromTripletsMultiply)
     bs_matrix2.set_from_triplets(triplets);
     rhs = bs_matrix2.multiply(x);
     
-    SSEVector rhs2;
+    smvs::SSEVector rhs2;
     rhs2 = bs_matrix2.multiply(x);
     
     EXPECT_EQ(rhs2[0], rhs[0]);
@@ -263,7 +263,7 @@ TEST (BlockSparseMatrixTest, SetFromTripletsMultiply)
 
 TEST (BlockSparseMatrixTest, BlockInvert)
 {
-    typedef BlockSparseMatrix<2> BSMatrix;
+    typedef smvs::BlockSparseMatrix<2> BSMatrix;
     BSMatrix bs_matrix(4, 4);
     double values1[4] = {2, 0, 0, 2};
     BSMatrix::Blocks blocks;
@@ -272,8 +272,8 @@ TEST (BlockSparseMatrixTest, BlockInvert)
     bs_matrix.set_from_blocks(blocks);
     bs_matrix.invert_blocks_inplace();
 
-    SSEVector x(4, 1);
-    SSEVector rhs;
+    smvs::SSEVector x(4, 1);
+    smvs::SSEVector rhs;
     rhs = bs_matrix.multiply(x);
     EXPECT_NEAR(0.5, rhs[0], 1e-10);
     EXPECT_NEAR(0.5, rhs[1], 1e-10);
