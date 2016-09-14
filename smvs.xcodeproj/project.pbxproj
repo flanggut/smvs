@@ -189,7 +189,6 @@
 		13A5C0C11D883FA5007B5AA3 /* frame_timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0AF1D883FA4007B5AA3 /* frame_timer.h */; };
 		13A5C0C21D883FA5007B5AA3 /* ini_parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0B01D883FA4007B5AA3 /* ini_parser.cc */; };
 		13A5C0C31D883FA5007B5AA3 /* ini_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B11D883FA4007B5AA3 /* ini_parser.h */; };
-		13A5C0C51D883FA5007B5AA3 /* string.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B31D883FA4007B5AA3 /* string.h */; };
 		13A5C0C61D883FA5007B5AA3 /* system.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5C0B41D883FA4007B5AA3 /* system.cc */; };
 		13A5C0C71D883FA5007B5AA3 /* system.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B51D883FA4007B5AA3 /* system.h */; };
 		13A5C0C81D883FA5007B5AA3 /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5C0B61D883FA4007B5AA3 /* timer.h */; };
@@ -682,7 +681,6 @@
 				13A5C07C1D883F66007B5AA3 /* marching_tets.h in Headers */,
 				13A5C0C01D883FA5007B5AA3 /* file_system.h in Headers */,
 				13A5C07D1D883F66007B5AA3 /* correspondence.h in Headers */,
-				13A5C0C51D883FA5007B5AA3 /* string.h in Headers */,
 				13A5C07E1D883F66007B5AA3 /* mesh_io_npts.h in Headers */,
 				13A5C07F1D883F66007B5AA3 /* image_color.h in Headers */,
 				13A5C0801D883F66007B5AA3 /* mesh_io_ply.h in Headers */,
@@ -1025,7 +1023,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1071,7 +1069,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
