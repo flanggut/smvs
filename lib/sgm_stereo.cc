@@ -238,14 +238,12 @@ SGMStereo::depth_from_cost_volume (void)
         for (int x = 0; x < depthmap->width(); ++x, ++p)
         {
             uint8_t min_error = 200;
-            uint8_t min_2_error = 200;
             std::size_t min_index = 0;
             for (int i = 0; i < (int)this->cost_volume_depths.size(); ++i)
             {
                 uint8_t const value = this->cost_volume->at(p, i);
                 if (value < min_error)
                 {
-                    min_2_error = min_error;
                     min_error = value;
                     min_index = i;
                 }
@@ -270,7 +268,6 @@ SGMStereo::depth_from_sgm_volume (void)
         for (int x = 0; x < depthmap->width(); ++x, ++p)
         {
             uint16_t min_error = std::numeric_limits<uint16_t>::max();
-            uint16_t min_2_error = std::numeric_limits<uint16_t>::max();
             int min_index = 0;
             for (int i = 0; i < num_steps; ++i)
             {
@@ -281,7 +278,6 @@ SGMStereo::depth_from_sgm_volume (void)
 #endif
                 if (value < min_error)
                 {
-                    min_2_error = min_error;
                     min_error = value;
                     min_index = i;
                 }
