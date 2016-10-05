@@ -1,0 +1,16 @@
+# Setup
+title:        Shading-aware Multi-view Stereo
+tagline:      
+baseurl:      "/smvs"
+
+# About/contact
+author:
+  name:       Fabian Langguth
+  url:        https://github.com/flanggut
+
+# Gems
+gems:
+  - jekyll-paginate
+
+#Others
+markdown: kramdown
