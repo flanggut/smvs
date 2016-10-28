@@ -44,6 +44,7 @@ struct AppSettings
     int debug_lvl = 0;
     std::size_t num_neighbors = 6;
     std::size_t min_neighbors = 3;
+    std::size_t max_pixels = 1700000;
     std::size_t num_threads;
     bool use_shading = false;
     float light_surf_regularization = 0.0f;
@@ -94,6 +95,9 @@ args_to_settings(int argc, char** argv)
     args.add_option('d', "debug-lvl", true, "Debug level [0]");
     args.add_option('r', "recon-only", false, "Generate only depth maps "
         "and no output ply. [off]");
+    args.add_option('M', "max-pixels", true, "Maximal number of "
+        "pixels for reconstruction. Images will be rescaled "
+        "to be below this value. [1700000]");
     args.add_option('S', "shading", false, "Use shading-based optimization. "
         "[off]");
     args.add_option('R', "regularize-lighting", true, "Use additional basic "
@@ -153,6 +157,8 @@ args_to_settings(int argc, char** argv)
             conf.debug_lvl = arg->get_arg<unsigned int>();
         else if (arg->opt->lopt == "min-neighbors")
             conf.min_neighbors = arg->get_arg<std::size_t>();
+        else if (arg->opt->lopt == "max-pixels")
+            conf.max_pixels = arg->get_arg<std::size_t>();
         else if (arg->opt->lopt == "simplify")
             conf.simplify = arg->get_arg<float>();
         else if (arg->opt->lopt == "shading")
@@ -419,10 +425,9 @@ main (int argc, char** argv)
         }
         avg_image_size /= static_cast<double>(view_counter);
         
-        int const max_image_size = 1.7e6;
-        if (avg_image_size > max_image_size)
+        if (avg_image_size > conf.max_pixels)
             conf.input_scale = std::ceil(std::log2(
-                avg_image_size / max_image_size) / 2);
+                avg_image_size / conf.max_pixels) / 2);
         else
             conf.input_scale = 0;
         std::cout << "Automatic input scale: " << conf.input_scale << std::endl;
