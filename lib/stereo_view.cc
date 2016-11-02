@@ -67,8 +67,11 @@ StereoView::initialize_image_gradients (mve::FloatImage::ConstPtr image)
 void
 StereoView::initialize_linear (bool gamma_correction)
 {
-    this->linear_image = mve::image::desaturate<float>(this->image,
-        mve::image::DESATURATE_LUMINANCE);
+    if(this->image->channels() > 1)
+        this->linear_image = mve::image::desaturate<float>(this->image,
+            mve::image::DESATURATE_LUMINANCE);
+    else
+        this->linear_image = this->image->duplicate();
 
     if (gamma_correction)
         mve::image::gamma_correct_inv_srgb<float>(this->linear_image);
@@ -88,10 +91,12 @@ StereoView::get_shading_image (void)
 mve::ByteImage::ConstPtr
 StereoView::get_byte_image (void) const
 {
-    mve::ByteImage::Ptr image =
+    mve::ByteImage::Ptr byte_image =
         this->view->get_byte_image(this->image_embedding);
-    return mve::image::desaturate<uint8_t>(image,
-        mve::image::DESATURATE_LUMINANCE);
+    if(byte_image->channels() > 1)
+        byte_image = mve::image::desaturate<uint8_t>(byte_image,
+            mve::image::DESATURATE_LUMINANCE);
+    return byte_image;
 }
 
 void
