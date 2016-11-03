@@ -531,6 +531,7 @@ main (int argc, char** argv)
                 std::unique_lock<std::mutex> lock2(counter_mutex);
                 std::cout << "View ID: " << i << " not enough neighbors, "
                     "skipping view." << std::endl;
+                started += 1;
                 finished += 1;
                 lock2.unlock();
                 return;
