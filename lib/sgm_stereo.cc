@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <smmintrin.h> // SSE4_1
+#include <popcntintrin.h> // for hamming distance
 
 #include "mve/depthmap.h"
 #include "mve/image_tools.h"
@@ -211,13 +212,8 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
                 continue;
 
             /* hamming distance between census values */
-            uint64_t c = r_census->at(p) ^ l_warped_census->at(p);
-            uint8_t count = 0;
-            while (c != 0)
-            {
-                c &= (c - 1);
-                count += 1;
-            }
+            uint8_t count = _mm_popcnt_u64(
+                r_census->at(p) ^ l_warped_census->at(p));
 
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
             this->sse_cost_volume.at(p * num_steps + i) = count;
