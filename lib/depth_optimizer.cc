@@ -703,8 +703,8 @@ DepthOptimizer::construct_newton_step (SparseMatrix * hessian,
         std::fill(sub_gradient, sub_gradient + 16, 0.0);
         std::fill(sub_hessian, sub_hessian + 256, 0.0);
 
-        this->jacobian_entries_for_patch(patch_id, node_derivatives,
-            sub_gradient, sub_hessian);
+        this->jacobian_entries_for_patch(patch, this->subsurfaces[patch_id],
+            node_derivatives, sub_gradient, sub_hessian);
 
         /* compute gradient block */
         for (int node = 0; node < 4; ++node)
@@ -754,12 +754,12 @@ DepthOptimizer::construct_newton_step (SparseMatrix * hessian,
 }
 
 void
-DepthOptimizer::jacobian_entries_for_patch(std::size_t patch_id,
+DepthOptimizer::jacobian_entries_for_patch(Surface::Patch::Ptr patch,
+    std::vector<std::size_t> const& patch_neighbors,
     std::vector<double> const& node_derivatives, double * gradient,
     double * hessian_entries)
 {
-    Surface::Patch::Ptr patch = this->surface->get_patches()[patch_id];
-    std::size_t num_sds = this->subsurfaces[patch_id].size() + 1;
+    std::size_t num_sds = patch_neighbors.size() + 1;
     num_sds = num_sds * (num_sds + 1);
     p_weights.resize(num_sds);
     p_diffs.resize(num_sds);
@@ -782,9 +782,9 @@ DepthOptimizer::jacobian_entries_for_patch(std::size_t patch_id,
 
         double const* dn00 = &node_derivatives[pids[i] * 96];
 
-        for (std::size_t j = 0; j < this->subsurfaces[patch_id].size(); ++j)
+        for (std::size_t j = 0; j < patch_neighbors.size(); ++j)
         {
-            std::size_t sub_id = this->subsurfaces[patch_id][j];
+            std::size_t sub_id = patch_neighbors[j];
             mve::FloatImage::ConstPtr sub_gradients =
                 this->sub_views[sub_id]->get_image_gradients();
             mve::FloatImage::ConstPtr sub_hessian =
@@ -848,26 +848,24 @@ DepthOptimizer::jacobian_entries_for_patch(std::size_t patch_id,
                 // depth_2nd_derivatives[i][2],
                 this->normal_deriv);
         }
-        this->fill_gradient_and_hessian_entries(i, patch_id, gradient,
-            hessian_entries);
+        this->fill_gradient_and_hessian_entries(i, patch_neighbors.size(),
+            gradient, hessian_entries);
     }
 }
 
 void
 DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
-    std::size_t patch_id, double * gradient, double * hessian_entries)
+    std::size_t num_subs, double * gradient, double * hessian_entries)
 {
     double weight[2];
-    std::size_t const num_diffs = (this->subsurfaces[patch_id].size() 
-        * this->subsurfaces[patch_id].size() + 1) / 2;
     
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     __m128d reg_grad_main = _mm_set_pd(grad_main[1], grad_main[0]);
     static __m128d const sign_mask = _mm_set1_pd(-0.);
     static __m128d const reg_rfactor = _mm_set1_pd(R_FACTOR);
 
-    reg_grad_mem.resize(16, math::Vec2d(0.0));
-    reg_hessian_mem.resize(256, math::Vec2d(0.0));
+    reg_grad_mem.resize(16);
+    reg_hessian_mem.resize(256);
 
     __m128d * reg_grad = reinterpret_cast<__m128d *>(*reg_grad_mem[0]);
     __m128d * reg_hessian = reinterpret_cast<__m128d *>(*reg_hessian_mem[0]);
@@ -876,16 +874,15 @@ DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
         reg_grad[col] = _mm_setzero_pd();
     for (int i = 0; i < 256; ++i)
         reg_hessian[i] = _mm_setzero_pd();
-    
-    for (std::size_t j = 0; j < this->subsurfaces[patch_id].size(); ++j)
+
+    for (std::size_t j = 0; j < num_subs; ++j)
     {
         __m128d reg_jgrad_sub = _mm_load_pd(*j_grad_subs[j]);
         __m128d reg_diff = _mm_sub_pd(reg_jgrad_sub, reg_grad_main);
         __m128d reg_weight = _mm_add_pd(_mm_andnot_pd(sign_mask, reg_diff),
             reg_rfactor);
         
-        for (std::size_t j2 = j + 1; j2 < this->subsurfaces[patch_id].size();
-             ++j2)
+        for (std::size_t j2 = j + 1; j2 < num_subs; ++j2)
         {
             __m128d reg_jgrad_sub2 = _mm_load_pd(*j_grad_subs[j2]);
             __m128d reg_subdiff = _mm_sub_pd(reg_jgrad_sub, reg_jgrad_sub2);
@@ -1002,6 +999,8 @@ DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
     
     if (this->opts.regularization <= 0.0)
         return;
+
+    std::size_t const num_diffs = (num_subs * (num_subs + 1)) / 2;
 
     /* basic regularization */
     basic_regularizer_weight *= num_diffs;

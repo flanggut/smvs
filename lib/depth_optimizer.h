@@ -71,10 +71,11 @@ private:
     void run_newton_iterations (int num_iters);
     void construct_newton_step (SparseMatrix * hessian,
         DenseVector * gradient, SparseMatrix * precond);
-    void jacobian_entries_for_patch (std::size_t patch_id,
+    void jacobian_entries_for_patch (Surface::Patch::Ptr patch,
+        std::vector<std::size_t> const& patch_neighbors,
         std::vector<double> const& node_derivatives, double * gradient,
-            double * hessian_entries);
-    void fill_gradient_and_hessian_entries(std::size_t i, std::size_t patch_id,
+        double * hessian_entries);
+    void fill_gradient_and_hessian_entries(std::size_t i, std::size_t num_subs,
         double * gradient, double * hessian_entries);
 
     /* Householder operations */
