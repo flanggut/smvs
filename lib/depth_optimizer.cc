@@ -790,7 +790,7 @@ DepthOptimizer::jacobian_entries_for_patch(std::size_t patch_id,
             mve::FloatImage::ConstPtr sub_hessian =
                 this->sub_views[sub_id]->get_image_hessian();
 
-            Correspondence C(this->Mi[sub_id], this->ti[sub_id],
+            C.update(this->Mi[sub_id], this->ti[sub_id],
                 pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i],
                 depth_derivatives[i][0], depth_derivatives[i][1]);
 
@@ -864,8 +864,14 @@ DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     __m128d reg_grad_main = _mm_set_pd(grad_main[1], grad_main[0]);
     static __m128d const sign_mask = _mm_set1_pd(-0.);
-    __m128d reg_grad[16];
-    __m128d reg_hessian[256];
+    static __m128d const reg_rfactor = _mm_set1_pd(R_FACTOR);
+
+    reg_grad_mem.resize(16, math::Vec2d(0.0));
+    reg_hessian_mem.resize(256, math::Vec2d(0.0));
+
+    __m128d * reg_grad = reinterpret_cast<__m128d *>(*reg_grad_mem[0]);
+    __m128d * reg_hessian = reinterpret_cast<__m128d *>(*reg_hessian_mem[0]);
+
     for (int col = 0; col < 16; ++col)
         reg_grad[col] = _mm_setzero_pd();
     for (int i = 0; i < 256; ++i)
@@ -876,7 +882,7 @@ DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
         __m128d reg_jgrad_sub = _mm_load_pd(*j_grad_subs[j]);
         __m128d reg_diff = _mm_sub_pd(reg_jgrad_sub, reg_grad_main);
         __m128d reg_weight = _mm_add_pd(_mm_andnot_pd(sign_mask, reg_diff),
-            _mm_set1_pd(R_FACTOR));
+            reg_rfactor);
         
         for (std::size_t j2 = j + 1; j2 < this->subsurfaces[patch_id].size();
              ++j2)
@@ -884,52 +890,55 @@ DepthOptimizer::fill_gradient_and_hessian_entries(std::size_t i,
             __m128d reg_jgrad_sub2 = _mm_load_pd(*j_grad_subs[j2]);
             __m128d reg_subdiff = _mm_sub_pd(reg_jgrad_sub, reg_jgrad_sub2);
             __m128d reg_subweight = _mm_add_pd(
-                _mm_andnot_pd(sign_mask, reg_subdiff), _mm_set1_pd(R_FACTOR));
-            for (int col = 0; col < 16; ++col)
+                _mm_andnot_pd(sign_mask, reg_subdiff), reg_rfactor);
+
+            __m128d * reg_jcol = reinterpret_cast<__m128d *>(
+                *jac_entries[j * 16]);
+            __m128d * reg_j2col = reinterpret_cast<__m128d *>(
+                *jac_entries[j2 * 16]);
+
+            for (int col = 0; col < 16; ++col, ++reg_jcol, ++reg_j2col)
             {
-                __m128d reg_jcol = _mm_load_pd(*jac_entries[j * 16 + col]);
-                __m128d reg_j2col = _mm_load_pd(*jac_entries[j2 * 16 + col]);
-                __m128d reg_jace = _mm_div_pd(_mm_sub_pd(reg_jcol, reg_j2col),
-                    reg_subweight);
-                
+                __m128d reg_jace = _mm_div_pd(_mm_sub_pd(*reg_jcol, *reg_j2col),
+                     reg_subweight);
+
                 if (j2 == j + 1)
                     reg_grad[col] = _mm_add_pd(reg_grad[col],
-                        _mm_div_pd(_mm_mul_pd(reg_diff, reg_jcol), reg_weight));
+                        _mm_div_pd(_mm_mul_pd(reg_diff, *reg_jcol), reg_weight));
 
                 reg_grad[col] = _mm_add_pd(reg_grad[col],
                     _mm_mul_pd(reg_jace, reg_subdiff));
-                for (int col2 = col; col2 < 16; ++col2)
+
+                __m128d * reg_jcol2 = reinterpret_cast<__m128d *>(
+                    *jac_entries[j * 16 + col]);
+                __m128d * reg_j2col2 = reinterpret_cast<__m128d *>(
+                    *jac_entries[j2 * 16 + col]);
+                for (int col2 = col; col2 < 16; ++col2,
+                     ++reg_jcol2, ++reg_j2col2)
                 {
-                    __m128d reg_jcol2 = _mm_load_pd(
-                        *jac_entries[j * 16 + col2]);
-                    __m128d reg_j2col2 = _mm_load_pd(
-                        *jac_entries[j2 * 16 + col2]);
                     reg_hessian[col * 16 + col2] =
                         _mm_add_pd(reg_hessian[col * 16 + col2],
                             _mm_mul_pd(reg_jace,
-                                _mm_sub_pd(reg_jcol2, reg_j2col2)));
+                                _mm_sub_pd(*reg_jcol2, *reg_j2col2)));
                     
                     if (j2 == j + 1)
                         reg_hessian[col * 16 + col2] =
                             _mm_add_pd(reg_hessian[col * 16 + col2],
-                                _mm_mul_pd(reg_jcol,
-                                    _mm_div_pd(reg_jcol2, reg_weight)));
+                                _mm_mul_pd(*reg_jcol,
+                                    _mm_div_pd(*reg_jcol2, reg_weight)));
                 }
             }
         }
     }
     
     for (int col = 0; col < 16; ++col)
-    {
-        double const* tmp = reinterpret_cast<double const*>(&reg_grad[col]);
-        gradient[col] += tmp[0] + tmp[1];
-    }
+        gradient[col] += reg_grad_mem[col][0] + reg_grad_mem[col][1];
+
     for (int col = 0; col < 16; ++col)
        for (int col2 = col; col2 < 16; ++col2)
         {
-            double const* tmp = reinterpret_cast<double const*>(
-                &reg_hessian[col * 16 + col2]);
-            hessian_entries[col * 16 + col2] += tmp[0] + tmp[1];
+            hessian_entries[col * 16 + col2] += reg_hessian_mem[col * 16 + col2][0] +
+                reg_hessian_mem[col * 16 + col2][1];
         }
     
 #else /* No SSE4 Support */

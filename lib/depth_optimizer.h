@@ -22,6 +22,7 @@
 #include "sse_vector.h"
 #include "block_sparse_matrix.h"
 #include "defines.h"
+#include "correspondence.h"
 
 SMVS_NAMESPACE_BEGIN
 
@@ -133,7 +134,10 @@ private:
     math::Vec2d proj;
     math::Matrix2d jac;
     math::Matrix2d jac_hess;
+    util::AlignedMemory<math::Vec2d, 16> reg_grad_mem;
+    util::AlignedMemory<math::Vec2d, 16> reg_hessian_mem;
     double basic_regularizer_weight;
+    Correspondence C;
 };
 
 /* ------------------------ Implementation ------------------------ */

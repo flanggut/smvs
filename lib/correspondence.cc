@@ -11,10 +11,17 @@
 
 SMVS_NAMESPACE_BEGIN
 
-Correspondence::Correspondence(math::Matrix3d const& M, math::Vec3d const& t,
+Correspondence::Correspondence (math::Matrix3d const& M, math::Vec3d const& t,
     double u, double v, double w, double w_dx, double w_dy)
-    : t(t)
 {
+    this->update(M, t, u, v, w, w_dx, w_dy);
+}
+
+void
+Correspondence::update (math::Matrix3d const& M, math::Vec3d const& t,
+    double u, double v, double w, double w_dx, double w_dy)
+{
+    this->t = t;
     this->w = w;
     this->p_prime[0] = M(0,0);
     this->p_prime[1] = M(0,1);
@@ -23,12 +30,12 @@ Correspondence::Correspondence(math::Matrix3d const& M, math::Vec3d const& t,
     this->r_prime[0] = M(2,0);
     this->r_prime[1] = M(2,1);
 
-    this->w_prime = math::Vec2d(w_dx, w_dy);
+    this->w_prime[0] = w_dx;
+    this->w_prime[1] = w_dy;
 
-    math::Vec3d pqr = M * math::Vec3d(u, v, 1.0f);
-    this->p = pqr[0];
-    this->q = pqr[1];
-    this->r = pqr[2];
+    this->p = M(0,0) * u + M(0,1) * v + M(0,2);
+    this->q = M(1,0) * u + M(1,1) * v + M(1,2);
+    this->r = M(2,0) * u + M(2,1) * v + M(2,2);
 
     this->a = w * p + t[0];
     this->b = w * q + t[1];
