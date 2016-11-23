@@ -274,7 +274,7 @@ DepthOptimizer::run_newton_iterations (int num_iters)
             {
                 double diff = (projections1[p].second -
                     projections2[p].second).norm();
-                if (diff > 0.25)
+                if (diff > 0.1)
                 {
                     active_nodes[projections1[p].first] = 1;
                     num_active_nodes += 1;

@@ -37,6 +37,7 @@ GaussNewtonStep::construct (Surface::Ptr surface,
         GlobalLighting::Ptr lighting,
         SparseMatrix * hessian, DenseVector * gradient, SparseMatrix * precond)
 {
+    this->lighting = lighting;
     Surface::PatchList const & patches = surface->get_patches();
     std::size_t const num_params = surface->get_num_nodes() * 4;
     int const pixels_per_patch = MATH_POW2(surface->get_patchsize());
