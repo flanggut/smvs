@@ -206,16 +206,20 @@ DepthOptimizer::run_newton_iterations (int num_iters)
         GaussNewtonStep gauss_newton_step(gauss_newton_opts, this->main_view,
             this->sub_views, this->Mi, this->ti);
 
+        std::vector<std::size_t> active_patches;
+        Surface::PatchList const & patches = this->surface->get_patches();
+        for (std::size_t patch_id = 0; patch_id < patches.size(); ++patch_id)
+            if (patches[patch_id] != nullptr)
+                active_patches.push_back(patch_id);
+
         for (; newton_step < 200 && update > 0.01; ++newton_step)
         {
             prev_gradient = gradient;
 
-
             util::WallTimer newton_timer;
             /* construct newton step */
-//            this->construct_newton_step(&hessian, &gradient, &precond);
             gauss_newton_step.construct(this->surface, this->subsurfaces,
-                this->lighting, &hessian, &gradient, &precond);
+                active_patches, this->lighting, &hessian, &gradient, &precond);
             timer_build_step += newton_timer.get_elapsed();
 
             if (this->opts.debug_lvl > 2)

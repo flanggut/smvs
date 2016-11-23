@@ -24,7 +24,7 @@ GaussNewtonStep::GaussNewtonStep (Options const& opts,
         std::vector<math::Matrix3d> const& Mi,
         std::vector<math::Vec3d> const& ti)
     : opts(opts), main_view(main_view), sub_views(sub_views)
-    , ti(ti), Mi(Mi)
+    , Mi(Mi), ti(ti)
 {
     this->main_gradients = this->main_view->get_image_gradients();
     this->main_gradients_linear = this->main_view->get_linear_gradients();
@@ -33,6 +33,7 @@ GaussNewtonStep::GaussNewtonStep (Options const& opts,
 void
 GaussNewtonStep::construct (Surface::Ptr surface,
         std::vector<std::vector<std::size_t>> const& subsurfaces,
+        std::vector<std::size_t> const& active_patches,
         GlobalLighting::Ptr lighting,
         SparseMatrix * hessian, DenseVector * gradient, SparseMatrix * precond)
 {
@@ -59,8 +60,9 @@ GaussNewtonStep::construct (Surface::Ptr surface,
     double sub_gradient[16];
     double sub_hessian[256];
 
-    for (int patch_id = 0; patch_id < (int)patches.size(); ++patch_id)
+    for (int patch_c = 0; patch_c < (int)active_patches.size(); ++patch_c)
     {
+        int const patch_id = static_cast<int>(active_patches[patch_c]);
         SurfacePatch::Ptr patch = patches[patch_id];
         if (patch == nullptr)
             continue;
