@@ -22,6 +22,7 @@ class StereoView
 {
 public:
     typedef std::shared_ptr<StereoView> Ptr;
+    typedef std::shared_ptr<const StereoView> ConstPtr;
 
 public:
     static StereoView::Ptr create (mve::View::Ptr view,
