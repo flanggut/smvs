@@ -168,8 +168,8 @@ DepthOptimizer::run_newton_iterations (int num_iters)
     SparseMatrix precond;
     std::vector<double> delta;
     std::vector<double> depth_updates;
-    std::vector<math::Vec2d> projections1;
-    std::vector<math::Vec2d> projections2;
+    std::vector<std::pair<std::size_t, math::Vec2d>> projections1;
+    std::vector<std::pair<std::size_t, math::Vec2d>> projections2;
 
     this->main_gradients = this->main_view->get_image_gradients();
     this->main_gradients_linear = this->main_view->get_linear_gradients();
@@ -177,13 +177,13 @@ DepthOptimizer::run_newton_iterations (int num_iters)
     bool finished = false;
     for (int iter = 0; iter < num_iters; ++iter)
     {
-        std::size_t num_valid = 0;
+        std::size_t num_valid_patches = 0;
         for (auto p : this->surface->get_patches())
             if (p != nullptr)
-                num_valid++;
+                num_valid_patches++;
         if (this->opts.debug_lvl > 0 && iter == 0)
             std::cout << "Surface Status - "
-                "Valid patches: " << num_valid << std::endl;
+                "Valid patches: " << num_valid_patches << std::endl;
 
         if (iter == 0)
         {
@@ -206,20 +206,24 @@ DepthOptimizer::run_newton_iterations (int num_iters)
         GaussNewtonStep gauss_newton_step(gauss_newton_opts, this->main_view,
             this->sub_views, this->Mi, this->ti);
 
-        std::vector<std::size_t> active_patches;
-        Surface::PatchList const & patches = this->surface->get_patches();
-        for (std::size_t patch_id = 0; patch_id < patches.size(); ++patch_id)
-            if (patches[patch_id] != nullptr)
-                active_patches.push_back(patch_id);
-
-        for (; newton_step < 200 && update > 0.01; ++newton_step)
+        std::size_t num_initial_active_nodes = 0;
+        std::vector<char> active_nodes(this->surface->get_nodes().size(), 0);
+        for (std::size_t i = 0; i < this->surface->get_nodes().size(); ++i)
+            if (this->surface->get_nodes()[i] != nullptr)
+            {
+                active_nodes[i] = 1;
+                num_initial_active_nodes += 1;
+            }
+        std::size_t num_active_nodes = num_initial_active_nodes;
+        for (; newton_step < 200 &&
+             num_active_nodes > num_initial_active_nodes / 100; ++newton_step)
         {
             prev_gradient = gradient;
 
             util::WallTimer newton_timer;
             /* construct newton step */
             gauss_newton_step.construct(this->surface, this->subsurfaces,
-                active_patches, this->lighting, &hessian, &gradient, &precond);
+                active_nodes, this->lighting, &hessian, &gradient, &precond);
             timer_build_step += newton_timer.get_elapsed();
 
             if (this->opts.debug_lvl > 2)
@@ -263,11 +267,26 @@ DepthOptimizer::run_newton_iterations (int num_iters)
             this->fill_node_reprojections(&projections2);
 
             double sum_diff = 0;
+            num_active_nodes = 0;
+            std::fill(active_nodes.begin(), active_nodes.end(), 0);
+
             for (std::size_t p = 0; p < projections1.size(); ++p)
-                sum_diff += (projections1[p] - projections2[p]).norm();
+            {
+                double diff = (projections1[p].second -
+                    projections2[p].second).norm();
+                if (diff > 0.25)
+                {
+                    active_nodes[projections1[p].first] = 1;
+                    num_active_nodes += 1;
+                }
+                sum_diff += diff;
+            }
             update = sum_diff / (double) projections1.size();
             if (this->opts.debug_lvl > 2)
                 std::cout << "Avg delta: " << update << std::endl;
+            if (this->opts.debug_lvl > 0)
+                std::cout << "Num active nodes: "
+                    << num_active_nodes << std::endl;
         }
 
         if (this->opts.debug_lvl > 0)
@@ -319,15 +338,15 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                 num_valid_new++;
 
         /* check surface changes for convergence */
-        double change = 1.0 - (double)std::min(num_valid_new, num_valid)
-            / (double)std::max(num_valid_new, num_valid);
+        double change = 1.0 - (double)std::min(num_valid_new, num_valid_patches)
+            / (double)std::max(num_valid_new, num_valid_patches);
 
         if (this->opts.debug_lvl > 0)
             std::cout << "Surface change: " << change << " Valid patches: "
-                << num_valid << " -> " << num_valid_new << std::endl;
+                << num_valid_patches << " -> " << num_valid_new << std::endl;
         this->write_debug_depth();
 
-        if (iter > 0 && (num_valid_new <= num_valid ||
+        if (iter > 0 && (num_valid_new <= num_valid_patches ||
             change < 0.05 * this->surface->get_scale()))
             finished = true;
     }
@@ -624,7 +643,8 @@ DepthOptimizer::get_non_converged_nodes(std::vector<math::Vec2d> const& proj1,
 
 
 void
-DepthOptimizer::fill_node_reprojections(std::vector<math::Vec2d> * proj)
+DepthOptimizer::fill_node_reprojections(
+    std::vector<std::pair<std::size_t, math::Vec2d>> * proj)
 {
     proj->clear();
     Surface::NodeList const& nodes = this->surface->get_nodes();
@@ -637,7 +657,6 @@ DepthOptimizer::fill_node_reprojections(std::vector<math::Vec2d> * proj)
         SurfacePatch::Ptr patch = patches[patch_id];
         if (patch == nullptr)
             continue;
-
         std::size_t node_ids[4];
         this->surface->fill_node_ids_for_patch(patch_id, node_ids);
         for (std::size_t i = 0; i < 4; ++i)
@@ -651,7 +670,7 @@ DepthOptimizer::fill_node_reprojections(std::vector<math::Vec2d> * proj)
                      node_coords[node_id][0], node_coords[node_id][1], node->f);
                 math::Vec2d projection;
                 C.fill(*projection);
-                proj->push_back(projection);
+                proj->emplace_back(node_id, projection);
             }
         }
     }

@@ -33,7 +33,7 @@ GaussNewtonStep::GaussNewtonStep (Options const& opts,
 void
 GaussNewtonStep::construct (Surface::Ptr surface,
         std::vector<std::vector<std::size_t>> const& subsurfaces,
-        std::vector<std::size_t> const& active_patches,
+        std::vector<char> const& active_nodes,
         GlobalLighting::Ptr lighting,
         SparseMatrix * hessian, DenseVector * gradient, SparseMatrix * precond)
 {
@@ -60,14 +60,22 @@ GaussNewtonStep::construct (Surface::Ptr surface,
     double sub_gradient[16];
     double sub_hessian[256];
 
-    for (int patch_c = 0; patch_c < (int)active_patches.size(); ++patch_c)
+    for (int patch_id = 0; patch_id < (int)surface->get_patches().size();
+         ++patch_id)
     {
-        int const patch_id = static_cast<int>(active_patches[patch_c]);
         SurfacePatch::Ptr patch = patches[patch_id];
         if (patch == nullptr)
             continue;
         std::size_t node_ids[4];
         surface->fill_node_ids_for_patch(patch_id, node_ids);
+
+        if (active_nodes[node_ids[0]] == 0
+            && active_nodes[node_ids[1]] == 0
+            && active_nodes[node_ids[2]] == 0
+            && active_nodes[node_ids[3]] == 0)
+        {
+            continue;
+        }
 
         std::fill(sub_gradient, sub_gradient + 16, 0.0);
         std::fill(sub_hessian, sub_hessian + 256, 0.0);
@@ -78,14 +86,23 @@ GaussNewtonStep::construct (Surface::Ptr surface,
 
         /* compute gradient block */
         for (int node = 0; node < 4; ++node)
+        {
+            if (active_nodes[node_ids[node]] == 0)
+                continue;
             for (int value = 0; value < 4; ++value)
                 gradient->at(node_ids[node] * 4 + value) +=
                     sub_gradient[node * 4 + value];
+        }
 
         /* compute hessian block */
         for (std::size_t node1 = 0; node1 < 16; ++node1)
+        {
+            if (active_nodes[node_ids[node1 / 4]] == 0)
+                continue;
             for (std::size_t node2 = node1; node2 < 16; ++node2)
             {
+                if (active_nodes[node_ids[node2 / 4]] == 0)
+                    continue;
                 std::size_t const block_id1 = node_ids[node1 / 4] *
                     num_params + node_ids[node2 / 4];
                 std::size_t const block_id2 = node_ids[node1 / 4] +
@@ -100,6 +117,7 @@ GaussNewtonStep::construct (Surface::Ptr surface,
                         [block_offset_x * 4 + block_offset_y]
                         += sub_hessian[node1 * 16 + node2];
             }
+         }
     }
     hessian->allocate(num_params, num_params);
     precond->allocate(num_params, num_params);

@@ -45,7 +45,7 @@ public:
 
     void construct (Surface::Ptr surface,
         std::vector<std::vector<std::size_t>> const& subsurfaces,
-        std::vector<std::size_t> const& active_patches,
+        std::vector<char> const& active_nodes,
         GlobalLighting::Ptr lighting,
         SparseMatrix * hessian, DenseVector * gradient, SparseMatrix * precond);
 

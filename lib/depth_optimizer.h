@@ -72,7 +72,8 @@ private:
     void get_non_converged_nodes(std::vector<math::Vec2d> const& proj1,
         std::vector<math::Vec2d> const& proj2,
         std::vector<std::size_t> * nodes);
-    void fill_node_reprojections(std::vector<math::Vec2d> * proj);
+    void fill_node_reprojections(
+        std::vector<std::pair<std::size_t, math::Vec2d>> * proj);
     int cut_boundaries (void);
 
     /* Errors and values for patch */
