@@ -21,9 +21,6 @@
 #include "sgm_stereo.h"
 #include "gauss_newton_step.h"
 
-// minimal value for reweighting linear system to optimize L1 norm
-#define R_FACTOR 1e-4
-
 SMVS_NAMESPACE_BEGIN
 
 DepthOptimizer::DepthOptimizer (StereoView::Ptr main_view,
@@ -192,9 +189,6 @@ DepthOptimizer::run_newton_iterations (int num_iters)
             while (deleted > 10)
                 deleted = this->cut_boundaries();
         }
-        if (this->opts.debug_lvl > 0)
-            std::cout << "### Iteration: " << iter << std::endl;
-
 
         GaussNewtonStep::Options gauss_newton_opts;
         gauss_newton_opts.regularization = this->opts.regularization;
@@ -222,8 +216,8 @@ DepthOptimizer::run_newton_iterations (int num_iters)
         {
             newton_step += 1;
             prev_gradient = gradient;
-
             util::WallTimer newton_timer;
+
             /* construct newton step */
             gauss_newton_step.construct(this->surface, this->subsurfaces,
                 active_nodes, this->lighting, &hessian, &gradient, &precond);
@@ -297,7 +291,7 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                     num_active_nodes += 1;
                 }
             }
-            if (this->opts.debug_lvl > 0)
+            if (this->opts.debug_lvl > 1)
                 std::cout << "Num active nodes: "
                     << num_active_nodes << std::endl;
             if (num_active_nodes < num_initial_active_nodes / 100)
