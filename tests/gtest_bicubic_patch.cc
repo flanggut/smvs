@@ -629,12 +629,12 @@ TEST(BicubicPatchTest, FitToDataConst)
         }
 
     BicubicPatch::Ptr patch = BicubicPatch::fit_to_data(x.data(), y.data(),
-        data.data(), data.size());
+        data.data(), static_cast<int>(data.size()));
 
-    EXPECT_NEAR(0.5, patch->evaluate_f(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.0, patch->evaluate_dx(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.0, patch->evaluate_dy(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.0, patch->evaluate_dxy(0.5, 0.5), 1e-5);
+    EXPECT_NEAR(0.5, patch->evaluate_f(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.0, patch->evaluate_dx(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.0, patch->evaluate_dy(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.0, patch->evaluate_dxy(0.5, 0.5), 1e-9);
 }
 
 TEST(BicubicPatchTest, FitToDataLinearX)
@@ -652,14 +652,14 @@ TEST(BicubicPatchTest, FitToDataLinearX)
         }
 
     BicubicPatch::Ptr patch = BicubicPatch::fit_to_data(x.data(), y.data(),
-        data.data(), data.size());
+        data.data(), static_cast<int>(data.size()));
 
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.2), 1e-5);
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.7), 1e-5);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.2), 1e-9);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.7), 1e-9);
 
-    EXPECT_NEAR(0.1, patch->evaluate_dx(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.0, patch->evaluate_dy(0.5, 0.5), 1e-5);
+    EXPECT_NEAR(0.1, patch->evaluate_dx(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.0, patch->evaluate_dy(0.5, 0.5), 1e-9);
 }
 
 TEST(BicubicPatchTest, FitToDataLinearY)
@@ -677,12 +677,76 @@ TEST(BicubicPatchTest, FitToDataLinearY)
         }
 
     BicubicPatch::Ptr patch = BicubicPatch::fit_to_data(x.data(), y.data(),
-        data.data(), data.size());
+        data.data(), static_cast<int>(data.size()));
 
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.2, 0.5), 1e-5);
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.55, patch->evaluate_f(0.7, 0.5), 1e-5);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.2, 0.5), 1e-9);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.55, patch->evaluate_f(0.7, 0.5), 1e-9);
 
-    EXPECT_NEAR(0.0, patch->evaluate_dx(0.5, 0.5), 1e-5);
-    EXPECT_NEAR(0.1, patch->evaluate_dy(0.5, 0.5), 1e-5);
+    EXPECT_NEAR(0.0, patch->evaluate_dx(0.5, 0.5), 1e-9);
+    EXPECT_NEAR(0.1, patch->evaluate_dy(0.5, 0.5), 1e-9);
+}
+
+TEST(BicubicPatchTest, FitToDataComplete)
+{
+    BicubicPatch::Node::Ptr n00 = BicubicPatch::Node::create();
+    BicubicPatch::Node::Ptr n10 = BicubicPatch::Node::create();
+    BicubicPatch::Node::Ptr n01 = BicubicPatch::Node::create();
+    BicubicPatch::Node::Ptr n11 = BicubicPatch::Node::create();
+
+    n00->f = 0.1;
+    n00->dx = 0.1;
+    n00->dy = 0.1;
+    n00->dxy = 0.1;
+
+    n10->f = 0.1;
+    n10->dx = 0.1;
+    n10->dy = 0.1;
+    n10->dxy = 0.1;
+
+    n01->f = 0.2;
+    n01->dx = 0.2;
+    n01->dy = 0.2;
+    n01->dxy = 0.2;
+
+    n11->f = 0.2;
+    n11->dx = 0.2;
+    n11->dy = 0.2;
+    n11->dxy = 0.2;
+
+    BicubicPatch::Ptr opatch = BicubicPatch::create(n00, n10, n01, n11);
+
+    std::vector<double> x;
+    std::vector<double> y;
+    std::vector<double> data;
+
+    for (int i = 0; i < 10; ++i)
+        for (int j = 0; j < 10; ++j)
+        {
+            x.push_back(0.1 * i);
+            y.push_back(0.1 * j);
+            data.push_back(opatch->evaluate_f(x.back(), y.back()));
+        }
+
+    BicubicPatch::Ptr patch = BicubicPatch::fit_to_data(x.data(), y.data(),
+        data.data(), static_cast<int>(data.size()));
+
+    EXPECT_NEAR(n00->f, patch->evaluate_f(0., 0.), 1e-9);
+    EXPECT_NEAR(n00->dx, patch->evaluate_dx(0., 0.), 1e-9);
+    EXPECT_NEAR(n00->dy, patch->evaluate_dy(0., 0.), 1e-9);
+    EXPECT_NEAR(n00->dxy, patch->evaluate_dxy(0., 0.), 1e-9);
+
+    EXPECT_NEAR(n10->f, patch->evaluate_f(1., 0.), 1e-9);
+    EXPECT_NEAR(n10->dx, patch->evaluate_dx(1., 0.), 1e-9);
+    EXPECT_NEAR(n10->dy, patch->evaluate_dy(1., 0.), 1e-9);
+    EXPECT_NEAR(n10->dxy, patch->evaluate_dxy(1., 0.), 1e-9);
+
+    EXPECT_NEAR(n01->f, patch->evaluate_f(0., 1.), 1e-9);
+    EXPECT_NEAR(n01->dx, patch->evaluate_dx(0., 1.), 1e-9);
+    EXPECT_NEAR(n01->dy, patch->evaluate_dy(0., 1.), 1e-9);
+    EXPECT_NEAR(n01->dxy, patch->evaluate_dxy(0., 1.), 1e-9);
+
+    EXPECT_NEAR(n11->f, patch->evaluate_f(1., 1.), 1e-9);
+    EXPECT_NEAR(n11->dx, patch->evaluate_dx(1., 1.), 1e-9);
+    EXPECT_NEAR(n11->dy, patch->evaluate_dy(1., 1.), 1e-9);
 }
