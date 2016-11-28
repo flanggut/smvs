@@ -14,6 +14,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <map>
 
 #include "sse_vector.h"
 #include "conjugate_gradient.h"

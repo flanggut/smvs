@@ -14,14 +14,13 @@
 
 #include "math/matrix.h"
 
-#include "util/aligned_memory.h"
-
 #include "stereo_view.h"
 #include "surface.h"
 #include "global_lighting.h"
 #include "sse_vector.h"
 #include "block_sparse_matrix.h"
 #include "defines.h"
+#include "correspondence.h"
 
 SMVS_NAMESPACE_BEGIN
 
@@ -38,6 +37,7 @@ public:
         int debug_lvl = 0;
         bool use_shading = false;
         bool use_sgm = false;
+        bool full_optimization = false;
         std::string output_name = "smvs";
     };
 
@@ -68,19 +68,13 @@ private:
 
     /* Run Gauss-Newton Optimization */
     void run_newton_iterations (int num_iters);
-    void construct_newton_step (SparseMatrix * hessian,
-        DenseVector * gradient, SparseMatrix * precond);
-    void jacobian_entries_for_patch (std::size_t patch_id,
-        std::vector<double> const& node_derivatives, double * gradient,
-            double * hessian_entries);
-    void fill_gradient_and_hessian_entries(std::size_t i, std::size_t patch_id,
-        double * gradient, double * hessian_entries);
 
     /* Householder operations */
     void get_non_converged_nodes(std::vector<math::Vec2d> const& proj1,
         std::vector<math::Vec2d> const& proj2,
         std::vector<std::size_t> * nodes);
-    void fill_node_reprojections(std::vector<math::Vec2d> * proj);
+    void fill_node_reprojections(
+        std::vector<std::pair<std::size_t, math::Vec2d>> * proj);
     int cut_boundaries (void);
 
     /* Errors and values for patch */
@@ -116,24 +110,11 @@ private:
     std::vector<math::Vec2d> depth_derivatives;
     std::vector<math::Vec3d> depth_2nd_derivatives;
 
-    math::Vec2d c_dn[16];
-    math::Vec2d jac_dn[16];
-    double full_surface_div[6];
-    double full_surface_div_deriv[96];
-    double normal_deriv[48];
-    util::AlignedMemory<math::Vec2d, 16> j_grad_subs;
-    util::AlignedMemory<math::Vec2d, 16> jac_entries;
-
-    std::vector<double> p_diffs;
-    std::vector<double> p_weights;
     math::Vec2d grad_main;
     math::Vec2d grad_linear;
     math::Vec2d grad_sub;
-    math::Matrix2d hess_sub;
     math::Vec2d proj;
     math::Matrix2d jac;
-    math::Matrix2d jac_hess;
-    double basic_regularizer_weight;
 };
 
 /* ------------------------ Implementation ------------------------ */

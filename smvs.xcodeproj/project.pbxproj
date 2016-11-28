@@ -45,6 +45,8 @@
 		1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		132924641C0332F1007756D0 /* test_optimization.cc in Sources */ = {isa = PBXBuildFile; fileRef = 132924471C031843007756D0 /* test_optimization.cc */; };
 		132A32931D896FE70059D63F /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
+		13554C3E1DE5F0EF00029F4B /* gauss_newton_step.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */; };
+		13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */ = {isa = PBXBuildFile; fileRef = 13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */; };
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
@@ -208,6 +210,8 @@
 		1352AF951BFB3F800023D277 /* correspondence.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = correspondence.cc; path = lib/correspondence.cc; sourceTree = SOURCE_ROOT; };
 		1352AF961BFB3F800023D277 /* correspondence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = correspondence.h; path = lib/correspondence.h; sourceTree = SOURCE_ROOT; };
 		1352AF991C00BF330023D277 /* surface_derivative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = surface_derivative.h; path = lib/surface_derivative.h; sourceTree = SOURCE_ROOT; };
+		13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gauss_newton_step.cc; path = lib/gauss_newton_step.cc; sourceTree = SOURCE_ROOT; };
+		13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gauss_newton_step.h; path = lib/gauss_newton_step.h; sourceTree = SOURCE_ROOT; };
 		135E702F1C5B8DB100D3017A /* mesh_generator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh_generator.cc; path = lib/mesh_generator.cc; sourceTree = SOURCE_ROOT; };
 		135E70301C5B8DB100D3017A /* mesh_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh_generator.h; path = lib/mesh_generator.h; sourceTree = SOURCE_ROOT; };
 		135F57381C7B6A44000289DE /* surface_derivative.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = surface_derivative.cc; path = lib/surface_derivative.cc; sourceTree = SOURCE_ROOT; };
@@ -419,6 +423,8 @@
 				131FC8EF1D4A40B3007E51AA /* defines.h */,
 				13D2448F1BD68DB0000E50FB /* depth_optimizer.cc */,
 				13D244901BD68DB0000E50FB /* depth_optimizer.h */,
+				13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */,
+				13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */,
 				1386AE3E1C620CE00094CE4D /* global_lighting.cc */,
 				1386AE3A1C6209A00094CE4D /* global_lighting.h */,
 				13778D941D48DD7E00AEA81A /* ldl_decomposition.h */,
@@ -654,6 +660,7 @@
 				131FC9151D4A4F6E007E51AA /* view_selection.h in Headers */,
 				131FC9121D4A4F6E007E51AA /* surface.h in Headers */,
 				131FC8F81D4A4F6E007E51AA /* block_sparse_matrix.h in Headers */,
+				13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */,
 				13C685EE1D64692A00396036 /* mesh_simplifier.h in Headers */,
 				131FC9101D4A4F6E007E51AA /* surface_patch.h in Headers */,
 				131FC90E1D4A4F6E007E51AA /* surface_derivative.h in Headers */,
@@ -881,6 +888,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				131FC90F1D4A4F6E007E51AA /* surface_patch.cc in Sources */,
+				13554C3E1DE5F0EF00029F4B /* gauss_newton_step.cc in Sources */,
 				131FC8FF1D4A4F6E007E51AA /* global_lighting.cc in Sources */,
 				131FC90B1D4A4F6E007E51AA /* stereo_view.cc in Sources */,
 				131FC8F61D4A4F6E007E51AA /* bicubic_patch.cc in Sources */,
