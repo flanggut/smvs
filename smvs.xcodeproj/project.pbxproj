@@ -47,8 +47,11 @@
 		132A32931D896FE70059D63F /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		13554C3E1DE5F0EF00029F4B /* gauss_newton_step.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */; };
 		13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */ = {isa = PBXBuildFile; fileRef = 13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */; };
+		13554C421DE7364A00029F4B /* delaunay_2d.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13554C401DE7364A00029F4B /* delaunay_2d.cc */; };
+		13554C431DE7364A00029F4B /* delaunay_2d.h in Headers */ = {isa = PBXBuildFile; fileRef = 13554C411DE7364A00029F4B /* delaunay_2d.h */; };
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
+		139B3D061DEC81EC00D603B0 /* quad_edge.h in Headers */ = {isa = PBXBuildFile; fileRef = 139B3D051DEC81EC00D603B0 /* quad_edge.h */; };
 		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		13A5C0191D883F2B007B5AA3 /* bundle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFE81D883F2B007B5AA3 /* bundle.cc */; };
 		13A5C01A1D883F2B007B5AA3 /* bundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFE91D883F2B007B5AA3 /* bundle.h */; };
@@ -212,6 +215,8 @@
 		1352AF991C00BF330023D277 /* surface_derivative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = surface_derivative.h; path = lib/surface_derivative.h; sourceTree = SOURCE_ROOT; };
 		13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gauss_newton_step.cc; path = lib/gauss_newton_step.cc; sourceTree = SOURCE_ROOT; };
 		13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gauss_newton_step.h; path = lib/gauss_newton_step.h; sourceTree = SOURCE_ROOT; };
+		13554C401DE7364A00029F4B /* delaunay_2d.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = delaunay_2d.cc; path = lib/delaunay_2d.cc; sourceTree = SOURCE_ROOT; };
+		13554C411DE7364A00029F4B /* delaunay_2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = delaunay_2d.h; path = lib/delaunay_2d.h; sourceTree = SOURCE_ROOT; };
 		135E702F1C5B8DB100D3017A /* mesh_generator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh_generator.cc; path = lib/mesh_generator.cc; sourceTree = SOURCE_ROOT; };
 		135E70301C5B8DB100D3017A /* mesh_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh_generator.h; path = lib/mesh_generator.h; sourceTree = SOURCE_ROOT; };
 		135F57381C7B6A44000289DE /* surface_derivative.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = surface_derivative.cc; path = lib/surface_derivative.cc; sourceTree = SOURCE_ROOT; };
@@ -229,6 +234,7 @@
 		138D57B31C6789B600C8B11E /* sgm_stereo.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sgm_stereo.cc; path = lib/sgm_stereo.cc; sourceTree = SOURCE_ROOT; };
 		138D57B41C6789B600C8B11E /* sgm_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sgm_stereo.h; path = lib/sgm_stereo.h; sourceTree = SOURCE_ROOT; };
 		139562EC1CBD254B0098E420 /* block_sparse_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = block_sparse_matrix.h; path = lib/block_sparse_matrix.h; sourceTree = SOURCE_ROOT; };
+		139B3D051DEC81EC00D603B0 /* quad_edge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quad_edge.h; path = lib/quad_edge.h; sourceTree = SOURCE_ROOT; };
 		13A5BF6E1D883743007B5AA3 /* gtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gtest_main.a; path = ../gtest/make/gtest_main.a; sourceTree = "<group>"; };
 		13A5BFE61D883F0E007B5AA3 /* libmve.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmve.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A5BFE81D883F2B007B5AA3 /* bundle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bundle.cc; sourceTree = "<group>"; };
@@ -421,6 +427,8 @@
 				1352AF951BFB3F800023D277 /* correspondence.cc */,
 				1352AF961BFB3F800023D277 /* correspondence.h */,
 				131FC8EF1D4A40B3007E51AA /* defines.h */,
+				13554C401DE7364A00029F4B /* delaunay_2d.cc */,
+				13554C411DE7364A00029F4B /* delaunay_2d.h */,
 				13D2448F1BD68DB0000E50FB /* depth_optimizer.cc */,
 				13D244901BD68DB0000E50FB /* depth_optimizer.h */,
 				13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */,
@@ -434,6 +442,7 @@
 				135E70301C5B8DB100D3017A /* mesh_generator.h */,
 				13C685EB1D64692A00396036 /* mesh_simplifier.cc */,
 				13C685EC1D64692A00396036 /* mesh_simplifier.h */,
+				139B3D051DEC81EC00D603B0 /* quad_edge.h */,
 				138D57B31C6789B600C8B11E /* sgm_stereo.cc */,
 				138D57B41C6789B600C8B11E /* sgm_stereo.h */,
 				1386AE3C1C620C460094CE4D /* spherical_harmonics.h */,
@@ -648,6 +657,7 @@
 				131FC90A1D4A4F6E007E51AA /* sse_vector.h in Headers */,
 				131FC9071D4A4F6E007E51AA /* sgm_stereo.h in Headers */,
 				131FC8FB1D4A4F6E007E51AA /* correspondence.h in Headers */,
+				139B3D061DEC81EC00D603B0 /* quad_edge.h in Headers */,
 				131FC9011D4A4F6E007E51AA /* ldl_decomposition.h in Headers */,
 				131FC8F71D4A4F6E007E51AA /* bicubic_patch.h in Headers */,
 				131FC90C1D4A4F6E007E51AA /* stereo_view.h in Headers */,
@@ -663,6 +673,7 @@
 				13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */,
 				13C685EE1D64692A00396036 /* mesh_simplifier.h in Headers */,
 				131FC9101D4A4F6E007E51AA /* surface_patch.h in Headers */,
+				13554C431DE7364A00029F4B /* delaunay_2d.h in Headers */,
 				131FC90E1D4A4F6E007E51AA /* surface_derivative.h in Headers */,
 				131FC9051D4A4F6E007E51AA /* mesh_generator.h in Headers */,
 			);
@@ -895,6 +906,7 @@
 				131FC9041D4A4F6E007E51AA /* mesh_generator.cc in Sources */,
 				131FC8FD1D4A4F6E007E51AA /* depth_optimizer.cc in Sources */,
 				131FC9021D4A4F6E007E51AA /* light_optimizer.cc in Sources */,
+				13554C421DE7364A00029F4B /* delaunay_2d.cc in Sources */,
 				131FC8FA1D4A4F6E007E51AA /* correspondence.cc in Sources */,
 				131FC9091D4A4F6E007E51AA /* sse_vector.cc in Sources */,
 				13C685ED1D64692A00396036 /* mesh_simplifier.cc in Sources */,
