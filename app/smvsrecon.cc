@@ -59,6 +59,7 @@ struct AppSettings
     std::string sgm_range = "";
     bool force_recon = false;
     bool force_sgm = false;
+    bool full_optimization = false;
     bool clean_scene = false;
 
     AppSettings (void)
@@ -124,6 +125,8 @@ args_to_settings(int argc, char** argv)
         "given as string \"0.1,3.5\" "
         "[estimated from SfM pointcloud] "
         "(this option is untested please report any issues)");
+    args.add_option('\0', "full-opt", false, "Run full optimization "
+        "on all nodes (otherwise it only runs on non converged nodes) [off]");
     args.add_option('\0', "clean", false, "Clean scene and remove all "
         "result embeddings");
 
@@ -181,6 +184,8 @@ args_to_settings(int argc, char** argv)
             conf.force_sgm = true;
         else if (arg->opt->lopt == "sgm-range")
             conf.sgm_range = arg->arg;
+        else if (arg->opt->lopt == "full-opt")
+            conf.full_optimization = true;
         else if (arg->opt->lopt == "clean")
             conf.clean_scene = true;
         else
@@ -575,6 +580,7 @@ main (int argc, char** argv)
             do_opts.use_shading = conf.use_shading;
             do_opts.output_name = output_name;
             do_opts.use_sgm = conf.use_sgm;
+            do_opts.full_optimization = conf.full_optimization;
             do_opts.light_surf_regularization = conf.light_surf_regularization;
 
             smvs::DepthOptimizer optimizer(main_view, stereo_views,

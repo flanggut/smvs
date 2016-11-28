@@ -192,12 +192,9 @@ DepthOptimizer::run_newton_iterations (int num_iters)
             while (deleted > 10)
                 deleted = this->cut_boundaries();
         }
+        if (this->opts.debug_lvl > 0)
+            std::cout << "### Iteration: " << iter << std::endl;
 
-        double update = 100.0;
-        unsigned int newton_step = 0;
-        unsigned int linear_iterations = 0;
-        float timer_build_step = 0.0;
-        float timer_solve_step = 0.0;
 
         GaussNewtonStep::Options gauss_newton_opts;
         gauss_newton_opts.regularization = this->opts.regularization;
@@ -215,9 +212,15 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                 num_initial_active_nodes += 1;
             }
         std::size_t num_active_nodes = num_initial_active_nodes;
-        for (; newton_step < 200 &&
-             num_active_nodes > num_initial_active_nodes / 100; ++newton_step)
+
+        unsigned int newton_step = 0;
+        unsigned int linear_iterations = 0;
+        float timer_build_step = 0.0;
+        float timer_solve_step = 0.0;
+
+        for (; newton_step < 200;)
         {
+            newton_step += 1;
             prev_gradient = gradient;
 
             util::WallTimer newton_timer;
@@ -266,10 +269,24 @@ DepthOptimizer::run_newton_iterations (int num_iters)
             this->surface->update_nodes(delta, &depth_updates);
             this->fill_node_reprojections(&projections2);
 
-            double sum_diff = 0;
+            if (this->opts.full_optimization)
+            {
+                double sum_diff = 0;
+                for (std::size_t p = 0; p < projections1.size(); ++p)
+                    sum_diff += (projections1[p].second -
+                        projections2[p].second).norm();
+
+                double update = sum_diff / (double) projections1.size();
+                if (this->opts.debug_lvl > 2)
+                    std::cout << "Avg delta: " << update << std::endl;
+                if (update < 0.01)
+                    break;
+                else
+                    continue;
+            }
+
             num_active_nodes = 0;
             std::fill(active_nodes.begin(), active_nodes.end(), 0);
-
             for (std::size_t p = 0; p < projections1.size(); ++p)
             {
                 double diff = (projections1[p].second -
@@ -279,19 +296,17 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                     active_nodes[projections1[p].first] = 1;
                     num_active_nodes += 1;
                 }
-                sum_diff += diff;
             }
-            update = sum_diff / (double) projections1.size();
-            if (this->opts.debug_lvl > 2)
-                std::cout << "Avg delta: " << update << std::endl;
             if (this->opts.debug_lvl > 0)
                 std::cout << "Num active nodes: "
                     << num_active_nodes << std::endl;
+            if (num_active_nodes < num_initial_active_nodes / 100)
+                break;
         }
 
         if (this->opts.debug_lvl > 0)
         {
-            std::cout << "### Iteration: " << iter << std::endl;
+            std::cout << "### Finished iteration: " << iter << std::endl;
             std::cout << "Number of Newton steps: " << newton_step << std::endl;
             std::cout << "Avg construction time: "
                 << timer_build_step / newton_step << "ms" << std::endl;

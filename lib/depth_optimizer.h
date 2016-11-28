@@ -37,6 +37,7 @@ public:
         int debug_lvl = 0;
         bool use_shading = false;
         bool use_sgm = false;
+        bool full_optimization = false;
         std::string output_name = "smvs";
     };
 
