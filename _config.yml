@@ -1,16 +1,25 @@
+# Dependencies
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+
 # Setup
-title:        Shading-aware Multi-view Stereo
-tagline:      
-baseurl:      "/smvs"
+title:            SMVS
+tagline:          'Shading-aware Multi-view Stereo'
+description:      'This is a changelog for the GitHub project'
+url:              
+baseurl:          /
+version:          0.1
 
-# About/contact
 author:
-  name:       Fabian Langguth
-  url:        https://github.com/flanggut
+  name:           'Fabian Langguth'
+  url:            
 
-# Gems
-gems:
-  - jekyll-paginate
+paginate:         5
 
-#Others
-markdown: kramdown
+# Custom vars
+gems: [jekyll-paginate, jekyll-gist]
+
+github:
+  repo:           https://github.com/flanggut/smvs
