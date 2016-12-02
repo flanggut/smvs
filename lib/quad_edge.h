@@ -16,6 +16,8 @@
 
 #include "defines.h"
 
+SMVS_NAMESPACE_BEGIN
+
 /*
  * Edge and QuadEdge datastructure based on:
  *   Leonidas J. Guibas and Jorge Stolfi,
@@ -28,10 +30,10 @@ class Edge
 public:
     friend QuadEdge;
     typedef Edge * Ptr;
+    typedef unsigned int VertexID;
+    typedef unsigned int FaceID;
 
 public:
-    Edge (void);
-
     static void splice (Edge::Ptr a, Edge::Ptr b);
 
     /// inverse edge
@@ -51,24 +53,31 @@ public:
     Ptr r_next (void);
     Ptr r_prev (void);
 
-    math::Vec2d & dest (void);
-    math::Vec2d & orig (void);
-    math::Vec2d const& dest (void) const;
-    math::Vec2d const& orig (void) const;
+    VertexID & dest (void);
+    VertexID & orig (void);
+    VertexID const& dest (void) const;
+    VertexID const& orig (void) const;
+    void set_vertex_ids (VertexID orig, VertexID dest);
 
-    void set_data(math::Vec2d const& orig, math::Vec2d const& dest);
+    FaceID & left (void);
+    FaceID & right (void);
+    void set_left_face (FaceID left);
+    void set_right_face (FaceID right);
 
 private:
+    Edge (void) {next = nullptr;}
+
     int quad_id;
     Ptr next;
-    math::Vec2d data;
+    VertexID vert_id;
+    FaceID face_id;
 };
 
 class QuadEdge
 {
 public:
     QuadEdge (void);
-    Edge::Ptr create (void);
+    static Edge::Ptr create_edge (std::vector<std::unique_ptr<QuadEdge>> * qs);
 
 private:
     Edge edges[4];
@@ -89,10 +98,10 @@ QuadEdge::QuadEdge (void)
 }
 
 inline Edge::Ptr
-QuadEdge::create (void)
+QuadEdge::create_edge (std::vector<std::unique_ptr<QuadEdge>> * q_edges)
 {
-    QuadEdge * q_edge = new QuadEdge();
-    return q_edge->edges;
+    q_edges->emplace_back(new QuadEdge());
+    return q_edges->back()->edges;
 }
 
 inline Edge::Ptr
@@ -166,35 +175,60 @@ Edge::r_prev (void)
 }
 
 /* Vertices */
-inline math::Vec2d &
+inline Edge::VertexID &
 Edge::orig (void)
 {
-    return data;
+    return vert_id;
 }
 
-inline math::Vec2d &
+inline Edge::VertexID &
 Edge::dest (void)
 {
     return this->inv()->orig();
 }
 
-inline math::Vec2d const&
+inline Edge::VertexID const&
 Edge::orig (void) const
 {
-    return data;
+    return vert_id;
 }
 
-inline math::Vec2d const&
+inline Edge::VertexID const&
 Edge::dest (void) const
 {
-    return this->quad_id < 2 ? (this + 2)->data : (this - 2)->data;
+    return this->quad_id < 2 ? (this + 2)->vert_id : (this - 2)->vert_id;
 }
 
 inline void
-Edge::set_data(math::Vec2d const& orig, math::Vec2d const& dest)
+Edge::set_vertex_ids(Edge::VertexID orig, Edge::VertexID dest)
 {
-    this->data = orig;
+    this->vert_id = orig;
     this->dest() = dest;
+}
+
+/* Faces */
+inline Edge::VertexID &
+Edge::left (void)
+{
+    return this->dual()->face_id;
+}
+
+inline Edge::VertexID &
+Edge::right (void)
+{
+    return this->inv_dual()->face_id;
+}
+
+inline void
+Edge::set_left_face (FaceID left)
+{
+    this->dual()->face_id = left;
+}
+
+inline void
+Edge::set_right_face (FaceID right)
+{
+    this->inv_dual()->face_id = right;
 }
 
 inline void
@@ -216,5 +250,7 @@ Edge::splice(Edge::Ptr a, Edge::Ptr b)
     alpha->next = beta_o_next;
     beta->next = alpha_o_next;
 }
+
+SMVS_NAMESPACE_END
 
 #endif /* SMVS_QUAD_EDGE_HEADER */
