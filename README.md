@@ -33,7 +33,7 @@ If you run `smvsrecon` without any arguments it automatically chooses the most r
 For more details please also have a look at the usage output of the application. Note that some of the features are still WIP.
 
 ###References
-[1] **Shading-aware Mult-view Stereo** - *Fabian Langguth, Kalyan Sunkavalli, Sunil Hadap, Michael Goesele* - ECCV 2016
+[1] **Shading-aware Multi-view Stereo** - *Fabian Langguth, Kalyan Sunkavalli, Sunil Hadap, Michael Goesele* - ECCV 2016
 
 	@inproceedings{langguth-2016-smvs,
 	  title = {Shading-aware Multi-view Stereo},
