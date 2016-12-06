@@ -1,5 +1,5 @@
 # Dependencies
-highlighter:      rogue
+highlighter:      rouge
 
 # Permalinks
 permalink:        pretty
