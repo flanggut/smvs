@@ -9,7 +9,7 @@ title:            SMVS
 tagline:          'Shading-aware Multi-view Stereo'
 description:      'This is a changelog for the GitHub project'
 url:              
-baseurl:          /
+baseurl:          "/smvs"
 version:          0.1
 
 author:
