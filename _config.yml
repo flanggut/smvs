@@ -1,5 +1,5 @@
 # Dependencies
-highlighter:      pygments
+highlighter:      rogue
 
 # Permalinks
 permalink:        pretty
