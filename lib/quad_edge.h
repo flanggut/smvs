@@ -30,8 +30,8 @@ class Edge
 public:
     friend QuadEdge;
     typedef Edge * Ptr;
-    typedef unsigned int VertexID;
-    typedef unsigned int FaceID;
+    typedef std::size_t VertexID;
+    typedef std::size_t FaceID;
 
 public:
     static void splice (Edge::Ptr a, Edge::Ptr b);
@@ -207,13 +207,13 @@ Edge::set_vertex_ids(Edge::VertexID orig, Edge::VertexID dest)
 }
 
 /* Faces */
-inline Edge::VertexID &
+inline Edge::FaceID &
 Edge::left (void)
 {
     return this->dual()->face_id;
 }
 
-inline Edge::VertexID &
+inline Edge::FaceID &
 Edge::right (void)
 {
     return this->inv_dual()->face_id;

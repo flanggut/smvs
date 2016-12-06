@@ -51,6 +51,8 @@
 		13554C431DE7364A00029F4B /* delaunay_2d.h in Headers */ = {isa = PBXBuildFile; fileRef = 13554C411DE7364A00029F4B /* delaunay_2d.h */; };
 		1374DF0D1D55D7A100A7C5EF /* smvsrecon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1300530E1BBEF40900A98180 /* smvsrecon */; };
 		1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
+		137C375F1DF593CD00F4667E /* depth_triangulator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 137C375D1DF593CD00F4667E /* depth_triangulator.cc */; };
+		137C37601DF593CD00F4667E /* depth_triangulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 137C375E1DF593CD00F4667E /* depth_triangulator.h */; };
 		139B3D061DEC81EC00D603B0 /* quad_edge.h in Headers */ = {isa = PBXBuildFile; fileRef = 139B3D051DEC81EC00D603B0 /* quad_edge.h */; };
 		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		13A5C0191D883F2B007B5AA3 /* bundle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFE81D883F2B007B5AA3 /* bundle.cc */; };
@@ -229,6 +231,8 @@
 		13778D971D4A1E2300AEA81A /* view_selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = view_selection.h; path = lib/view_selection.h; sourceTree = SOURCE_ROOT; };
 		1379AA6A1BC2BF1A00A53173 /* surface.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = surface.cc; path = lib/surface.cc; sourceTree = SOURCE_ROOT; };
 		1379AA6B1BC2BF1A00A53173 /* surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = surface.h; path = lib/surface.h; sourceTree = SOURCE_ROOT; };
+		137C375D1DF593CD00F4667E /* depth_triangulator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = depth_triangulator.cc; path = lib/depth_triangulator.cc; sourceTree = SOURCE_ROOT; };
+		137C375E1DF593CD00F4667E /* depth_triangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = depth_triangulator.h; path = lib/depth_triangulator.h; sourceTree = SOURCE_ROOT; };
 		1386AE301C6208FE0094CE4D /* light_optimizer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = light_optimizer.cc; path = lib/light_optimizer.cc; sourceTree = SOURCE_ROOT; };
 		1386AE311C6208FE0094CE4D /* light_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = light_optimizer.h; path = lib/light_optimizer.h; sourceTree = SOURCE_ROOT; };
 		1386AE3A1C6209A00094CE4D /* global_lighting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global_lighting.h; path = lib/global_lighting.h; sourceTree = SOURCE_ROOT; };
@@ -437,6 +441,8 @@
 				13554C411DE7364A00029F4B /* delaunay_2d.h */,
 				13D2448F1BD68DB0000E50FB /* depth_optimizer.cc */,
 				13D244901BD68DB0000E50FB /* depth_optimizer.h */,
+				137C375D1DF593CD00F4667E /* depth_triangulator.cc */,
+				137C375E1DF593CD00F4667E /* depth_triangulator.h */,
 				13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */,
 				13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */,
 				1386AE3E1C620CE00094CE4D /* global_lighting.cc */,
@@ -680,6 +686,7 @@
 				13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */,
 				13C685EE1D64692A00396036 /* mesh_simplifier.h in Headers */,
 				131FC9101D4A4F6E007E51AA /* surface_patch.h in Headers */,
+				137C37601DF593CD00F4667E /* depth_triangulator.h in Headers */,
 				13554C431DE7364A00029F4B /* delaunay_2d.h in Headers */,
 				131FC90E1D4A4F6E007E51AA /* surface_derivative.h in Headers */,
 				131FC9051D4A4F6E007E51AA /* mesh_generator.h in Headers */,
@@ -922,6 +929,7 @@
 				131FC9061D4A4F6E007E51AA /* sgm_stereo.cc in Sources */,
 				131FC9141D4A4F6E007E51AA /* view_selection.cc in Sources */,
 				131FC9111D4A4F6E007E51AA /* surface.cc in Sources */,
+				137C375F1DF593CD00F4667E /* depth_triangulator.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,18 +975,21 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -1014,13 +1025,16 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -1034,7 +1048,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
@@ -1050,7 +1063,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
@@ -1065,7 +1077,6 @@
 		132924611C0332D1007756D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
@@ -1080,7 +1091,6 @@
 		132924621C0332D1007756D0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
@@ -1131,7 +1141,6 @@
 		13A657311BC0189700B509FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
 				OTHER_LDFLAGS = (
 					"-L",
@@ -1147,7 +1156,6 @@
 		13A657321BC0189700B509FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
 				OTHER_LDFLAGS = (
 					"-L",
