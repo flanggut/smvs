@@ -8,7 +8,7 @@ permalink:        pretty
 title:            SMVS
 tagline:          'Shading-aware Multi-view Stereo'
 description:      'This is a changelog for the GitHub project'
-baseurl:          "/smvs"
+baseurl:          "/smvs/"
 version:          0.1
 
 author:
