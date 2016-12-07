@@ -154,7 +154,7 @@
 		13C323611C3E8EE8004A13EF /* gtest_surface_deriv.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13C323601C3E8EE8004A13EF /* gtest_surface_deriv.cc */; };
 		13C685ED1D64692A00396036 /* mesh_simplifier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13C685EB1D64692A00396036 /* mesh_simplifier.cc */; };
 		13C685EE1D64692A00396036 /* mesh_simplifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 13C685EC1D64692A00396036 /* mesh_simplifier.h */; };
-		13C9B1D11DF0568C008F42C9 /* gtest_delaunay_2d.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13C9B1D01DF0568C008F42C9 /* gtest_delaunay_2d.cc */; };
+		13C9B1D11DF0568C008F42C9 /* gtest_triangulator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13C9B1D01DF0568C008F42C9 /* gtest_triangulator.cc */; };
 		13C9B1D21DF1A733008F42C9 /* libmve.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BFE61D883F0E007B5AA3 /* libmve.a */; };
 		13C9B1D31DF1A73E008F42C9 /* libmve_util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5C0A41D883F66007B5AA3 /* libmve_util.a */; };
 /* End PBXBuildFile section */
@@ -322,7 +322,7 @@
 		13C323601C3E8EE8004A13EF /* gtest_surface_deriv.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_surface_deriv.cc; path = tests/gtest_surface_deriv.cc; sourceTree = SOURCE_ROOT; };
 		13C685EB1D64692A00396036 /* mesh_simplifier.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh_simplifier.cc; path = lib/mesh_simplifier.cc; sourceTree = SOURCE_ROOT; };
 		13C685EC1D64692A00396036 /* mesh_simplifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh_simplifier.h; path = lib/mesh_simplifier.h; sourceTree = SOURCE_ROOT; };
-		13C9B1D01DF0568C008F42C9 /* gtest_delaunay_2d.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_delaunay_2d.cc; path = tests/gtest_delaunay_2d.cc; sourceTree = SOURCE_ROOT; };
+		13C9B1D01DF0568C008F42C9 /* gtest_triangulator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_triangulator.cc; path = tests/gtest_triangulator.cc; sourceTree = SOURCE_ROOT; };
 		13D2448F1BD68DB0000E50FB /* depth_optimizer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = depth_optimizer.cc; path = lib/depth_optimizer.cc; sourceTree = SOURCE_ROOT; };
 		13D244901BD68DB0000E50FB /* depth_optimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = depth_optimizer.h; path = lib/depth_optimizer.h; sourceTree = SOURCE_ROOT; };
 		13D2449A1BD7AB52000E50FB /* stereo_view.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stereo_view.cc; path = lib/stereo_view.cc; sourceTree = SOURCE_ROOT; };
@@ -484,7 +484,7 @@
 				13ADF1711C0E2BD500CADB5E /* gtest_matrix_vector.cc */,
 				132924471C031843007756D0 /* test_optimization.cc */,
 				13151FB71C7CA43300CC005C /* gtest_spherical_harmonics.cc */,
-				13C9B1D01DF0568C008F42C9 /* gtest_delaunay_2d.cc */,
+				13C9B1D01DF0568C008F42C9 /* gtest_triangulator.cc */,
 			);
 			name = tests;
 			sourceTree = "<group>";
@@ -904,7 +904,7 @@
 				13A657341BC018E700B509FE /* gtest_bicubic_patch.cc in Sources */,
 				13ADF1721C0E2BD500CADB5E /* gtest_matrix_vector.cc in Sources */,
 				13C323611C3E8EE8004A13EF /* gtest_surface_deriv.cc in Sources */,
-				13C9B1D11DF0568C008F42C9 /* gtest_delaunay_2d.cc in Sources */,
+				13C9B1D11DF0568C008F42C9 /* gtest_triangulator.cc in Sources */,
 				13151FB81C7CA43300CC005C /* gtest_spherical_harmonics.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
