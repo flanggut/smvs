@@ -10,6 +10,7 @@
 #include "mve/depthmap.h"
 #include "mve/image_tools.h"
 #include "mve/mesh_io.h"
+#include "mve/mesh_tools.h"
 
 #include "depth_triangulator.h"
 
@@ -66,6 +67,7 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
         std::size_t tid = (*this->triangle_heap.begin()).second;
         Triangle t = this->triangles[tid];
         delaunay.insert_point(t.candidate, t.id);
+
         /* Rescan all changed triangles */
         delaunay.fill_recently_changed(&changed);
         for (std::size_t id: changed)
@@ -89,7 +91,7 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
         }
     }
 
-    /* Get Mesh, clean and return */
+    /* Get Mesh, clean, transform, and return */
     mve::TriangleMesh::Ptr mesh = delaunay.get_mesh();
     std::vector<bool> delete_list(mesh->get_vertices().size(), false);
     delete_list[0] = true;
@@ -97,6 +99,21 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     delete_list[2] = true;
     delete_list[3] = true;
     mesh->delete_vertices_fix_faces(delete_list);
+    math::Matrix3f invproj;
+    this->camera.fill_inverse_calibration(*invproj,
+        this->depth_map->width(), this->depth_map->height());
+    mve::TriangleMesh::VertexList & vertices = mesh->get_vertices();
+    for (auto & vert : vertices)
+    {
+        math::Vec3f ray = invproj * math::Vec3f
+        (vert[0] + 0.5f, vert[1] + 0.5f, 1.0f);
+        vert = ray.normalized() * vert[2];
+    }
+    math::Matrix4f ctw;
+    this->camera.fill_cam_to_world(*ctw);
+    mve::geom::mesh_transform(mesh, ctw);
+    mve::geom::mesh_invert_faces(mesh);
+    mesh->recalc_normals();
     return mesh;
 }
 
@@ -214,9 +231,13 @@ DepthTriangulator::pixels_for_triangle (math::Vec3d const& a,
         pixels_for_bottom_flat_triangle(verts[0], verts[1], verts[2], pixels);
     else
     {
-        math::Vec3d v(std::floor(verts[0][0] + ((verts[1][1] - verts[0][1])
-            / (verts[2][1] - verts[0][1])) * (verts[2][0] - verts[0][0])),
+        math::Vec3d v(verts[0][0] + ((verts[1][1] - verts[0][1])
+            / (verts[2][1] - verts[0][1])) * (verts[2][0] - verts[0][0]),
             verts[1][1], 0.0);
+        if (verts[0][0] < verts[1][0])
+            v[0] = std::ceil(v[0]);
+        else
+            v[0] = std::floor(v[0]);
         pixels_for_top_flat_triangle(verts[0], verts[1], v, pixels);
         pixels_for_bottom_flat_triangle(verts[1], v, verts[2], pixels);
     }
