@@ -30,6 +30,16 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
 {
     float dm_min, dm_max;
     mve::image::find_min_max_value(this->depth_map, &dm_min, &dm_max);
+    float dm_avg = 0;
+    float counter = 0;
+    for (float const* ptr = this->depth_map->begin();
+         ptr != this->depth_map->end(); ++ptr)
+        if (*ptr > 0)
+        {
+            dm_avg += *ptr;
+            counter += 1;
+        }
+    dm_avg /= counter;
 
     int const max_x = this->depth_map->width() - 1;
     int const max_y = this->depth_map->height() - 1;
@@ -63,6 +73,9 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     std::vector<std::size_t> changed;
     for (std::size_t i = 0; i < num_vertices; ++i)
     {
+        if ((*this->triangle_heap.begin()).first < dm_avg * 2e-4)
+            break;
+
         /* Insert new point */
         std::size_t tid = (*this->triangle_heap.begin()).second;
         Triangle t = this->triangles[tid];
@@ -112,6 +125,21 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     math::Matrix4f ctw;
     this->camera.fill_cam_to_world(*ctw);
     mve::geom::mesh_transform(mesh, ctw);
+
+    mve::TriangleMesh::FaceList & faces = mesh->get_faces();
+    for (std::size_t f = 0; f < faces.size(); f += 3)
+    {
+        float edge1 = (vertices[faces[f]] - vertices[faces[f + 1]]).norm();
+        float edge2 = (vertices[faces[f]] - vertices[faces[f + 2]]).norm();
+        float edge3 = (vertices[faces[f + 1]] - vertices[faces[f + 2]]).norm();
+        float min_edge = std::min(edge1, std::min(edge2, edge3));
+        float max_edge = std::max(edge1, std::max(edge2, edge3));
+        if (min_edge / max_edge < 0.1f)
+            faces[f] = faces[f + 1] = faces[f + 2] =  0;
+    }
+    mesh->delete_invalid_faces();
+    mve::geom::mesh_delete_unreferenced(mesh);
+
     mve::geom::mesh_invert_faces(mesh);
     mesh->recalc_normals();
     return mesh;
