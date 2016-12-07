@@ -89,7 +89,15 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
         }
     }
 
-    return delaunay.get_mesh();
+    /* Get Mesh, clean and return */
+    mve::TriangleMesh::Ptr mesh = delaunay.get_mesh();
+    std::vector<bool> delete_list(mesh->get_vertices().size(), false);
+    delete_list[0] = true;
+    delete_list[1] = true;
+    delete_list[2] = true;
+    delete_list[3] = true;
+    mesh->delete_vertices_fix_faces(delete_list);
+    return mesh;
 }
 
 namespace

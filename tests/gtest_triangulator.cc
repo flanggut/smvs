@@ -125,7 +125,7 @@ TEST(DepthTriangulator, ApproximateTriangulation)
 
     DepthTriangulator dt(dm, cam);
     mve::TriangleMesh::Ptr approx = dt.approximate_triangulation(27);
-    EXPECT_EQ(31, approx->get_vertices().size());
-    EXPECT_EQ(56, approx->get_faces().size() / 3);
+    EXPECT_EQ(27, approx->get_vertices().size());
+    EXPECT_EQ(38, approx->get_faces().size() / 3);
 //    mve::geom::save_mesh(approx, "/tmp/approx.ply");
 }
