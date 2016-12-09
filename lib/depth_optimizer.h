@@ -66,6 +66,11 @@ private:
     void create_initial_surface (void);
     void create_subview_surfaces (void);
 
+    /* Joint bilateral filter on initial depth map */
+    mve::FloatImage::Ptr depthmap_bilateral_filter (
+        mve::FloatImage::ConstPtr dm, mve::FloatImage::ConstPtr ci,
+        float sigma = 5, int kernel_size = 5);
+
     /* Run Gauss-Newton Optimization */
     void run_newton_iterations (int num_iters);
 
@@ -73,7 +78,7 @@ private:
     void get_non_converged_nodes(std::vector<math::Vec2d> const& proj1,
         std::vector<math::Vec2d> const& proj2,
         std::vector<std::size_t> * nodes);
-    void fill_node_reprojections(
+    void fill_node_reprojections(std::vector<char> const& active_nodes,
         std::vector<std::pair<std::size_t, math::Vec2d>> * proj);
     int cut_boundaries (void);
 

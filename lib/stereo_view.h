@@ -38,6 +38,7 @@ public:
     float get_inverse_flen (void) const;
     mve::ByteImage::ConstPtr get_byte_image (void) const;
     mve::FloatImage::ConstPtr get_image (void) const;
+    mve::FloatImage::ConstPtr get_scaleimage (void) const;
     mve::FloatImage::ConstPtr get_image_gradients (void) const;
     mve::FloatImage::ConstPtr get_image_hessian (void) const;
     mve::FloatImage::Ptr get_sgm_depth (void) const;
@@ -69,6 +70,7 @@ private:
     mve::View::Ptr view;
     std::string const image_embedding;
     mve::FloatImage::ConstPtr image;
+    mve::FloatImage::Ptr scaleimage;
     mve::FloatImage::Ptr image_grad;
     mve::FloatImage::Ptr image_hessian;
     mve::FloatImage::Ptr linear_image;
@@ -163,6 +165,12 @@ inline mve::FloatImage::ConstPtr
 StereoView::get_image (void) const
 {
     return this->image;
+}
+
+inline mve::FloatImage::ConstPtr
+StereoView::get_scaleimage (void) const
+{
+    return this->scaleimage;
 }
 
 inline mve::FloatImage::ConstPtr

@@ -29,16 +29,18 @@ StereoView::StereoView (mve::View::Ptr view,
 void
 StereoView::set_scale(int scale, bool debug)
 {
-    mve::FloatImage::Ptr fimage = this->image->duplicate();
+    this->scaleimage = this->image->duplicate();
 
     double sigma = 0.12 * std::pow(2.0, scale) + 0.2;
-    fimage = mve::image::blur_gaussian<float>(fimage, sigma);
+    this->scaleimage = mve::image::blur_gaussian<float>(
+        this->scaleimage, sigma);
 
-    this->initialize_image_gradients(fimage);
+    this->initialize_image_gradients(this->scaleimage);
 
     if (debug)
     {
-        mve::ByteImage::Ptr blur = mve::image::float_to_byte_image(fimage);
+        mve::ByteImage::Ptr blur = mve::image::float_to_byte_image(
+            this->scaleimage);
         this->view->set_image(blur, "smvs-image");
         this->view->set_image(this->image_grad, "smvs-gradients");
         this->view->set_image(this->image_hessian, "smvs-hessian");

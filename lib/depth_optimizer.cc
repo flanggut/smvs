@@ -38,6 +38,9 @@ DepthOptimizer::create_initial_surface (void)
     if (this->opts.use_sgm)
     {
         mve::FloatImage::Ptr init = this->main_view->get_sgm_depth();
+        init = depthmap_bilateral_filter(init, main_view->get_image());
+        if(this->opts.debug_lvl > 1)
+            this->main_view->write_depth_to_view(init, "sgm-filtered");
         this->surface = Surface::create(bundle, main_view, 4, init);
         this->sgm_depth = init;
     }
@@ -212,8 +215,13 @@ DepthOptimizer::run_newton_iterations (int num_iters)
         float timer_build_step = 0.0;
         float timer_solve_step = 0.0;
 
-        for (; newton_step < 200;)
+        for (; newton_step < 200
+             &&  num_active_nodes > num_initial_active_nodes / 20;)
         {
+            if (this->opts.debug_lvl > 1)
+                std::cout << "Num active nodes: "
+                    << num_active_nodes << std::endl;
+
             newton_step += 1;
             prev_gradient = gradient;
             util::WallTimer newton_timer;
@@ -259,9 +267,9 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                 break;
 
             /* update nodes and compute reprojection difference */
-            this->fill_node_reprojections(&projections1);
+            this->fill_node_reprojections(active_nodes, &projections1);
             this->surface->update_nodes(delta, &depth_updates);
-            this->fill_node_reprojections(&projections2);
+            this->fill_node_reprojections(active_nodes, &projections2);
 
             if (this->opts.full_optimization)
             {
@@ -279,23 +287,19 @@ DepthOptimizer::run_newton_iterations (int num_iters)
                     continue;
             }
 
-            num_active_nodes = 0;
             std::fill(active_nodes.begin(), active_nodes.end(), 0);
             for (std::size_t p = 0; p < projections1.size(); ++p)
             {
                 double diff = (projections1[p].second -
                     projections2[p].second).norm();
-                if (diff > 0.1)
-                {
+                if (diff > 0.15)
                     active_nodes[projections1[p].first] = 1;
-                    num_active_nodes += 1;
-                }
             }
-            if (this->opts.debug_lvl > 1)
-                std::cout << "Num active nodes: "
-                    << num_active_nodes << std::endl;
-            if (num_active_nodes < num_initial_active_nodes / 100)
-                break;
+
+            num_active_nodes = 0;
+            for (auto & node : active_nodes)
+                if (node == 1)
+                    num_active_nodes += 1;
         }
 
         if (this->opts.debug_lvl > 0)
@@ -312,34 +316,25 @@ DepthOptimizer::run_newton_iterations (int num_iters)
         this->write_debug_depth();
 
         // FIXME: Check non converged nodes
-        std::size_t counter = 0;
-        for (std::size_t i = 0; i < depth_updates.size(); ++i)
-            if (depth_updates[i] > 0.005)
-            {
-                this->surface->delete_node(i);
-                counter++;
-            }
-        this->surface->remove_patches_without_nodes();
 
-        /* expand surface and cut occlusion boundaries */
-        if(!finished)
-        {
-            int deleted = std::numeric_limits<int>::max();
-            while (deleted > 10)
-                deleted = this->cut_boundaries();
-            if (!this->opts.use_sgm)
-            {
-                this->surface->expand();
-                this->write_debug_depth("-exp");
-                this->create_subview_surfaces();
-                deleted = std::numeric_limits<int>::max();
-                while (deleted > 10)
-                    deleted = this->cut_boundaries();
-            }
-        }
-        this->surface->remove_isolated_patches();
+        /* Stop here if number of surface patches is converged */
         if (finished)
             break;
+
+        /*  Else expand surface patches and cut boundaries */
+        int deleted = std::numeric_limits<int>::max();
+        while (deleted > 10)
+            deleted = this->cut_boundaries();
+        if (!this->opts.use_sgm)
+        {
+            this->surface->expand();
+            this->write_debug_depth("-exp");
+            this->create_subview_surfaces();
+            deleted = std::numeric_limits<int>::max();
+            while (deleted > 10)
+                deleted = this->cut_boundaries();
+        }
+        this->surface->remove_isolated_patches();
 
         std::size_t num_valid_new = 0;
         for (auto p : this->surface->get_patches())
@@ -384,14 +379,16 @@ DepthOptimizer::cut_boundaries (void)
         for (std::size_t i = 0; i < 4; ++i)
             depth_p.insert(std::make_pair(depths[i], i));
 
-        double dd_factor = 7.0;
+        double dd_factor = 5.0;
         auto iter_first = depth_p.begin();
         auto iter_last = std::prev(depth_p.end());
 
         if (iter_first->second + iter_last->second == 3)
             dd_factor *= MATH_SQRT2;
+        math::Vec3f v = invproj * math::Vec3f
+            ((float)pixels[0][0] + 0.5f, (float)pixels[0][1] + 0.5f, 1.0f);
         double threshold = dd_factor * iter_first->first * invproj[0]
-            * this->surface->get_patchsize();
+            * this->surface->get_patchsize() / v.norm();
 
         double dist = iter_last->first - iter_first->first;
         if (dist > threshold)
@@ -411,7 +408,6 @@ DepthOptimizer::cut_boundaries (void)
         this->surface->fill_node_ids_for_patch(patch_id, node_ids);
 
         double error = this->mse_for_patch(patch_id);
-        double tex_score = this->tex_score_for_patch(patch_id);
         for (std::size_t node = 0; node < 4; ++node)
         {
             Surface::NodeList node_neighbors;
@@ -421,8 +417,7 @@ DepthOptimizer::cut_boundaries (void)
                 if (neighbor == nullptr)
                     num_invalid += 1;
             if (num_invalid > 1)
-                if (error > 0.05
-                    || (this->surface->get_scale() > 1 && tex_score < 0.005))
+                if (error > 0.05)
                 {
                     this->surface->delete_patch(patch_id);
                     deleted += 1;
@@ -461,9 +456,7 @@ DepthOptimizer::create_subview_surfaces (void)
         if (patches[patch_id] == nullptr)
             continue;
         num_total += 1;
-        std::vector<math::Vec2d> coords;
-        std::vector<double> depths;
-        patches[patch_id]->fill_values_at_pixels(&coords, &depths);
+        patches[patch_id]->fill_values_at_pixels(&pixels, &depths);
 
         for (std::size_t sub_id = 0; sub_id < this->sub_views.size(); ++sub_id)
         {
@@ -472,10 +465,34 @@ DepthOptimizer::create_subview_surfaces (void)
             double const sub_height = static_cast<double>(
                 this->sub_views[sub_id]->get_height());
 
-            for (std::size_t i = 0; i < coords.size(); i++)
+            for (std::size_t i = 0; i < pixels.size(); i++)
             {
                 Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                    coords[i][0] + 0.5, coords[i][1] + 0.5, depths[i]);
+                    pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i]);
+                math::Vec2d proj;
+                C.fill(*proj);
+                proj[0] -= 0.5;
+                proj[1] -= 0.5;
+                double const cutoffset = 10.0;
+                if (proj[0] < cutoffset || proj[0] >= sub_width - cutoffset ||
+                    proj[1] < cutoffset || proj[1] >= sub_height - cutoffset)
+                    break;
+
+                int cx = static_cast<int>(proj[0]);
+                int cy = static_cast<int>(proj[1]);
+                for (int x = -1; x < 2; ++x)
+                    for (int y = -1; y < 2; ++y)
+                if (C.get_depth() < depth_caches[sub_id]->at(cx+x, cy+y, 0))
+                    depth_caches[sub_id]->at(cx+x, cy+y, 0) = C.get_depth();
+            }
+            if (!this->opts.use_sgm)
+                continue;
+
+            for (std::size_t i = 0; i < pixels.size(); i++)
+            {
+                Correspondence C(this->Mi[sub_id], this->ti[sub_id],
+                     pixels[i][0] + 0.5, pixels[i][1] + 0.5,
+                     this->sgm_depth->at(pixels[i][0], pixels[i][1], 0));
                 math::Vec2d proj;
                 C.fill(*proj);
                 proj[0] -= 0.5;
@@ -501,23 +518,7 @@ DepthOptimizer::create_subview_surfaces (void)
         if (patches[patch_id] == nullptr)
             continue;
 
-        std::vector<math::Vec2d> coords;
-        std::vector<double> depths;
-        patches[patch_id]->fill_values_at_pixels(&coords, &depths);
-
-        if (this->opts.use_sgm)
-        {
-            bool has_sgm_depth = false;
-            for (std::size_t i = 0; i < coords.size(); i++)
-                if (this->sgm_depth->at(coords[i][0], coords[i][1], 0) != 0.0)
-                    has_sgm_depth = true;
-            if (!has_sgm_depth)
-                continue;
-        }
-
-        std::vector<double> sub_nccs;
-        for (std::size_t sub_id = 0; sub_id < this->sub_views.size(); ++sub_id)
-            sub_nccs.emplace_back(this->ncc_for_patch(patch_id, sub_id));
+        patches[patch_id]->fill_values_at_pixels(&pixels, &depths);
 
         for (std::size_t sub_id = 0; sub_id < this->sub_views.size(); ++sub_id)
         {
@@ -527,10 +528,10 @@ DepthOptimizer::create_subview_surfaces (void)
                 this->sub_views[sub_id]->get_height());
 
             bool success = true;
-            for (std::size_t i = 0; i < coords.size() && success; i++)
+            for (std::size_t i = 0; i < pixels.size() && success; i++)
             {
                 Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                    coords[i][0] + 0.5, coords[i][1] + 0.5, depths[i]);
+                    pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i]);
                 math::Vec2d proj;
                 C.fill(*proj);
                 proj[0] -= 0.5;
@@ -547,7 +548,7 @@ DepthOptimizer::create_subview_surfaces (void)
                 int cy = static_cast<int>(proj[1]);
                 for (int x = -1; x < 2; ++x)
                     for (int y = -1; y < 2; ++y)
-                    if (C.get_depth() * 0.97 >
+                    if (C.get_depth() * 0.95 >
                         depth_caches[sub_id]->at(cx + x, cy + y, 0))
                         success = false;
             }
@@ -557,33 +558,32 @@ DepthOptimizer::create_subview_surfaces (void)
             std::vector<math::Vec2d> node_coords;
             std::vector<double> node_depths;
             std::vector<math::Vec2d> node_depths_derivs;
-            patches[patch_id]->fill_values_at_pixels(&coords, &depths);
-            patches[patch_id]->fill_values_at_nodes(&node_coords, &node_depths,
-                &node_depths_derivs);
+            patches[patch_id]->fill_values_at_nodes(&node_coords,
+                &node_depths, &node_depths_derivs);
 
-            if (!this->opts.use_sgm)
+            patches[patch_id]->fill_values_at_pixels(&pixels, &depths,
+                &depth_derivatives);
+
+            double max = 0.0;
+            for (std::size_t i = 0; i < pixels.size(); ++i)
             {
-                double max = 0.0;
-                for (int i = 0; i < 4; ++i)
-                {
-                    Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                         node_coords[i][0] + 0.5, node_coords[i][1] + 0.5,
-                         node_depths[i],
-                         node_depths_derivs[i][0], node_depths_derivs[i][1]);
-                    math::Matrix2d jac;
-                    C.fill_jacobian(*jac);
-                    double S[2];
-                    math::matrix_svd<double>(*jac, 2, 2, nullptr, S, nullptr);
-                    double sigma0 = MATH_POW2(std::max(S[0], S[1]));
-                    double sigma1 = MATH_POW2(std::min(S[0], S[1]));
-                    max = std::max(max, sigma0 / sigma1);
-                }
-                if (max > 4.0)
-                    continue;
+                Correspondence C(this->Mi[sub_id], this->ti[sub_id],
+                     pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i],
+                     depth_derivatives[i][0], depth_derivatives[i][1]);
+                math::Matrix2d jac;
+                C.fill_jacobian(*jac);
+                double S[2];
+                math::matrix_svd<double>(*jac, 2, 2, nullptr, S, nullptr);
+                double sigma0 = MATH_POW2(std::max(S[0], S[1]));
+                double sigma1 = MATH_POW2(std::min(S[0], S[1]));
+                max = std::max(max, sigma0 / sigma1);
             }
+            if (max > 8.0)
+                continue;
 
-            /* filter possible occlusions through unreconstructed geometry */
-            if (!opts.use_sgm && sub_nccs[sub_id] < 0.0)
+            /* filter possible occlusions from unreconstructed geometry */
+            if (!this->opts.use_sgm &&
+                this->ncc_for_patch(patch_id, sub_id) < 0)
                 continue;
 
             /* Patch is visible in neigbor view, add to sub_ids */
@@ -652,15 +652,11 @@ DepthOptimizer::get_non_converged_nodes(std::vector<math::Vec2d> const& proj1,
 
 
 void
-DepthOptimizer::fill_node_reprojections(
+DepthOptimizer::fill_node_reprojections(std::vector<char> const& active_nodes,
     std::vector<std::pair<std::size_t, math::Vec2d>> * proj)
 {
     proj->clear();
-    Surface::NodeList const& nodes = this->surface->get_nodes();
     Surface::PatchList const& patches = this->surface->get_patches();
-    std::vector<math::Vec2d> node_coords;
-    this->surface->fill_node_coords(&node_coords);
-
     for (int patch_id = 0; patch_id < (int)patches.size(); ++patch_id)
     {
         SurfacePatch::Ptr patch = patches[patch_id];
@@ -668,20 +664,22 @@ DepthOptimizer::fill_node_reprojections(
             continue;
         std::size_t node_ids[4];
         this->surface->fill_node_ids_for_patch(patch_id, node_ids);
-        for (std::size_t i = 0; i < 4; ++i)
-        {
-            std::size_t node_id = node_ids[i];
-            Surface::Node::Ptr node = nodes[node_id];
-            for (std::size_t j = 0; j < this->subsurfaces[patch_id].size(); ++j)
+        if ((active_nodes[node_ids[0]] + active_nodes[node_ids[1]]
+            + active_nodes[node_ids[2]] + active_nodes[node_ids[3]]) == 0)
+            continue;
+
+        patch->fill_values_at_pixels(&pixels, &depths);
+        for (std::size_t j = 0; j < this->subsurfaces[patch_id].size(); ++j)
+            for (std::size_t i = 0; i < pixels.size(); ++i)
             {
                 std::size_t sub_id = this->subsurfaces[patch_id][j];
                 Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                     node_coords[node_id][0], node_coords[node_id][1], node->f);
+                    pixels[i][0], pixels[i][1], depths[i]);
                 math::Vec2d projection;
                 C.fill(*projection);
-                proj->emplace_back(node_id, projection);
+                for (std::size_t n = 0; n < 4; ++n)
+                    proj->emplace_back(node_ids[n], projection);
             }
-        }
     }
 }
 
@@ -792,9 +790,6 @@ DepthOptimizer::mse_for_patch (std::size_t patch_id)
 
             math::Vec2d diff = this->grad_main - (jac * grad_sub);
             error += diff.norm();
-            if (std::isnan(error)) {
-                std::cout << grad_sub[0] << " " << grad_sub[1] << std::endl;
-            }
             counter += 1.0;
         }
     }
@@ -806,18 +801,65 @@ DepthOptimizer::mse_for_patch (std::size_t patch_id)
 double
 DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
 {
+    Surface::Patch::Ptr patch = this->surface->get_patches()[patch_id];
+
     mve::FloatImage::ConstPtr main_image =
         this->main_view->get_image();
-
-    std::vector<double> errors;
-
-    Surface::Patch::Ptr patch = this->surface->get_patches()[patch_id];
-    std::vector<math::Vec2d> pixels;
-    std::vector<double> depths;
-    patch->fill_values_at_pixels(&pixels, &depths);
-
     mve::FloatImage::ConstPtr sub_image =
         this->sub_views[sub_id]->get_image();
+
+    /* Get corners and pixels */
+    std::vector<math::Vec2d> corners;
+    std::vector<double> corner_depths;
+    patch->fill_values_at_nodes(&corners, &corner_depths);
+    math::Vec2d min = corners[0];
+    math::Vec2d max = corners[3];
+    patch->fill_values_at_pixels(&pixels, &depths);
+
+    /* Add boundary */
+    if (min[0] > 1 && max[0] < main_image->width() - 2
+        && min[1] > 1 && max[1] < main_image->height() - 2)
+    {
+        pixels.emplace_back(corners[0][0] - 1, corners[0][1] - 1);
+        depths.emplace_back(corner_depths[0]);
+        pixels.emplace_back(corners[1][0] + 1, corners[1][1] - 1);
+        depths.emplace_back(corner_depths[1]);
+        pixels.emplace_back(corners[2][0] - 1, corners[2][1] + 1);
+        depths.emplace_back(corner_depths[2]);
+        pixels.emplace_back(corners[3][0] + 1, corners[0][1] + 1);
+        depths.emplace_back(corner_depths[3]);
+    }
+    for (std::size_t i = 0; i < pixels.size(); ++i)
+    {
+        /* top */
+        if (min[1] > 2 && pixels[i][1] == min[1])
+        {
+            pixels.emplace_back(pixels[i][0], pixels[i][1] - 2);
+            pixels.emplace_back(pixels[i][0], pixels[i][1] - 1);
+            depths.emplace_back(depths[i]);
+        }
+        /* bottom */
+        if (max[1] < main_image->height() - 3 && pixels[i][1] == max[1])
+        {
+            pixels.emplace_back(pixels[i][0], pixels[i][1] + 2);
+            pixels.emplace_back(pixels[i][0], pixels[i][1] + 1);
+            depths.emplace_back(depths[i]);
+        }
+        /* left */
+        if (min[0] > 2 && pixels[i][0] == min[0])
+        {
+            pixels.emplace_back(pixels[i][0] - 2, pixels[i][1]);
+            pixels.emplace_back(pixels[i][0] - 1, pixels[i][1]);
+            depths.emplace_back(depths[i]);
+        }
+        /* right */
+        if (max[0] < main_image->width() - 3 && pixels[i][0] == max[0])
+        {
+            pixels.emplace_back(pixels[i][0] + 2, pixels[i][1]);
+            pixels.emplace_back(pixels[i][0] + 1, pixels[i][1]);
+            depths.emplace_back(depths[i]);
+        }
+    }
 
     DenseVector values0;
     DenseVector values1;
@@ -827,7 +869,6 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
     math::Vec3d means0(0,0,0);
     math::Vec3d means1(0,0,0);
     math::Vec3d counter(0,0,0);
-    math::Vec2d proj;
     math::Vec3d color_main;
     math::Vec3d color_sub;
     
@@ -867,12 +908,12 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
             values0[i * 3 + c] -= means0[c];
             values1[i * 3 + c] -= means1[c];
         }
-    double norm0 = values0.square_norm();
-    double norm1 = values1.square_norm();
-    if (norm0 + norm1 < 0.001)
+    double norm0 = values0.norm();
+    double norm1 = values1.norm();
+    if (norm0 + norm1 < 0.001 * pixels.size())
         return 1;
-
-    return values0.dot(values1) / (norm0 * norm1);
+    double ncc = values0.dot(values1) / (norm0 * norm1);
+    return ncc;
 }
 
 double
@@ -916,6 +957,55 @@ DepthOptimizer::tex_score_for_patch (std::size_t patch_id)
             score += std::abs(values[i * 3 + c] - means[c]);
 
     return score / pixels.size();
+}
+
+mve::FloatImage::Ptr
+DepthOptimizer::depthmap_bilateral_filter(mve::FloatImage::ConstPtr dm,
+    mve::FloatImage::ConstPtr ci, float sigma, int kernel_size)
+{
+    int const dm_w(dm->width());
+    int const dm_h(dm->height());
+
+    int const w = ci->width();
+    int const h = ci->height();
+    mve::FloatImage::Ptr out = mve::FloatImage::create(w, h, 1);
+    out->fill(0);
+
+    float const scale_x = static_cast<float>(dm_w) / static_cast<float>(w);
+    float const scale_y = static_cast<float>(dm_h) / static_cast<float>(h);
+
+    for (int y = 0; y < h; ++y)
+        for (int x = 0; x < w; ++x)
+        {
+            math::Accum<float> accum(0.0f);
+            for (int ky = -kernel_size; ky <= kernel_size; ++ky)
+                for (int kx = -kernel_size; kx <= kernel_size; ++kx)
+                {
+                    int const ci_x = math::clamp(x + kx, 0, w - 1);
+                    int const ci_y = math::clamp(y + ky, 0, h - 1);
+                    int const dm_x = math::clamp(scale_x * ci_x, 0.f,
+                        static_cast<float>(dm_w) - 1.f);
+                    int const dm_y = math::clamp(scale_y * ci_y, 0.f,
+                        static_cast<float>(dm_w) - 1.f);
+
+                    if(dm->at(dm_x, dm_y, 0) == 0.0f)
+                        continue;
+
+                    float weight(1.0f);
+                    /* spatial weight */
+                    weight *= math::gaussian_2d((float)kx, (float)ky,
+                        sigma, sigma);
+                    /* depth value difference weight */
+                    for (int c = 0; c < ci->channels(); ++c)
+                        weight *= math::gaussian(ci->at(ci_x, ci_y, c)
+                            - ci->at(x, y, c), 0.1f);
+
+                    accum.add(dm->at(dm_x, dm_y, 0), weight);
+                }
+            if (accum.w > 0)
+                out->at(x, y, 0) = accum.normalized();
+        }
+    return out;
 }
 
 SMVS_NAMESPACE_END

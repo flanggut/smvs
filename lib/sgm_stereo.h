@@ -30,7 +30,7 @@ public:
         float min_depth = 0.0f;
         float max_depth = 0.0f;
         uint16_t penalty1 = 24;
-        uint16_t penalty2 = 1000;
+        uint16_t penalty2 = 4000;
     };
 
     SGMStereo (Options const& opts,

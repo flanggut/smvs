@@ -493,8 +493,8 @@ Surface::expand (void)
         std::vector<std::size_t> neighbor_ids;
         this->fill_node_neighbors(node_id, &neighbors, &neighbor_ids);
 
-        this->initialize_node_from_depth(node_id % this->node_stride,
-            static_cast<int>(node_id) / this->node_stride);
+//        this->initialize_node_from_depth(node_id % this->node_stride,
+//            static_cast<int>(node_id) / this->node_stride);
 
         if (this->nodes[node_id] != nullptr
             && new_nodes[node_id] == nullptr)
@@ -643,9 +643,6 @@ Surface::fill_holes (void)
                 patch_nodes[2] != nullptr &&
                 patch_nodes[3] != nullptr)
             {
-                std::vector<double> values;
-                for (int i = 0; i < 4; ++i)
-                    values.push_back(patch_nodes[i]->f);
                 this->create_patch(x, y);
                 filled_counter += 1;
             }
@@ -711,10 +708,14 @@ Surface::initialize_node_from_depth (int idx, int idy)
 
     double avg[4];
     double sum = 0.0;
+    std::vector<double> all;
     for (int i = 0; i < 4; ++i)
     {
         for (std::size_t j = 0; j < d[i].size(); ++j)
+        {
             sum += d[i][j];
+            all.push_back(d[i][j]);
+        }
 
         if (d[i].size() == 0)
         {
@@ -722,8 +723,7 @@ Surface::initialize_node_from_depth (int idx, int idy)
             num_non_zeros -= 1;
             continue;
         }
-        std::nth_element(d[i].begin(), d[i].begin(), d[i].end());
-        avg[i] = d[i][0];
+        avg[i] = *std::min_element(d[i].begin(), d[i].end());
     }
 
     if (num_non_zeros == 0)
@@ -734,8 +734,10 @@ Surface::initialize_node_from_depth (int idx, int idy)
 
     sum /= d[0].size() + d[1].size() + d[2].size() + d[3].size();
 
+    std::nth_element(all.begin(), all.begin() + all.size() / 2, all.end());
+
     BicubicPatch::Node::Ptr node =  BicubicPatch::Node::create();
-    node->f = sum;
+    node->f = all[all.size() / 2];
 
     if (num_non_zeros == 4)
     {

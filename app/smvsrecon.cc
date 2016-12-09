@@ -327,18 +327,15 @@ void reconstruct_sgm_depth_for_view (AppSettings const& conf,
             if (min / max < 0.95)
                 d1->at(p) = 0.0f;
             else
-                d1->at(p) = (d1->at(p) + d2->at(p)) * 0.5;
+                d1->at(p) = std::min(d1->at(p) , d2->at(p));
         }
     }
-    mve::FloatImage::Ptr init = mve::FloatImage::create(
-        main_view->get_width(), main_view->get_height(), 1);
-    mve::image::rescale_nearest<float>(d1, init);
 
     if (conf.debug_lvl > 0)
         std::cout << "SGM took: " << sgm_timer.get_elapsed_sec()
         << "sec" << std::endl;
 
-    main_view->write_depth_to_view(init, "sgm-depth");
+    main_view->write_depth_to_view(d1, "sgm-depth");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -566,9 +563,9 @@ main (int argc, char** argv)
             if (conf.use_sgm)
                 if (conf.force_sgm || !views[i]->has_image("sgm-depth")
                     || views[i]->get_image_proxy("sgm-depth")->width !=
-                    views[i]->get_image_proxy(input_name)->width
+                    views[i]->get_image_proxy(input_name)->width / 2
                     || views[i]->get_image_proxy("sgm-depth")->height !=
-                    views[i]->get_image_proxy(input_name)->height)
+                    views[i]->get_image_proxy(input_name)->height / 2)
                     reconstruct_sgm_depth_for_view(conf, main_view,
                         stereo_views, bundle);
 
