@@ -129,3 +129,17 @@ TEST(DepthTriangulator, ApproximateTriangulation)
     EXPECT_EQ(38, approx->get_faces().size() / 3);
 //    mve::geom::save_mesh(approx, "/tmp/approx.ply");
 }
+
+TEST(DepthTriangulator, ApproximateTriangulationEmpty)
+{
+    mve::FloatImage::Ptr dm = mve::FloatImage::create(10, 10, 1);
+    dm->fill(0.0f);
+    mve::CameraInfo cam;
+    cam.flen = 1;
+    cam.trans[2] = -1.0;
+
+    DepthTriangulator dt(dm, cam);
+    mve::TriangleMesh::Ptr approx = dt.approximate_triangulation(27);
+    EXPECT_EQ(0, approx->get_vertices().size());
+    EXPECT_EQ(0, approx->get_faces().size() / 3);
+}

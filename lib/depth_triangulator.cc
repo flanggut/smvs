@@ -118,8 +118,8 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     mve::TriangleMesh::VertexList & vertices = mesh->get_vertices();
     for (auto & vert : vertices)
     {
-        math::Vec3f ray = invproj * math::Vec3f
-        (vert[0] + 0.5f, vert[1] + 0.5f, 1.0f);
+        math::Vec3f ray = invproj * math::Vec3f(vert[0] + 0.5f,
+            vert[1] + 0.5f, 1.0f);
         vert = ray.normalized() * vert[2];
     }
     math::Matrix4f ctw;
@@ -173,7 +173,7 @@ DepthTriangulator::scan_triangle (std::size_t id)
     pixels_for_triangle(triangle.v1, triangle.v2, triangle.v3, &pixels);
 
     double max_dist = 0;
-    math::Vec3d max_dist_point;
+    math::Vec3d max_dist_point(0.0, 0.0, 0.0);
     Plane plane(triangle.v1, triangle.v2, triangle.v3);
     for (auto const& pixel : pixels)
     {
