@@ -53,6 +53,7 @@ struct AppSettings
     bool cut_surface = true;
     float simplify = 0.0f;
     bool create_triangle_mesh = false;
+    std::string aabb_string = "";
     bool use_sgm = true;
     float sgm_min = 0.0f;
     float sgm_max = 0.0f;
@@ -61,6 +62,8 @@ struct AppSettings
     bool force_sgm = false;
     bool full_optimization = false;
     bool clean_scene = false;
+    math::Vec3f aabb_min = math::Vec3f(0.0f);
+    math::Vec3f aabb_max = math::Vec3f(0.0f);
 
     AppSettings (void)
     {
@@ -113,6 +116,8 @@ args_to_settings(int argc, char** argv)
         " export fill pointcloud from all depth values. [on]");
     args.add_option('\0', "simplify", true, "Simplify triangle mesh "
         "(WIP). Given as percentage [100 = keep everything]");
+    args.add_option('\0', "aabb", true, "Comma separated AABB for output: "
+        "min,min,min,max,max,max");
     args.add_option('\0', "min-neighbors", true, "Minimal number of "
         "neighbors for reconstruction. [3]");
     args.add_option('\0', "force", false, "Force reconstruction of "
@@ -174,6 +179,8 @@ args_to_settings(int argc, char** argv)
             conf.recon_only = true;
         else if (arg->opt->lopt == "mesh")
             conf.create_triangle_mesh = true;
+        else if (arg->opt->lopt == "aabb")
+            conf.aabb_string = arg->arg;
         else if (arg->opt->lopt == "force")
             conf.force_recon = true;
         else if (arg->opt->lopt == "no-cut")
@@ -227,6 +234,22 @@ args_to_settings(int argc, char** argv)
         conf.sgm_max = tok.get_as<float>(1);
     }
 
+    if (conf.aabb_string.size() > 0)
+    {
+        util::Tokenizer tok;
+        tok.split(conf.aabb_string, ',');
+        if (tok.size() != 6)
+        {
+            std::cerr << "Error: AABB invalid" << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+        for (int i = 0; i < 3; ++i)
+        {
+            conf.aabb_min[i] = tok.get_as<float>(i);
+            conf.aabb_max[i] = tok.get_as<float>(i + 3);
+        }
+    }
+
     if (conf.force_sgm && !conf.use_sgm)
     {
         std::cerr << "[Warning] Force-SGM is activated but SGM is deactivated."
@@ -272,18 +295,38 @@ void generate_mesh (AppSettings const& conf, mve::Scene::Ptr scene,
     mve::TriangleMesh::Ptr mesh = meshgen.generate_mesh(recon_views,
         input_name, dm_name);
 
+    if (conf.aabb_string.size() > 0)
+    {
+        std::cout << "Clipping to AABB: (" << conf.aabb_min << ") / ("
+            << conf.aabb_max << ")" << std::endl;
+
+        mve::TriangleMesh::VertexList const& verts = mesh->get_vertices();
+        std::vector<bool> aabb_clip(verts.size(), false);
+        for (std::size_t v = 0; v < verts.size(); ++v)
+            for (int i = 0; i < 3; ++i)
+                if (verts[v][i] < conf.aabb_min[i]
+                    || verts[v][i] > conf.aabb_max[i])
+                    aabb_clip[v] = true;
+        mesh->delete_vertices_fix_faces(aabb_clip);
+    }
+
     std::cout << "Done. Took: " << timer.get_elapsed_sec() << "s" << std::endl;
 
     if (conf.create_triangle_mesh)
         mesh->recalc_normals();
 
-    std::string meshname;
+    /* Build mesh name */
+    std::string meshname = "smvs-";
+    if (conf.create_triangle_mesh)
+        meshname += "m-";
     if (conf.use_shading)
-        meshname =
-            util::fs::join_path(scene->get_path(), "smvs-S.ply");
+        meshname += "S";
     else
-        meshname =
-            util::fs::join_path(scene->get_path(), "smvs-B.ply");
+        meshname += "B";
+    meshname += util::string::get(conf.input_scale) + ".ply";
+    meshname = util::fs::join_path(scene->get_path(), meshname);
+
+    /* Save mesh */
     mve::geom::SavePLYOptions opts;
     opts.write_vertex_normals = true;
     opts.write_vertex_values = true;
