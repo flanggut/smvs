@@ -986,7 +986,7 @@ DepthOptimizer::depthmap_bilateral_filter(mve::FloatImage::ConstPtr dm,
                     int const dm_x = math::clamp(scale_x * ci_x, 0.f,
                         static_cast<float>(dm_w) - 1.f);
                     int const dm_y = math::clamp(scale_y * ci_y, 0.f,
-                        static_cast<float>(dm_w) - 1.f);
+                        static_cast<float>(dm_h) - 1.f);
 
                     if(dm->at(dm_x, dm_y, 0) == 0.0f)
                         continue;
