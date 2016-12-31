@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <set>
 #include <string>
 
 #include "mve/scene.h"
@@ -45,7 +46,7 @@ struct AppSettings
     std::size_t num_neighbors = 6;
     std::size_t min_neighbors = 3;
     std::size_t max_pixels = 1700000;
-    std::size_t num_threads;
+    std::size_t num_threads = std::thread::hardware_concurrency();
     bool use_shading = false;
     float light_surf_regularization = 0.0f;
     bool gamma_correction = false;
@@ -65,10 +66,7 @@ struct AppSettings
     math::Vec3f aabb_min = math::Vec3f(0.0f);
     math::Vec3f aabb_max = math::Vec3f(0.0f);
 
-    AppSettings (void)
-    {
-        num_threads = std::thread::hardware_concurrency();
-    }
+    AppSettings (void) {}
 };
 
 AppSettings
@@ -521,13 +519,38 @@ main (int argc, char** argv)
         << " views that are already reconstructed." << std::endl;
 
     /* Create reconstruction threads */
-    ThreadPool thread_pool(std::max<std::size_t>(std::min(conf.num_threads,
-        reconstruction_list.size()), 1));
+    ThreadPool thread_pool(std::max<std::size_t>(conf.num_threads, 1));
 
-    /* Create input embedding */
-    std::vector<std::future<void>> resize;
-    for (std::size_t i = 0; i < views.size(); ++i)
-    resize.emplace_back(thread_pool.add_task(
+    /* View selection */
+    smvs::ViewSelection::Options view_select_opts;
+    view_select_opts.num_neighbors = conf.num_neighbors;
+    view_select_opts.embedding = conf.image_embedding;
+    smvs::ViewSelection view_selection(view_select_opts, views, bundle);
+    std::vector<mve::Scene::ViewList> view_neighbors(
+        reconstruction_list.size());
+    std::vector<std::future<void>> selection_tasks;
+    for (std::size_t v = 0; v < reconstruction_list.size(); ++v)
+    {
+        int const i = reconstruction_list[v];
+        selection_tasks.emplace_back(thread_pool.add_task(
+            [i, v, &views, &view_selection, &view_neighbors]
+        {
+            view_neighbors[v] = view_selection.get_neighbors_for_view(i);
+        }));
+    }
+    for(auto && selection : selection_tasks) selection.get();
+
+    /* Create input embedding and resize */
+    std::set<int> check_embedding_list;
+    for (std::size_t v = 0; v < reconstruction_list.size(); ++v)
+    {
+        check_embedding_list.insert(reconstruction_list[v]);
+        for (auto & neighbor : view_neighbors[v])
+            check_embedding_list.insert(neighbor->get_id());
+    }
+    std::vector<std::future<void>> resize_tasks;
+    for (auto const& i : check_embedding_list)
+    resize_tasks.emplace_back(thread_pool.add_task(
         [i, &views, &input_name, &conf]
     {
         mve::View::Ptr view = views[i];
@@ -544,17 +567,13 @@ main (int argc, char** argv)
         view->set_image(scaled, input_name);
         view->save_view();
     }));
-    for(auto && resized: resize) resized.get();
+    for(auto && resized : resize_tasks) resized.get();
 
     std::vector<std::future<void>> results;
     std::mutex counter_mutex;
     std::size_t started = 0;
     std::size_t finished = 0;
     util::WallTimer timer;
-    smvs::ViewSelection::Options view_select_opts;
-    view_select_opts.num_neighbors = conf.num_neighbors;
-    view_select_opts.embedding = input_name;
-    smvs::ViewSelection view_selection(view_select_opts, views, bundle);
 
     for (std::size_t v = 0; v < reconstruction_list.size(); ++v)
     {
@@ -562,14 +581,12 @@ main (int argc, char** argv)
 
         results.emplace_back(thread_pool.add_task(
             [v, i, &views, &conf, &counter_mutex, &input_name, &output_name,
-             &started, &finished, &reconstruction_list, &view_selection,
+             &started, &finished, &reconstruction_list, &view_neighbors,
              bundle, scene]
         {
-            smvs::StereoView::Ptr main_view = smvs::StereoView::create(views[i],
-                input_name, conf.gamma_correction);
-
-            mve::Scene::ViewList neighbors =
-                view_selection.get_neighbors_for_view(i);
+            smvs::StereoView::Ptr main_view = smvs::StereoView::create(
+                views[i], input_name, conf.gamma_correction);
+            mve::Scene::ViewList neighbors = view_neighbors[v];
 
             if (neighbors.size() < conf.min_neighbors)
             {
