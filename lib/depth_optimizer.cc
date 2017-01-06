@@ -128,8 +128,8 @@ DepthOptimizer::optimize (void)
         this->run_newton_iterations(this->opts.num_iterations);
 
         if (this->opts.debug_lvl > 0)
-            std::cout << "Scale " << this->surface->get_scale()
-                << " took " << scale_timer.get_elapsed_sec() << "s" << std::endl;
+            std::cout << "Scale " << this->surface->get_scale() << " took "
+                << scale_timer.get_elapsed_sec() << "s" << std::endl;
         this->write_debug_depth();
     }
 

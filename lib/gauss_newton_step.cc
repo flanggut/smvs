@@ -290,8 +290,8 @@ GaussNewtonStep::fill_gradient_and_hessian_entries(std::size_t i,
                      reg_subweight);
 
                 if (j2 == j + 1)
-                    reg_grad[col] = _mm_add_pd(reg_grad[col],
-                        _mm_div_pd(_mm_mul_pd(reg_diff, *reg_jcol), reg_weight));
+                    reg_grad[col] = _mm_add_pd(reg_grad[col], _mm_div_pd(
+                        _mm_mul_pd(reg_diff, *reg_jcol), reg_weight));
 
                 reg_grad[col] = _mm_add_pd(reg_grad[col],
                     _mm_mul_pd(reg_jace, reg_subdiff));
@@ -324,7 +324,8 @@ GaussNewtonStep::fill_gradient_and_hessian_entries(std::size_t i,
     for (int col = 0; col < 16; ++col)
        for (int col2 = col; col2 < 16; ++col2)
         {
-            hessian_entries[col * 16 + col2] += reg_hessian_mem[col * 16 + col2][0] +
+            hessian_entries[col * 16 + col2] +=
+                reg_hessian_mem[col * 16 + col2][0] +
                 reg_hessian_mem[col * 16 + col2][1];
         }
     
