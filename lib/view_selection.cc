@@ -50,12 +50,14 @@ ViewSelection::bundle_based_selection (std::size_t const view) const
         }
 
     /* Collect common features in neighboring views */
+    neighbors = this->get_sorted_neighbors(view);
     std::multimap<std::size_t, std::size_t,
         std::greater<std::size_t>> common_features_map;
-    for (std::size_t i = 0; i < this->views.size(); ++i)
+    for (std::size_t i = 0; i < neighbors.size() && i < 50; ++i)
     {
-        mve::View::Ptr v = this->views[i];
-        if (i == view || v == nullptr || v->get_camera().flen == 0.0
+        mve::View::Ptr v = neighbors[i];
+        std::size_t id = v->get_id();
+        if (id == view || v == nullptr || v->get_camera().flen == 0.0
             || !v->has_image(this->opts.embedding))
             continue;
         math::Matrix4f neighbor_view_wtc;
@@ -78,8 +80,9 @@ ViewSelection::bundle_based_selection (std::size_t const view) const
                     num_matches++;
             }
         }
-        common_features_map.insert(std::make_pair(num_matches, i));
+        common_features_map.insert(std::make_pair(num_matches, id));
     }
+    neighbors.clear();
 
     /* Use views with most common features as neighbors */
     for (auto features_for_view : common_features_map)
@@ -92,23 +95,50 @@ ViewSelection::bundle_based_selection (std::size_t const view) const
     return neighbors;
 }
 
-
 mve::Scene::ViewList
 ViewSelection::position_based_selection (std::size_t const view) const
 {
     mve::Scene::ViewList neighbors;
 
-    mve::View::ConstPtr main_view = views[view];
+    mve::View::ConstPtr main_view = this->views[view];
     mve::CameraInfo const& main_cam = main_view->get_camera();
-    math::Vec3f main_cam_pos;
     math::Vec3f main_cam_dir;
-    main_cam.fill_camera_pos(*main_cam_pos);
     main_cam.fill_viewing_direction(*main_cam_dir);
     math::Vec3f main_cam_up;
     main_cam_up[0] = main_cam.rot[2];
     main_cam_up[1] = main_cam.rot[5];
     main_cam_up[2] = main_cam.rot[8];
 
+    neighbors = this->get_sorted_neighbors(view);
+    for (auto n = neighbors.begin(); n != neighbors.end();)
+    {
+        mve::CameraInfo const& cam = (*n)->get_camera();
+        if (cam.flen == 0.0)
+            continue;
+        math::Vec3f sub_cam_dir;
+        cam.fill_viewing_direction(*sub_cam_dir);
+        math::Vec3f sub_cam_up;
+        sub_cam_up[0] = cam.rot[2];
+        sub_cam_up[1] = cam.rot[5];
+        sub_cam_up[2] = cam.rot[8];
+
+        if (main_cam_up.dot(sub_cam_up) < 0
+            || main_cam_dir.dot(sub_cam_dir) < 0.65)
+            n = neighbors.erase(n);
+        else
+            n++;
+    }
+    return neighbors;
+}
+
+mve::Scene::ViewList
+ViewSelection::get_sorted_neighbors(std::size_t const view) const
+{
+    mve::Scene::ViewList neighbors;
+    mve::View::ConstPtr main_view = this->views[view];
+    mve::CameraInfo const& main_cam = main_view->get_camera();
+    math::Vec3f main_cam_pos;
+    main_cam.fill_camera_pos(*main_cam_pos);
     std::map<float, std::size_t> distances;
     for (std::size_t i = 0; i < views.size(); ++i)
     {
@@ -119,20 +149,7 @@ ViewSelection::position_based_selection (std::size_t const view) const
         if (cam.flen == 0.0)
             continue;
         math::Vec3f pos;
-        math::Vec3f dir;
         cam.fill_camera_pos(*pos);
-        cam.fill_viewing_direction(*dir);
-
-        math::Vec3f sub_cam_up;
-        sub_cam_up[0] = cam.rot[2];
-        sub_cam_up[1] = cam.rot[5];
-        sub_cam_up[2] = cam.rot[8];
-
-        if (main_cam_up.dot(sub_cam_up) < 0)
-            continue;
-
-        if (main_cam_dir.dot(dir) < 0.65)
-            continue;
         float dist = (main_cam_pos - pos).norm();
         distances[dist] = i;
     }

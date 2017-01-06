@@ -35,6 +35,7 @@ public:
 private:
     mve::Scene::ViewList bundle_based_selection(std::size_t const view) const;
     mve::Scene::ViewList position_based_selection(std::size_t const view) const;
+    mve::Scene::ViewList get_sorted_neighbors(std::size_t const view) const;
 
 private:
     Options const& opts;
