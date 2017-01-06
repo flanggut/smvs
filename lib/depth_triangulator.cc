@@ -19,9 +19,8 @@ SMVS_NAMESPACE_BEGIN
 mve::TriangleMesh::Ptr
 DepthTriangulator::full_triangulation (void)
 {
-    mve::ByteImage::ConstPtr color_image = nullptr;
     mve::TriangleMesh::Ptr mesh = mve::geom::depthmap_triangulate(
-        this->depth_map, color_image, this->camera);
+        this->depth_map, this->color, this->camera);
     return mesh;
 }
 
@@ -108,25 +107,46 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     /* Get Mesh, clean, transform, and return */
     mve::TriangleMesh::Ptr mesh = delaunay.get_mesh();
     std::vector<bool> delete_list(mesh->get_vertices().size(), false);
-    delete_list[0] = true;
-    delete_list[1] = true;
-    delete_list[2] = true;
-    delete_list[3] = true;
+    delete_list[0] = delete_list[1] = delete_list[2] = delete_list[3] = true;
     mesh->delete_vertices_fix_faces(delete_list);
     math::Matrix3f invproj;
     this->camera.fill_inverse_calibration(*invproj,
         this->depth_map->width(), this->depth_map->height());
+
     mve::TriangleMesh::VertexList & vertices = mesh->get_vertices();
+
+    /* Add vertex colors if color image exists */
+    if (this->color != nullptr)
+    {
+        mve::TriangleMesh::ColorList & vcolors = mesh->get_vertex_colors();
+        vcolors.reserve(vertices.size());
+        for (auto & vert : vertices)
+        {
+            math::Vec4f vcolor(this->color->at(vert[0], vert[1], 0),
+                0.0f, 0.0f, 255.0f);
+            if (this->color->channels() >= 3)
+            {
+                vcolor[1] = this->color->at(vert[0], vert[1], 1);
+                vcolor[2] = this->color->at(vert[0], vert[1], 2);
+            } else
+                vcolor[1] = vcolor[2] = vcolor[0];
+            vcolors.push_back(vcolor / 255.0f);
+        }
+    }
+
+    /* Project vertices along viewing ray */
     for (auto & vert : vertices)
     {
         math::Vec3f ray = invproj * math::Vec3f(vert[0] + 0.5f,
             vert[1] + 0.5f, 1.0f);
         vert = ray.normalized() * vert[2];
     }
+    /* Transform into world coordinates */
     math::Matrix4f ctw;
     this->camera.fill_cam_to_world(*ctw);
     mve::geom::mesh_transform(mesh, ctw);
 
+    /* Remove bad faces */
     mve::TriangleMesh::FaceList & faces = mesh->get_faces();
     for (std::size_t f = 0; f < faces.size(); f += 3)
     {

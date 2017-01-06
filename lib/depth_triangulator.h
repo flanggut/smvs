@@ -26,7 +26,7 @@ class DepthTriangulator
 {
 public:
     DepthTriangulator (mve::FloatImage::ConstPtr depth_map,
-        mve::CameraInfo const& camera);
+        mve::ByteImage::ConstPtr color, mve::CameraInfo const& camera);
 
     mve::TriangleMesh::Ptr full_triangulation (void);
     mve::TriangleMesh::Ptr approximate_triangulation (std::size_t num_vertices);
@@ -50,6 +50,7 @@ private:
 
 private:
     mve::FloatImage::ConstPtr depth_map;
+    mve::ByteImage::ConstPtr color;
     mve::CameraInfo const& camera;
 
     std::vector<Triangle> triangles;
@@ -61,8 +62,8 @@ private:
 
 inline
 DepthTriangulator::DepthTriangulator (mve::FloatImage::ConstPtr depth_map,
-    mve::CameraInfo const& camera)
-    : depth_map(depth_map), camera(camera)
+    mve::ByteImage::ConstPtr color, mve::CameraInfo const& camera)
+    : depth_map(depth_map), color(color), camera(camera)
 {
 }
 

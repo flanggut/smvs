@@ -233,17 +233,17 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
             pset->get_vertex_confidences());
 
         mve::FloatImage::Ptr normals = normalmaps[i];
+        mve::ByteImage::Ptr color = this->views[i]->get_byte_image(image_name);
+
+        DepthTriangulator dt(depthmaps[i], color, this->views[i]->get_camera());
         mve::TriangleMesh::Ptr m;
         if (this->opts.create_triangle_mesh && this->opts.simplify)
         {
-            DepthTriangulator dt(depthmaps[i], this->views[i]->get_camera());
             m = dt.approximate_triangulation(100000);
         }
         else
         {
-            m = mve::geom::depthmap_triangulate(depthmaps[i],
-            this->views[i]->get_byte_image(image_name),
-            this->views[i]->get_camera(), 7.0);
+            m = dt.full_triangulation();
         }
 
         mve::TriangleMesh::VertexList const& mverts(m->get_vertices());
