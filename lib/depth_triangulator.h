@@ -39,6 +39,7 @@ private:
     {
         Triangle (std::size_t id, double * vertices);
         std::size_t id;
+        int num_zero_depths;
         math::Vec3d v1, v2, v3;
         math::Vec3d candidate;
         std::multimap<double, std::size_t>::iterator heap_iterator;

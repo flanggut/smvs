@@ -25,7 +25,7 @@ public:
         std::size_t num_threads;
         bool cut_surfaces = false;
         bool create_triangle_mesh = false;
-        float simplify = 0.0f;
+        bool simplify = false;
 
         Options (void)
         {

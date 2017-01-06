@@ -73,6 +73,7 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     std::vector<std::size_t> changed;
     for (std::size_t i = 0; i < num_vertices; ++i)
     {
+        /* Exit if error is already small */
         if ((*this->triangle_heap.begin()).first < dm_avg * 2e-4)
             break;
 
@@ -134,7 +135,8 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
         float edge3 = (vertices[faces[f + 1]] - vertices[faces[f + 2]]).norm();
         float min_edge = std::min(edge1, std::min(edge2, edge3));
         float max_edge = std::max(edge1, std::max(edge2, edge3));
-        if (min_edge / max_edge < 0.1f)
+        if (this->triangles[f/3].num_zero_depths > 4
+            || min_edge / max_edge < 0.1)
             faces[f] = faces[f + 1] = faces[f + 2] =  0;
     }
     mesh->delete_invalid_faces();
@@ -174,13 +176,17 @@ DepthTriangulator::scan_triangle (std::size_t id)
 
     double max_dist = 0;
     math::Vec3d max_dist_point(0.0, 0.0, 0.0);
+    triangle.num_zero_depths = 0;
     Plane plane(triangle.v1, triangle.v2, triangle.v3);
     for (auto const& pixel : pixels)
     {
         if (pixel[0] < 0 || pixel[0] > this->depth_map->width() - 1
             || pixel[1] < 0 || pixel[1] > this->depth_map->height() - 1
             || this->depth_map->at(pixel[0], pixel[1], 0) == 0)
+        {
+            triangle.num_zero_depths += 1;
             continue;
+        }
 
         math::Vec3d point(pixel[0], pixel[1],
             this->depth_map->at(pixel[0], pixel[1], 0));
