@@ -475,6 +475,7 @@ main (int argc, char** argv)
             conf.input_scale = 0;
         std::cout << "Automatic input scale: " << conf.input_scale << std::endl;
     }
+
     std::string input_name;
     if (conf.input_scale > 0)
         input_name = "undist-L" + util::string::get(conf.input_scale);
@@ -489,25 +490,36 @@ main (int argc, char** argv)
         output_name = "smvs-B" + util::string::get(conf.input_scale);
     std::cout << "Output embedding: " << output_name << std::endl;
 
+    /* Clean view id list */
+    std::vector<int> ignore_list;
+    for (std::size_t v = 0; v < conf.view_ids.size(); ++v)
+    {
+        int const i = conf.view_ids[v];
+        if (i > static_cast<int>(views.size() - 1) || views[i] == nullptr)
+        {
+            std::cout << "View ID " << i << " invalid, skipping view."
+                << std::endl;
+            ignore_list.push_back(i);
+            continue;
+        }
+        if (!views[i]->has_image(conf.image_embedding))
+        {
+            std::cout << "View ID " << i << " missing image embedding, "
+                << "skipping view." << std::endl;
+            ignore_list.push_back(i);
+            continue;
+        }
+    }
+    for (auto const& id : ignore_list)
+        conf.view_ids.erase(std::remove(conf.view_ids.begin(),
+            conf.view_ids.end(), id));
+
     /* Add views to reconstruction list */
     std::vector<int> reconstruction_list;
     int already_reconstructed = 0;
     for (std::size_t v = 0; v < conf.view_ids.size(); ++v)
     {
         int const i = conf.view_ids[v];
-        if (views[i] == nullptr)
-        {
-            std::cout << "View ID " << i << " invalid, skipping view."
-            << std::endl;
-            continue;
-        }
-        if (!views[i]->has_image(conf.image_embedding))
-        {
-            std::cout << "View ID " << i << " missing image embedding, "
-            << "skipping view." << std::endl;
-            continue;
-        }
-
         /* Only reconstruct missing views or if forced */
         if (conf.force_recon || !views[i]->has_image(output_name))
             reconstruction_list.push_back(i);
@@ -516,7 +528,7 @@ main (int argc, char** argv)
     }
     if (already_reconstructed > 0)
         std::cout << "Skipping " << already_reconstructed
-        << " views that are already reconstructed." << std::endl;
+            << " views that are already reconstructed." << std::endl;
 
     /* Create reconstruction threads */
     ThreadPool thread_pool(std::max<std::size_t>(conf.num_threads, 1));
