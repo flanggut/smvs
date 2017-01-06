@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -210,10 +210,6 @@ args_to_settings(int argc, char** argv)
             << "setting output-scale to 1." << std::endl;
         conf.output_scale = 1;
     }
-
-    if (!conf.create_triangle_mesh && conf.simplify)
-        std::cout << "[Warning] Only mesh output can be simplified. "
-            << "Ignoring simplify argument!" << std::endl;
 
     if (conf.create_triangle_mesh && !conf.cut_surface)
         std::cout << "[Warning] Turning surface cutting off for mesh output"

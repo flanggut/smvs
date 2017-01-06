@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -237,14 +237,10 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
 
         DepthTriangulator dt(depthmaps[i], color, this->views[i]->get_camera());
         mve::TriangleMesh::Ptr m;
-        if (this->opts.create_triangle_mesh && this->opts.simplify)
-        {
+        if (this->opts.simplify)
             m = dt.approximate_triangulation(100000);
-        }
         else
-        {
             m = dt.full_triangulation();
-        }
 
         mve::TriangleMesh::VertexList const& mverts(m->get_vertices());
         mve::TriangleMesh::ColorList const& mvcol(m->get_vertex_colors());
