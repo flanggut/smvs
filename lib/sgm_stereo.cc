@@ -58,6 +58,7 @@ SGMStereo::reconstruct (SGMStereo::Options sgm_opts, StereoView::Ptr main_view,
     main_cam.fill_reprojection(neighbor_cam, d_main->width(),
         d_main->height(), d_neig->width(), d_neig->height(), *M, *t);
 
+    int const cut = 0.03 * std::max(d_neig->width(), d_neig->height());
     for (int x = 0; x < d_main->width(); ++x)
         for (int y = 0; y < d_main->height(); ++y)
         {
@@ -66,8 +67,8 @@ SGMStereo::reconstruct (SGMStereo::Options sgm_opts, StereoView::Ptr main_view,
             Correspondence c(M, t, x, y, d_main->at(x, y, 0));
             math::Vec2d coords;
             c.fill(*coords);
-            if (coords[0] < 1 || coords[0] >= d_neig->width() - 1
-                || coords[1] < 1 || coords[1] >= d_neig->height() - 1)
+            if (coords[0] < cut || coords[0] >= d_neig->width() - cut
+                || coords[1] < cut || coords[1] >= d_neig->height() - cut)
             {
                 d_main->at(x, y, 0) = 0;
                 continue;

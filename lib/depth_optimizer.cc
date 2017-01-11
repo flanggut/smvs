@@ -436,7 +436,6 @@ DepthOptimizer::create_subview_surfaces (void)
     this->subsurfaces.clear();
     this->subsurfaces.resize(patches.size());
 
-    int num_total = 0;
     std::vector<mve::FloatImage::Ptr> depth_caches;
     depth_caches.resize(this->sub_views.size());
 
@@ -450,65 +449,52 @@ DepthOptimizer::create_subview_surfaces (void)
         depth_caches[sub_id]->fill(10000.0);
     }
 
-    /* first pass: find minimal depth */
-    for (std::size_t patch_id = 0; patch_id < patches.size(); ++patch_id)
-    {
-        if (patches[patch_id] == nullptr)
-            continue;
-        num_total += 1;
-        patches[patch_id]->fill_values_at_pixels(&pixels, &depths);
-
-        for (std::size_t sub_id = 0; sub_id < this->sub_views.size(); ++sub_id)
+    this->pixels.clear();
+    this->depths.clear();
+    mve::FloatImage::Ptr depth = this->get_depth();
+    for (int x = 0; x < depth->width(); ++x)
+        for (int y = 0; y < depth->height(); ++y)
         {
-            double const sub_width = static_cast<double>(
-                this->sub_views[sub_id]->get_width());
-            double const sub_height = static_cast<double>(
-                this->sub_views[sub_id]->get_height());
-
-            for (std::size_t i = 0; i < pixels.size(); i++)
+            if (depth->at(x, y, 0) != 0)
             {
-                Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                    pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i]);
-                math::Vec2d proj;
-                C.fill(*proj);
-                proj[0] -= 0.5;
-                proj[1] -= 0.5;
-                double const cutoffset = 10.0;
-                if (proj[0] < cutoffset || proj[0] >= sub_width - cutoffset ||
-                    proj[1] < cutoffset || proj[1] >= sub_height - cutoffset)
-                    break;
-
-                int cx = static_cast<int>(proj[0]);
-                int cy = static_cast<int>(proj[1]);
-                for (int x = -1; x < 2; ++x)
-                    for (int y = -1; y < 2; ++y)
-                if (C.get_depth() < depth_caches[sub_id]->at(cx+x, cy+y, 0))
-                    depth_caches[sub_id]->at(cx+x, cy+y, 0) = C.get_depth();
+                pixels.push_back(math::Vec2d(x, y));
+                depths.push_back(depth->at(x, y, 0));
             }
-            if (!this->opts.use_sgm)
+            if (this->opts.use_sgm && this->sgm_depth->at(x, y, 0) != 0)
+            {
+                pixels.push_back(math::Vec2d(x, y));
+                depths.push_back(this->sgm_depth->at(x, y, 0));
+            }
+        }
+
+    /* first pass: find minimal depth */
+    Correspondence C;
+    for (std::size_t sub_id = 0; sub_id < this->sub_views.size(); ++sub_id)
+    {
+        double const sub_width = static_cast<double>(
+            this->sub_views[sub_id]->get_width());
+        double const sub_height = static_cast<double>(
+            this->sub_views[sub_id]->get_height());
+
+        for (std::size_t i = 0; i < pixels.size(); i++)
+        {
+            C.update(this->Mi[sub_id], this->ti[sub_id],
+                pixels[i][0] + 0.5, pixels[i][1] + 0.5, depths[i]);
+            math::Vec2d proj;
+            C.fill(*proj);
+            proj[0] -= 0.5;
+            proj[1] -= 0.5;
+            double const cutoffset = 3.0;
+            if (proj[0] < cutoffset || proj[0] >= sub_width - cutoffset ||
+                proj[1] < cutoffset || proj[1] >= sub_height - cutoffset)
                 continue;
 
-            for (std::size_t i = 0; i < pixels.size(); i++)
-            {
-                Correspondence C(this->Mi[sub_id], this->ti[sub_id],
-                     pixels[i][0] + 0.5, pixels[i][1] + 0.5,
-                     this->sgm_depth->at(pixels[i][0], pixels[i][1], 0));
-                math::Vec2d proj;
-                C.fill(*proj);
-                proj[0] -= 0.5;
-                proj[1] -= 0.5;
-                double const cutoffset = 10.0;
-                if (proj[0] < cutoffset || proj[0] >= sub_width - cutoffset ||
-                    proj[1] < cutoffset || proj[1] >= sub_height - cutoffset)
-                    break;
-
-                int cx = static_cast<int>(proj[0]);
-                int cy = static_cast<int>(proj[1]);
-                for (int x = -1; x < 2; ++x)
-                    for (int y = -1; y < 2; ++y)
-                if (C.get_depth() < depth_caches[sub_id]->at(cx+x, cy+y, 0))
-                    depth_caches[sub_id]->at(cx+x, cy+y, 0) = C.get_depth();
-            }
+            int cx = static_cast<int>(proj[0]);
+            int cy = static_cast<int>(proj[1]);
+            for (int x = -1; x < 2; ++x)
+                for (int y = -1; y < 2; ++y)
+            if (C.get_depth() < depth_caches[sub_id]->at(cx+x, cy+y, 0))
+                depth_caches[sub_id]->at(cx+x, cy+y, 0) = C.get_depth();
         }
     }
 
@@ -536,7 +522,7 @@ DepthOptimizer::create_subview_surfaces (void)
                 C.fill(*proj);
                 proj[0] -= 0.5;
                 proj[1] -= 0.5;
-                double const cutoffset = 10;
+                double const cutoffset = 0.03 * std::max(sub_width, sub_height);
                 if (proj[0] < cutoffset || proj[0] >= sub_width - cutoffset ||
                     proj[1] < cutoffset || proj[1] >= sub_height - cutoffset)
                 {
