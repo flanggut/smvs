@@ -58,6 +58,7 @@ struct AppSettings
     bool use_sgm = true;
     float sgm_min = 0.0f;
     float sgm_max = 0.0f;
+    int sgm_scale = 1;
     std::string sgm_range = "";
     bool force_recon = false;
     bool force_sgm = false;
@@ -124,8 +125,10 @@ args_to_settings(int argc, char** argv)
         "matching.");
     args.add_option('\0', "force-sgm", false, "Force reconstruction of "
         "SGM embeddings.");
+    args.add_option('\0', "sgm-scale", false, "Scale of reconstruction of "
+        "SGM embeddings relative to input scale. [1]");
     args.add_option('\0', "sgm-range", true, "Range for SGM depth sweep, "
-        "given as string \"0.1,3.5\" "
+        "given as string \"0.1,3.5\". "
         "[estimated from SfM pointcloud] "
         "(this option is untested please report any issues)");
     args.add_option('\0', "full-opt", false, "Run full optimization "
@@ -187,6 +190,8 @@ args_to_settings(int argc, char** argv)
             conf.use_sgm = false;
         else if (arg->opt->lopt == "force-sgm")
             conf.force_sgm = true;
+        else if (arg->opt->lopt == "sgm-scale")
+            conf.sgm_scale = arg->get_arg<int>();
         else if (arg->opt->lopt == "sgm-range")
             conf.sgm_range = arg->arg;
         else if (arg->opt->lopt == "full-opt")
@@ -345,7 +350,7 @@ void reconstruct_sgm_depth_for_view (AppSettings const& conf,
     mve::Bundle::ConstPtr bundle = nullptr)
 {
     smvs::SGMStereo::Options sgm_opts;
-    sgm_opts.scale = 1;
+    sgm_opts.scale = conf.sgm_scale;
     sgm_opts.num_steps = 128;
     sgm_opts.debug_lvl = conf.debug_lvl;
     sgm_opts.min_depth = conf.sgm_min;
@@ -638,13 +643,22 @@ main (int argc, char** argv)
             }
 
             if (conf.use_sgm)
+            {
+                int sgm_width = views[i]->get_image_proxy(input_name)->width;
+                int sgm_height = views[i]->get_image_proxy(input_name)->height;
+                for (int scale = 0; scale < conf.sgm_scale; ++scale)
+                {
+                    sgm_width = (sgm_width + 1) / 2;
+                    sgm_height = (sgm_height + 1) / 2;
+                }
                 if (conf.force_sgm || !views[i]->has_image("sgm-depth")
                     || views[i]->get_image_proxy("sgm-depth")->width !=
-                    views[i]->get_image_proxy(input_name)->width / 2
+                        sgm_width
                     || views[i]->get_image_proxy("sgm-depth")->height !=
-                    views[i]->get_image_proxy(input_name)->height / 2)
+                        sgm_height)
                     reconstruct_sgm_depth_for_view(conf, main_view,
                         stereo_views, bundle);
+            }
 
             smvs::DepthOptimizer::Options do_opts;
             do_opts.regularization = 0.01 * conf.regularization;
