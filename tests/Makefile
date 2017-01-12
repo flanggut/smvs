@@ -8,7 +8,7 @@ CXXWARNINGS = -Wall -Wextra -pedantic -Wno-sign-compare
 CXXFLAGS = -std=c++11 -pthread ${CXXWARNINGS} ${INCLUDES}
 LDLIBS += -lpng -ltiff -ljpeg
 
-test: ${SOURCES:.cc=.o} libsmvs.a gtest_main.a
+test: ${SOURCES:.cc=.o} libsmvs.a libmve.a libmve_util.a gtest_main.a
 	${LINK.cc} -o $@ $^ ${LDLIBS}
 
 clean:

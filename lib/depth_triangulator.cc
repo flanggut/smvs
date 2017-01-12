@@ -201,8 +201,9 @@ DepthTriangulator::scan_triangle (std::size_t id)
     for (auto const& pixel : pixels)
     {
         if (pixel[0] < 0 || pixel[0] > this->depth_map->width() - 1
-            || pixel[1] < 0 || pixel[1] > this->depth_map->height() - 1
-            || this->depth_map->at(pixel[0], pixel[1], 0) == 0)
+            || pixel[1] < 0 || pixel[1] > this->depth_map->height() - 1)
+            continue;
+        if (this->depth_map->at(pixel[0], pixel[1], 0) == 0)
         {
             triangle.num_zero_depths += 1;
             continue;

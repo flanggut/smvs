@@ -235,7 +235,7 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
         mve::FloatImage::Ptr normals = normalmaps[i];
         mve::ByteImage::Ptr color = this->views[i]->get_byte_image(image_name);
 
-        DepthTriangulator dt(depthmaps[i], color, this->views[i]->get_camera());
+        DepthTriangulator dt(depthmaps[i], this->views[i]->get_camera(), color);
         mve::TriangleMesh::Ptr m;
         if (this->opts.simplify)
             m = dt.approximate_triangulation(100000);
