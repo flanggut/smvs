@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -52,9 +52,9 @@ struct AppSettings
     bool gamma_correction = false;
     bool recon_only = false;
     bool cut_surface = true;
-    float simplify = 0.0f;
     bool create_triangle_mesh = false;
     std::string aabb_string = "";
+    bool simplify = false;
     bool use_sgm = true;
     float sgm_min = 0.0f;
     float sgm_max = 0.0f;
@@ -110,10 +110,10 @@ args_to_settings(int argc, char** argv)
         " correction. [off]");
     args.add_option('m', "mesh", false, "Create Triangle mesh "
         "instead of simple point cloud (WIP). [off]");
+    args.add_option('\0', "simplify", false, "Create simplified triangle mesh "
+        "(WIP). [off]");
     args.add_option('\0', "no-cut", false, "Turn off surface cutting and"
         " export fill pointcloud from all depth values. [on]");
-    args.add_option('\0', "simplify", true, "Simplify triangle mesh "
-        "(WIP). Given as percentage [100 = keep everything]");
     args.add_option('\0', "aabb", true, "Comma separated AABB for output: "
         "min,min,min,max,max,max");
     args.add_option('\0', "min-neighbors", true, "Minimal number of "
@@ -166,7 +166,7 @@ args_to_settings(int argc, char** argv)
         else if (arg->opt->lopt == "max-pixels")
             conf.max_pixels = arg->get_arg<std::size_t>();
         else if (arg->opt->lopt == "simplify")
-            conf.simplify = arg->get_arg<float>();
+            conf.simplify = true;
         else if (arg->opt->lopt == "shading")
             conf.use_shading = true;
         else if (arg->opt->lopt == "regularize-lighting")
@@ -210,10 +210,6 @@ args_to_settings(int argc, char** argv)
             << "setting output-scale to 1." << std::endl;
         conf.output_scale = 1;
     }
-
-    if (!conf.create_triangle_mesh && conf.simplify > 0.0f)
-        std::cout << "[Warning] Only mesh output can be simplified. "
-            << "Ignoring simplify argument!" << std::endl;
 
     if (conf.create_triangle_mesh && !conf.cut_surface)
         std::cout << "[Warning] Turning surface cutting off for mesh output"
