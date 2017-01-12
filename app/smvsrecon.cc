@@ -198,12 +198,21 @@ args_to_settings(int argc, char** argv)
     }
 
     /* Process and cleanup arguments */
+    if (conf.num_neighbors < 1)
+    {
+        std::cout << "[Warning] Need at least 1 neighbor for reconstruction, "
+            << "setting num-neighbors to 1." << std::endl;
+        conf.num_neighbors = 1;
+    }
+    conf.min_neighbors = std::min(conf.min_neighbors, conf.num_neighbors);
+
     if (conf.min_neighbors < 1)
     {
         std::cout << "[Warning] Need at least 1 neighbor for reconstruction, "
             << "setting min-neighbors to 1." << std::endl;
         conf.min_neighbors = 1;
     }
+
     if (conf.output_scale < 1)
     {
         std::cout << "[Warning] Output scale cannot be smaller than 1, "
