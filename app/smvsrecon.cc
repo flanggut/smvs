@@ -125,7 +125,7 @@ args_to_settings(int argc, char** argv)
         "matching.");
     args.add_option('\0', "force-sgm", false, "Force reconstruction of "
         "SGM embeddings.");
-    args.add_option('\0', "sgm-scale", false, "Scale of reconstruction of "
+    args.add_option('\0', "sgm-scale", true, "Scale of reconstruction of "
         "SGM embeddings relative to input scale. [1]");
     args.add_option('\0', "sgm-range", true, "Range for SGM depth sweep, "
         "given as string \"0.1,3.5\". "
