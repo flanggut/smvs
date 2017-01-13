@@ -35,17 +35,19 @@ DepthOptimizer::DepthOptimizer (StereoView::Ptr main_view,
 void
 DepthOptimizer::create_initial_surface (void)
 {
+    int init_scale = std::max(std::ceil(std::log2(this->main_view->get_width() *
+        this->main_view->get_height() / 1.7e6) / 2) + 4, 4.0);
     if (this->opts.use_sgm)
     {
         mve::FloatImage::Ptr init = this->main_view->get_sgm_depth();
         init = depthmap_bilateral_filter(init, main_view->get_image());
         if(this->opts.debug_lvl > 1)
             this->main_view->write_depth_to_view(init, "sgm-filtered");
-        this->surface = Surface::create(bundle, main_view, 4, init);
+        this->surface = Surface::create(bundle, main_view, init_scale, init);
         this->sgm_depth = init;
     }
     else
-        this->surface = Surface::create(bundle, main_view, 5);
+        this->surface = Surface::create(bundle, main_view, init_scale + 1);
 }
 
 void
