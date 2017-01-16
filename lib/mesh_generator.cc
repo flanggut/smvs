@@ -205,7 +205,7 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
     for(auto && result: load_and_convert) result.get();
 
     /* cut depthmaps */
-    if (this->opts.cut_surfaces)
+    if (this->opts.cut_surfaces && depthmaps.size() > 1)
         this->cut_depth_maps(&depthmaps, &normalmaps);
 
     /* Prepare output mesh. */
@@ -238,7 +238,7 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
         DepthTriangulator dt(depthmaps[i], this->views[i]->get_camera(), color);
         mve::TriangleMesh::Ptr m;
         if (this->opts.simplify)
-            m = dt.approximate_triangulation(100000);
+            m = dt.approximate_triangulation();
         else
             m = dt.full_triangulation();
 

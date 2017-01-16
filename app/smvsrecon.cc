@@ -111,7 +111,7 @@ args_to_settings(int argc, char** argv)
         " correction. [off]");
     args.add_option('m', "mesh", false, "Create Triangle mesh "
         "instead of simple point cloud (WIP). [off]");
-    args.add_option('\0', "simplify", false, "Create simplified triangle mesh "
+    args.add_option('y', "simplify", false, "Create simplified triangle mesh "
         "(WIP). [off]");
     args.add_option('\0', "no-cut", false, "Turn off surface cutting and"
         " export fill pointcloud from all depth values. [on]");
@@ -225,9 +225,9 @@ args_to_settings(int argc, char** argv)
         conf.output_scale = 1;
     }
 
-    if (conf.create_triangle_mesh && !conf.cut_surface)
-        std::cout << "[Warning] Turning surface cutting off for mesh output"
-            << " is not the best idea - the mesh will be huge!" << std::endl;
+    if (conf.create_triangle_mesh && !conf.cut_surface && !conf.simplify)
+        std::cout << "[Warning] Turning surface cutting off for unsimplified"
+            << " mesh output might create a huge file." << std::endl;
 
     if (conf.sgm_range.size() > 0)
     {

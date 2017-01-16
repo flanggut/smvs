@@ -25,8 +25,12 @@ DepthTriangulator::full_triangulation (void)
 }
 
 mve::TriangleMesh::Ptr
-DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
+DepthTriangulator::approximate_triangulation (int max_vertices,
+    double max_error)
 {
+    if (max_vertices < 0)
+        max_vertices = this->depth_map->get_pixel_amount() / 40;
+
     float dm_min, dm_max;
     mve::image::find_min_max_value(this->depth_map, &dm_min, &dm_max);
     float dm_avg = 0;
@@ -39,6 +43,8 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
             counter += 1;
         }
     dm_avg /= counter;
+    if (max_error < 0.0)
+        max_error = (dm_max - dm_avg) * 1e-3;
 
     int const max_x = this->depth_map->width() - 1;
     int const max_y = this->depth_map->height() - 1;
@@ -70,10 +76,10 @@ DepthTriangulator::approximate_triangulation (std::size_t num_vertices)
     this->scan_triangle(1);
 
     std::vector<std::size_t> changed;
-    for (std::size_t i = 0; i < num_vertices; ++i)
+    for (int i = 0; i < max_vertices; ++i)
     {
         /* Exit if error is already small */
-        if ((*this->triangle_heap.begin()).first < dm_avg * 2e-4)
+        if ((*this->triangle_heap.begin()).first < max_error)
             break;
 
         /* Insert new point */

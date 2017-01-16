@@ -30,7 +30,23 @@ public:
         mve::ByteImage::ConstPtr color = nullptr);
 
     mve::TriangleMesh::Ptr full_triangulation (void);
-    mve::TriangleMesh::Ptr approximate_triangulation (std::size_t num_vertices);
+
+    /**
+     * Compute approximate triangulation of depth map using the greedy,
+     * Delaunay based algorithm presented in:
+     *
+     * "Fast Triangular Approximation of Terrains and Height Fields"
+     * Michael Garland and Paul S. Heckbert, 1997
+     *
+     * max_vertices: Maximal number of vertices in the final triangulation.
+     *               This defaults to 2.5% of the number of pixels in the dm.
+     *
+     * max_error: Maximal error of the final triangulation compared to
+     *            the ground truth depth map. This defaults to 0.05% of the
+     *            full depth range [min, max].
+     */
+    mve::TriangleMesh::Ptr approximate_triangulation (int max_vertices = -1,
+        double max_error = -1.0);
 
     static void pixels_for_triangle (math::Vec3d const& a, math::Vec3d const& b,
         math::Vec3d const& c, std::vector<math::Vec2i> * pixels);
