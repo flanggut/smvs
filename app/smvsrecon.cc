@@ -560,7 +560,15 @@ main (int argc, char** argv)
             view_neighbors[v] = view_selection.get_neighbors_for_view(i);
         }));
     }
-    for(auto && selection : selection_tasks) selection.get();
+    if (selection_tasks.size() > 0)
+    {
+        std::cout << "Running view selection for "
+            << selection_tasks.size() << " views... " << std::flush;
+        util::WallTimer timer;
+        for(auto && task : selection_tasks) task.get();
+        std::cout << " done, took " << timer.get_elapsed_sec()
+            << "s." << std::endl;
+    }
 
     /* Create input embedding and resize */
     std::set<int> check_embedding_list;
@@ -572,24 +580,34 @@ main (int argc, char** argv)
     }
     std::vector<std::future<void>> resize_tasks;
     for (auto const& i : check_embedding_list)
-    resize_tasks.emplace_back(thread_pool.add_task(
-        [i, &views, &input_name, &conf]
     {
         mve::View::Ptr view = views[i];
         if (view == nullptr
             || !view->has_image(conf.image_embedding)
             || view->has_image(input_name))
-            return;
+            continue;
 
-        mve::ByteImage::ConstPtr input =
-            view->get_byte_image(conf.image_embedding);
-        mve::ByteImage::Ptr scaled = input->duplicate();
-        for (int i = 0; i < conf.input_scale; ++i)
-            scaled = mve::image::rescale_half_size_gaussian<uint8_t>(scaled);
-        view->set_image(scaled, input_name);
-        view->save_view();
-    }));
-    for(auto && resized : resize_tasks) resized.get();
+        resize_tasks.emplace_back(thread_pool.add_task(
+            [view, &input_name, &conf]
+        {
+            mve::ByteImage::ConstPtr input =
+                view->get_byte_image(conf.image_embedding);
+            mve::ByteImage::Ptr scld = input->duplicate();
+            for (int i = 0; i < conf.input_scale; ++i)
+                scld = mve::image::rescale_half_size_gaussian<uint8_t>(scld);
+            view->set_image(scld, input_name);
+            view->save_view();
+        }));
+    }
+    if (resize_tasks.size() > 0)
+    {
+        std::cout << "Resizing input images for "
+            << resize_tasks.size() << " views... " << std::flush;
+        util::WallTimer timer;
+        for(auto && task : resize_tasks) task.get();
+        std::cout << " done, took " << timer.get_elapsed_sec()
+            << "s." << std::endl;
+    }
 
     std::vector<std::future<void>> results;
     std::mutex counter_mutex;
