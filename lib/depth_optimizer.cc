@@ -697,7 +697,6 @@ void
 DepthOptimizer::reproject_neighbor (std::size_t neighbor)
 {
     StereoView::Ptr neighbor_view = this->sub_views[neighbor];
-#if SMVS_DEBUG
     mve::FloatImage::Ptr debug = this->main_view->get_debug_image();
     debug->fill(0);
 
@@ -738,7 +737,6 @@ DepthOptimizer::reproject_neighbor (std::size_t neighbor)
         }
     }
     this->main_view->write_debug(neighbor_view->get_view_id());
-#endif
 }
 
 double

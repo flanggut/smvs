@@ -15,15 +15,10 @@ SMVS_NAMESPACE_BEGIN
 
 StereoView::StereoView (mve::View::Ptr view,
     std::string const& image_embedding)
-    : view(view), image_embedding(image_embedding)
+    : view(view), image_embedding(image_embedding), debug(nullptr)
 {
     this->image = mve::image::byte_to_float_image(
         this->view->get_byte_image(this->image_embedding));
-    /* use only for debug */
-#if SMVS_DEBUG
-    this->debug = mve::FloatImage::create(this->image->width(),
-        this->image->height(), 3);
-#endif
 }
 
 void

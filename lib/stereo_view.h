@@ -52,10 +52,8 @@ public:
     void write_depth_to_view (mve::FloatImage::Ptr depth,
         std::string const& name);
 
-#if SMVS_DEBUG
-    mve::FloatImage::Ptr get_debug_image (void) {return this->debug;}
+    mve::FloatImage::Ptr get_debug_image (void);
     void write_debug (int num = 0);
-#endif
 
 private:
     StereoView (mve::View::Ptr view, std::string const& image_embedding);
@@ -75,10 +73,7 @@ private:
     mve::FloatImage::Ptr image_hessian;
     mve::FloatImage::Ptr linear_image;
     mve::FloatImage::Ptr linear_grad;
-
-#if SMVS_DEBUG
     mve::FloatImage::Ptr debug;
-#endif
 };
 
 /* ------------------------ Implementation ------------------------ */
@@ -92,16 +87,6 @@ StereoView::create(mve::View::Ptr view, const std::string &image_embedding,
     stereo_view->initialize_linear(gamma_correction);
     return stereo_view;
 }
-
-#if SMVS_DEBUG
-inline void
-StereoView::write_debug (int num)
-{
-    std::string name = "smvs-debug-" + util::string::get_filled(num, 2);
-    this->view->set_image(this->debug, name);
-    this->view->save_view();
-}
-#endif
 
 inline void
 StereoView::write_image_to_view(mve::ImageBase::Ptr image,
@@ -130,8 +115,7 @@ StereoView::write_depth_to_view(mve::FloatImage::Ptr depth,
     this->view->save_view();
 }
 
-inline
-mve::FloatImage::Ptr
+inline mve::FloatImage::Ptr
 StereoView::get_sgm_depth (void) const
 {
     mve::FloatImage::Ptr mve_depth = this->view->get_float_image("sgm-depth");
@@ -213,6 +197,26 @@ inline int
 StereoView::get_view_id (void) const
 {
     return this->view->get_id();
+}
+
+/********************************* Debug **************************************/
+
+inline mve::FloatImage::Ptr
+StereoView::get_debug_image (void)
+{
+    if (this->debug == nullptr)
+        this->debug = mve::FloatImage::create(this->image->width(),
+            this->image->height(), 3);
+    return this->debug;
+}
+
+inline void
+StereoView::write_debug (int num)
+{
+    std::string name = "smvs-debug-" + util::string::get_filled(num, 2);
+    this->view->set_image(this->debug, name);
+    this->view->save_view();
+    this->view->cache_cleanup();
 }
 
 SMVS_NAMESPACE_END
