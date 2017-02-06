@@ -66,7 +66,7 @@ GlobalLighting::render_normal_map (mve::FloatImage::ConstPtr normals) const
     {
         math::Vec3d normal(normals->at(i, 0), normals->at(i, 1),
             normals->at(i, 2));
-        if (normal.norm() == 0.0)
+        if (std::fabs(normal.norm() - 1.0) > 1e-6)
             continue;
         image->at(i, 0) = this->value_for_normal(normal);
     }
