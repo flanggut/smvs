@@ -569,6 +569,27 @@ main (int argc, char** argv)
         std::cout << " done, took " << timer.get_elapsed_sec()
             << "s." << std::endl;
     }
+    std::vector<int> skipped;
+    for (std::size_t v = 0; v < reconstruction_list.size(); ++v)
+        if (view_neighbors[v].size() < conf.min_neighbors)
+        {
+            skipped.push_back(reconstruction_list[v]);
+            reconstruction_list.erase(reconstruction_list.begin() + v);
+            v -= 1;
+        }
+    if (skipped.size() > 0)
+    {
+        std::cout << "Skipping " << skipped.size() << " views with "
+            << "insufficient number of neighbors." << std::endl;
+        std::cout << "Skipped IDs: ";
+        for (std::size_t s = 0; s < skipped.size(); ++s)
+        {
+            std::cout << skipped[s] << " ";
+            if (s > 0 && s % 12 == 0)
+                std::cout << std::endl << "     ";
+        }
+        std::cout << std::endl;
+    }
 
     /* Create input embedding and resize */
     std::set<int> check_embedding_list;
@@ -627,17 +648,6 @@ main (int argc, char** argv)
             smvs::StereoView::Ptr main_view = smvs::StereoView::create(
                 views[i], input_name, conf.gamma_correction);
             mve::Scene::ViewList neighbors = view_neighbors[v];
-
-            if (neighbors.size() < conf.min_neighbors)
-            {
-                std::unique_lock<std::mutex> lock2(counter_mutex);
-                std::cout << "View ID: " << i << " not enough neighbors, "
-                    "skipping view." << std::endl;
-                started += 1;
-                finished += 1;
-                lock2.unlock();
-                return;
-            }
 
             std::vector<smvs::StereoView::Ptr> stereo_views;
 
