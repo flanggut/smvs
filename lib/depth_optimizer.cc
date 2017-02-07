@@ -560,8 +560,14 @@ DepthOptimizer::create_subview_surfaces (void)
                      depth_derivatives[i][0], depth_derivatives[i][1]);
                 math::Matrix2d jac;
                 C.fill_jacobian(*jac);
+                /* Find singular values of jacobian */
                 double S[2];
-                math::matrix_svd<double>(*jac, 2, 2, nullptr, S, nullptr);
+                S[0] = (std::sqrt(MATH_POW2(jac[0] - jac[3])
+                    + MATH_POW2(jac[1] + jac[2]))
+                    + std::sqrt(MATH_POW2(jac[0] + jac[3])
+                    + MATH_POW2(jac[1] - jac[2]))) / 2.0;
+                S[1] = std::fabs(S[0] - std::sqrt(MATH_POW2(jac[0] - jac[3])
+                    + MATH_POW2(jac[1] + jac[2])));
                 double sigma0 = MATH_POW2(std::max(S[0], S[1]));
                 double sigma1 = MATH_POW2(std::min(S[0], S[1]));
                 max = std::max(max, sigma0 / sigma1);
