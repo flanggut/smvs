@@ -570,12 +570,15 @@ main (int argc, char** argv)
             << "s." << std::endl;
     }
     std::vector<int> skipped;
+    std::vector<int> final_reconstruction_list;
+    std::vector<mve::Scene::ViewList> final_view_neighbors;
     for (std::size_t v = 0; v < reconstruction_list.size(); ++v)
         if (view_neighbors[v].size() < conf.min_neighbors)
-        {
             skipped.push_back(reconstruction_list[v]);
-            reconstruction_list.erase(reconstruction_list.begin() + v);
-            v -= 1;
+        else
+        {
+            final_reconstruction_list.push_back(reconstruction_list[v]);
+            final_view_neighbors.push_back(view_neighbors[v]);
         }
     if (skipped.size() > 0)
     {
@@ -590,6 +593,8 @@ main (int argc, char** argv)
         }
         std::cout << std::endl;
     }
+    reconstruction_list = final_reconstruction_list;
+    view_neighbors = final_view_neighbors;
 
     /* Create input embedding and resize */
     std::set<int> check_embedding_list;
