@@ -42,7 +42,7 @@ DepthOptimizer::create_initial_surface (void)
         mve::FloatImage::Ptr init = this->main_view->get_sgm_depth();
         init = depthmap_bilateral_filter(init, main_view->get_image());
         if(this->opts.debug_lvl > 1)
-            this->main_view->write_depth_to_view(init, "sgm-filtered");
+            this->main_view->write_depth_to_view(init, "smvs-sgm-filtered");
         this->surface = Surface::create(bundle, main_view, init_scale, init);
         this->sgm_depth = init;
     }
@@ -120,10 +120,10 @@ DepthOptimizer::optimize (void)
         {
             mve::FloatImage::Ptr shaded = this->lighting->render_normal_map(
                 this->get_normals());
-            this->main_view->write_image_to_view(shaded, "lighting-shaded");
+            this->main_view->write_image_to_view(shaded, "smvs-shaded");
             mve::FloatImage::Ptr sphere =
                 this->lighting->get_rendered_sphere(555);
-            this->main_view->write_image_to_view(sphere, "lighting-sphere");
+            this->main_view->write_image_to_view(sphere, "smvs-shaded-sphere");
         }
 
         /* run optimization */
@@ -140,9 +140,9 @@ DepthOptimizer::optimize (void)
     {
         mve::FloatImage::Ptr shaded = this->lighting->render_normal_map(
             this->get_normals());
-        this->main_view->write_image_to_view(shaded, "lighting-shaded");
+        this->main_view->write_image_to_view(shaded, "smvs-shaded");
         mve::FloatImage::Ptr sphere = this->lighting->get_rendered_sphere(555);
-        this->main_view->write_image_to_view(sphere, "lighting-sphere");
+        this->main_view->write_image_to_view(sphere, "smvs-shaded-sphere");
         mve::FloatImage::Ptr albedo =
             this->main_view->get_linear_image()->duplicate();
         for (int p = 0; p < albedo->get_pixel_amount(); ++p)
@@ -152,7 +152,7 @@ DepthOptimizer::optimize (void)
             else
                for(int c = 0; c < 3; ++c)
                    albedo->at(p, c) = 0.0;
-        this->main_view->write_image_to_view(albedo, "implicit-albedo");
+        this->main_view->write_image_to_view(albedo, "smvs-implicit-albedo");
     }
 
     this->main_view->write_depth_to_view(this->surface->get_depth_map(),

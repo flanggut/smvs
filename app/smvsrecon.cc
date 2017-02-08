@@ -386,7 +386,7 @@ void reconstruct_sgm_depth_for_view (AppSettings const& conf,
         std::cout << "SGM took: " << sgm_timer.get_elapsed_sec()
         << "sec" << std::endl;
 
-    main_view->write_depth_to_view(d1, "sgm-depth");
+    main_view->write_depth_to_view(d1, "smvs-sgm");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -433,6 +433,31 @@ main (int argc, char** argv)
             if (view != nullptr && view->is_camera_valid())
                 conf.view_ids.push_back(view->get_id());
 
+    /* Update legacy data */
+    for (std::size_t i = 0; i < views.size(); ++i)
+    {
+        mve::View::Ptr view = views[i];
+        if (view == nullptr)
+            continue;
+        mve::View::ImageProxies proxies = view->get_images();
+        for (std::size_t p = 0; p < proxies.size(); ++p)
+            if (proxies[p].name.compare("lighting-shaded") == 0
+                || proxies[p].name.compare("lighting-sphere") == 0
+                || proxies[p].name.compare("implicit-albedo") == 0)
+                view->remove_image(proxies[p].name);
+        view->save_view();
+        for (std::size_t p = 0; p < proxies.size(); ++p)
+            if (proxies[p].name.compare("sgm-depth") == 0)
+            {
+                std::string file = util::fs::join_path(
+                    view->get_directory(), proxies[p].filename);
+                std::string new_file = util::fs::join_path(
+                   view->get_directory(), "smvs-sgm.mvei");
+                util::fs::rename(file.c_str(), new_file.c_str());
+            }
+        view->reload_view();
+    }
+
     if (conf.clean_scene)
     {
         std::cout << "Cleaning Scene, removing all result embeddings."
@@ -447,11 +472,7 @@ main (int argc, char** argv)
             {
                 std::string name = proxies[p].name;
                 std::string left = util::string::left(name, 4);
-                if (left.compare("smvs") == 0
-                    || name.compare("sgm-depth") == 0
-                    || name.compare("lighting-shaded") == 0
-                    || name.compare("lighting-sphere") == 0
-                    || name.compare("implicit-albedo") == 0)
+                if (left.compare("smvs") == 0)
                     view->remove_image(name);
             }
             view->save_view();
@@ -684,10 +705,10 @@ main (int argc, char** argv)
                     sgm_width = (sgm_width + 1) / 2;
                     sgm_height = (sgm_height + 1) / 2;
                 }
-                if (conf.force_sgm || !views[i]->has_image("sgm-depth")
-                    || views[i]->get_image_proxy("sgm-depth")->width !=
+                if (conf.force_sgm || !views[i]->has_image("smvs-sgm")
+                    || views[i]->get_image_proxy("smvs-sgm")->width !=
                         sgm_width
-                    || views[i]->get_image_proxy("sgm-depth")->height !=
+                    || views[i]->get_image_proxy("smvs-sgm")->height !=
                         sgm_height)
                     reconstruct_sgm_depth_for_view(conf, main_view,
                         stereo_views, bundle);

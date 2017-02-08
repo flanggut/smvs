@@ -118,7 +118,7 @@ StereoView::write_depth_to_view(mve::FloatImage::Ptr depth,
 inline mve::FloatImage::Ptr
 StereoView::get_sgm_depth (void) const
 {
-    mve::FloatImage::Ptr mve_depth = this->view->get_float_image("sgm-depth");
+    mve::FloatImage::Ptr mve_depth = this->view->get_float_image("smvs-sgm");
     math::Matrix3f invproj;
     this->get_camera().fill_inverse_calibration(
         *invproj, mve_depth->width(), mve_depth->height());
