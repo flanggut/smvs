@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -198,81 +198,6 @@ derivative_4_band(T const* normal, T * sh_deriv)
     sh_deriv[45] = T(3.0) * (x2 - y2);
     sh_deriv[46] = -T(6.0) * normal[0] * normal[1];
     sh_deriv[47] = T(0.0);
-}
-
-
-template <typename T>
-T
-// unused attribute for consistency
-spherical_harmonics_9_0(T const* __attribute__((unused)) normal)
-{
-    /* l = 0 */
-    return 1.0;
-}
-
-template <typename T>
-T
-spherical_harmonics_9_1(T const* normal)
-{
-    /* l = 1 */
-    return normal[1];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_2(T const* normal)
-{
-    /* l = 1 */
-    return normal[2];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_3(T const* normal)
-{
-    /* l = 1 */
-    return normal[0];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_4(T const* normal)
-{
-    /* l = 2 */
-    return normal[0] * normal[1];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_5(T const* normal)
-{
-    /* l = 2 */
-    return normal[1] * normal[2];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_6(T const* normal)
-{
-    /* l = 2 */
-    return -MATH_POW2(normal[0]) - MATH_POW2(normal[1])
-        - T(2.0) * MATH_POW2(normal[2]);
-}
-
-template <typename T>
-T
-spherical_harmonics_9_7(T const* normal)
-{
-    /* l = 2 */
-    return normal[0] * normal[2];
-}
-
-template <typename T>
-T
-spherical_harmonics_9_8(T const* normal)
-{
-    /* l = 2 */
-    return normal[0] * normal[0] - normal[1] * normal[1];
 }
 
 SPHERICAL_HARMONICS_NAMESPACE_END
