@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -26,9 +26,9 @@
 
 /* Example usage:
 
-    ThreadPool threadpool(4);
+    ThreadPool pool(4);
 
-    std::vector< std::future<int> > results;
+    std::vector<std::future<int>> results;
 
     for(int i = 0; i < 8; ++i) {
         results.emplace_back(
@@ -41,7 +41,6 @@
     for(auto && result: results)
         std::cout << result.get() << ' ';
     std::cout << std::endl;
-
 */
 
 class ThreadPool
@@ -125,8 +124,6 @@ ThreadPool::~ThreadPool ()
     for (std::thread & worker : this->workers)
         worker.join();
 }
-
-
 
 template<class F, class... Args>
 auto ThreadPool::add_task(F&& f, Args&&... args)
