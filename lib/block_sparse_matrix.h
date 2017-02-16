@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -304,7 +304,7 @@ BlockSparseMatrix<N>::invert_blocks_inplace(void)
     for (std::size_t i = 0; i < this->values.size(); ++i)
     {
         std::array<double, N * N> b = values[i];
-        ldl_inverse(b.begin(), N);
+        ldl_inverse(b.data(), N);
         bool nancheck = false;
         for (int i = 0; i < N * N; ++i)
             if (std::isnan(b[i]))

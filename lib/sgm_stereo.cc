@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2016-2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -9,7 +9,11 @@
 
 #include <iostream>
 #include <smmintrin.h> // SSE4_1
-#include <popcntintrin.h> // for hamming distance
+#if defined(_WIN32)
+#   include <nmmintrin.h> // for hamming distance
+#else // Linux, OSX, ...
+#   include <popcntintrin.h> // for hamming distance
+#endif
 
 #include "mve/depthmap.h"
 #include "mve/image_tools.h"
