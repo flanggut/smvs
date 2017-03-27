@@ -113,14 +113,14 @@ args_to_settings(int argc, char** argv)
         "instead of simple point cloud (WIP). [off]");
     args.add_option('y', "simplify", false, "Create simplified triangle mesh "
         "(WIP). [off]");
+    args.add_option('f', "force", false, "Force reconstruction of "
+        "result embeddings");
     args.add_option('\0', "no-cut", false, "Turn off surface cutting and"
         " export fill pointcloud from all depth values. [on]");
     args.add_option('\0', "aabb", true, "Comma separated AABB for output: "
         "min,min,min,max,max,max");
     args.add_option('\0', "min-neighbors", true, "Minimal number of "
         "neighbors for reconstruction. [3]");
-    args.add_option('\0', "force", false, "Force reconstruction of "
-        "result embeddings");
     args.add_option('\0', "no-sgm", false, "Turn off semi-global "
         "matching.");
     args.add_option('\0', "force-sgm", false, "Force reconstruction of "
