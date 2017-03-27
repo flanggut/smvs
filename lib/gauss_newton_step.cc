@@ -27,7 +27,7 @@ GaussNewtonStep::GaussNewtonStep (Options const& opts,
     , Mi(Mi), ti(ti)
 {
     this->main_gradients = this->main_view->get_image_gradients();
-    this->main_gradients_linear = this->main_view->get_linear_gradients();
+    this->main_gradients_linear = this->main_view->get_shading_gradients();
 }
 
 void
@@ -432,11 +432,11 @@ GaussNewtonStep::fill_gradient_and_hessian_entries(std::size_t i,
 
     double shading = this->lighting->value_for_normal(normal);
     math::Vec2d linear_image_grad;
-    linear_image_grad[0] = this->main_view->get_linear_gradients()->at(
+    linear_image_grad[0] = this->main_gradients_linear->at(
         pixels[i][0], pixels[i][1], 0);
-    linear_image_grad[1] = this->main_view->get_linear_gradients()->at(
+    linear_image_grad[1] = this->main_gradients_linear->at(
         pixels[i][0], pixels[i][1], 1);
-    double linear_image_value = this->main_view->get_linear_image()->at(
+    double linear_image_value = this->main_view->get_shading_image()->at(
         pixels[i][0], pixels[i][1], 0);
     
     double shading_weight = 0.001 * num_diffs /

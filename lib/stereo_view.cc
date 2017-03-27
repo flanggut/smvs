@@ -64,25 +64,23 @@ StereoView::initialize_image_gradients (mve::FloatImage::ConstPtr image)
 void
 StereoView::initialize_linear (bool gamma_correction)
 {
-    if(this->image->channels() > 1)
-        this->linear_image = mve::image::desaturate<float>(this->image,
-            mve::image::DESATURATE_LUMINANCE);
-    else
-        this->linear_image = this->image->duplicate();
+    this->linear_image = this->image->duplicate();
 
     if (gamma_correction)
+    {
         mve::image::gamma_correct_inv_srgb<float>(this->linear_image);
+        this->view->set_image(this->linear_image, "smvs-linear");
+    }
 
-    this->linear_grad = mve::FloatImage::create(this->linear_image->width(),
+    if(this->linear_image->channels() > 1)
+        this->shading = mve::image::desaturate<float>(this->linear_image,
+            mve::image::DESATURATE_LUMINANCE);
+    else
+        this->shading = this->linear_image;
+
+    this->shading_grad = mve::FloatImage::create(this->linear_image->width(),
         this->linear_image->height(), 2);
-    this->compute_gradients_and_hessian(this->linear_image, this->linear_grad);
-}
-
-mve::FloatImage::Ptr
-StereoView::get_shading_image (void)
-{
-    mve::FloatImage::Ptr shading = this->linear_image->duplicate();
-    return shading;
+    this->compute_gradients_and_hessian(this->shading, this->shading_grad);
 }
 
 mve::ByteImage::ConstPtr

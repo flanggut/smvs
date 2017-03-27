@@ -672,7 +672,8 @@ main (int argc, char** argv)
              bundle, scene]
         {
             smvs::StereoView::Ptr main_view = smvs::StereoView::create(
-                views[i], input_name, conf.gamma_correction);
+                views[i], input_name, conf.use_shading,
+                conf.gamma_correction);
             mve::Scene::ViewList neighbors = view_neighbors[v];
 
             std::vector<smvs::StereoView::Ptr> stereo_views;
@@ -692,7 +693,7 @@ main (int argc, char** argv)
                 && n < neighbors.size() ; ++n)
             {
                 smvs::StereoView::Ptr sv = smvs::StereoView::create(
-                    neighbors[n], input_name, conf.gamma_correction);
+                    neighbors[n], input_name);
                 stereo_views.push_back(sv);
             }
 

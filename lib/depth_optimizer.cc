@@ -147,10 +147,10 @@ DepthOptimizer::optimize (void)
             this->main_view->get_linear_image()->duplicate();
         for (int p = 0; p < albedo->get_pixel_amount(); ++p)
             if (shaded->at(p) > 0.0)
-               for(int c = 0; c < 3; ++c)
+               for(int c = 0; c < albedo->channels(); ++c)
                   albedo->at(p, c) /= shaded->at(p);
             else
-               for(int c = 0; c < 3; ++c)
+               for(int c = 0; c < albedo->channels(); ++c)
                    albedo->at(p, c) = 0.0;
         this->main_view->write_image_to_view(albedo, "smvs-implicit-albedo");
     }
@@ -174,7 +174,6 @@ DepthOptimizer::run_newton_iterations (int num_iters)
     std::vector<std::pair<std::size_t, math::Vec2d>> projections2;
 
     this->main_gradients = this->main_view->get_image_gradients();
-    this->main_gradients_linear = this->main_view->get_linear_gradients();
 
     bool finished = false;
     for (int iter = 0; iter < num_iters; ++iter)

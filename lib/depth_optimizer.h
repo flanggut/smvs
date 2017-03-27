@@ -98,7 +98,6 @@ private:
 
     StereoView::Ptr main_view;
     mve::FloatImage::ConstPtr main_gradients;
-    mve::FloatImage::ConstPtr main_gradients_linear;
     mve::FloatImage::ConstPtr sgm_depth;
 
     std::vector<StereoView::Ptr> const& sub_views;

@@ -26,7 +26,8 @@ public:
 
 public:
     static StereoView::Ptr create (mve::View::Ptr view,
-        std::string const& image_embedding, bool gamma_correction);
+        std::string const& image_embedding, bool initialize_linear = false,
+        bool gamma_correction = false);
 
     void set_scale(int scale, bool debug = false);
 
@@ -42,9 +43,9 @@ public:
     mve::FloatImage::ConstPtr get_image_gradients (void) const;
     mve::FloatImage::ConstPtr get_image_hessian (void) const;
     mve::FloatImage::Ptr get_sgm_depth (void) const;
-    mve::FloatImage::Ptr get_shading_image (void);
+    mve::FloatImage::ConstPtr get_shading_image (void) const;
+    mve::FloatImage::ConstPtr get_shading_gradients (void) const;
     mve::FloatImage::ConstPtr get_linear_image (void) const;
-    mve::FloatImage::ConstPtr get_linear_gradients (void) const;
 
     void write_image_to_view (mve::ImageBase::Ptr image,
         std::string const& name);
@@ -72,8 +73,9 @@ private:
     mve::FloatImage::Ptr image_grad;
     mve::FloatImage::Ptr image_hessian;
     mve::FloatImage::Ptr linear_image;
-    mve::FloatImage::Ptr linear_grad;
     mve::FloatImage::Ptr debug;
+    mve::FloatImage::Ptr shading;
+    mve::FloatImage::Ptr shading_grad;
 };
 
 /* ------------------------ Implementation ------------------------ */
@@ -81,10 +83,11 @@ private:
 inline
 StereoView::Ptr
 StereoView::create(mve::View::Ptr view, const std::string &image_embedding,
-    bool gamma_correction)
+    bool initialize_linear, bool gamma_correction)
 {
     Ptr stereo_view(new StereoView(view, image_embedding));
-    stereo_view->initialize_linear(gamma_correction);
+    if (initialize_linear)
+        stereo_view->initialize_linear(gamma_correction);
     return stereo_view;
 }
 
@@ -176,9 +179,15 @@ StereoView::get_linear_image (void) const
 }
 
 inline mve::FloatImage::ConstPtr
-StereoView::get_linear_gradients (void) const
+StereoView::get_shading_image (void) const
 {
-    return this->linear_grad;
+    return this->shading;
+}
+
+inline mve::FloatImage::ConstPtr
+StereoView::get_shading_gradients (void) const
+{
+    return this->shading_grad;
 }
 
 inline int
