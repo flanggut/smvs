@@ -55,8 +55,8 @@ SSEVector::add (SSEVector const& rhs) const
     __m128d _dest1;
     __m128d _dest2;
 
-    for (std::size_t i = 0; i < this->size() - 4;
-        i += 4, rhs_ptr += 2, ptr += 2, res_ptr+=2)
+    for (std::size_t i = 0; i < this->size() - 3;
+        i += 4, rhs_ptr += 2, ptr += 2, res_ptr+= 2)
     {
         _dest1 = _mm_add_pd(*ptr,  *rhs_ptr);
         _dest2 = _mm_add_pd(*(ptr + 1), *(rhs_ptr + 1));
@@ -89,8 +89,8 @@ SSEVector::subtract (SSEVector const& rhs) const
     __m128d _dest1;
     __m128d _dest2;
 
-    for (std::size_t i = 0; i < this->size() - 4;
-         i += 4, rhs_ptr += 2, ptr += 2, res_ptr+=2)
+    for (std::size_t i = 0; i < this->size() - 3;
+         i += 4, rhs_ptr += 2, ptr += 2, res_ptr+= 2)
     {
         _dest1 = _mm_sub_pd(*ptr,  *rhs_ptr);
         _dest2 = _mm_sub_pd(*(ptr + 1), *(rhs_ptr + 1));
@@ -121,8 +121,8 @@ SSEVector::multiply (double const rhs) const
     __m128d _dest1;
     __m128d _dest2;
 
-    for (std::size_t i = 0; i < this->size() - 4;
-         i += 4, ptr += 2, res_ptr+=2)
+    for (std::size_t i = 0; i < this->size() - 3;
+         i += 4, ptr += 2, res_ptr+= 2)
     {
         _dest1 = _mm_mul_pd(a, *ptr );
         _dest2 = _mm_mul_pd(a, *(ptr + 1));
