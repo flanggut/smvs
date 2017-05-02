@@ -826,6 +826,7 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         if (min[1] > 2 && pixels[i][1] == min[1])
         {
             pixels.emplace_back(pixels[i][0], pixels[i][1] - 2);
+            depths.emplace_back(depths[i]);
             pixels.emplace_back(pixels[i][0], pixels[i][1] - 1);
             depths.emplace_back(depths[i]);
         }
@@ -833,6 +834,7 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         if (max[1] < main_image->height() - 3 && pixels[i][1] == max[1])
         {
             pixels.emplace_back(pixels[i][0], pixels[i][1] + 2);
+            depths.emplace_back(depths[i]);
             pixels.emplace_back(pixels[i][0], pixels[i][1] + 1);
             depths.emplace_back(depths[i]);
         }
@@ -840,6 +842,7 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         if (min[0] > 2 && pixels[i][0] == min[0])
         {
             pixels.emplace_back(pixels[i][0] - 2, pixels[i][1]);
+            depths.emplace_back(depths[i]);
             pixels.emplace_back(pixels[i][0] - 1, pixels[i][1]);
             depths.emplace_back(depths[i]);
         }
@@ -847,6 +850,7 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         if (max[0] < main_image->width() - 3 && pixels[i][0] == max[0])
         {
             pixels.emplace_back(pixels[i][0] + 2, pixels[i][1]);
+            depths.emplace_back(depths[i]);
             pixels.emplace_back(pixels[i][0] + 1, pixels[i][1]);
             depths.emplace_back(depths[i]);
         }
