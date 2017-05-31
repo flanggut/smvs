@@ -403,8 +403,7 @@ main (int argc, char** argv)
     /* Start processing */
 
     /* Load scene */
-    mve::Scene::Ptr scene(mve::Scene::create());
-    scene->load_scene(conf.scene_dname);
+    mve::Scene::Ptr scene = mve::Scene::create(conf.scene_dname);
     mve::Scene::ViewList& views(scene->get_views());
 
     /* Check bundle file */
