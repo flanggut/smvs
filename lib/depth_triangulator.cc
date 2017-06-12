@@ -168,7 +168,6 @@ DepthTriangulator::approximate_triangulation (int max_vertices,
     mesh->delete_invalid_faces();
     mve::geom::mesh_delete_unreferenced(mesh);
 
-    mve::geom::mesh_invert_faces(mesh);
     mesh->recalc_normals();
     return mesh;
 }

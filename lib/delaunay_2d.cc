@@ -125,7 +125,7 @@ Delaunay2D::Triangle::get_vertices (void) const
     for (int v = 0; v < 3; ++v)
     {
         verts[v] = static_cast<unsigned int>(edge->orig());
-        edge = edge->l_next();
+        edge = edge->l_prev();
     }
     return verts;
 }
