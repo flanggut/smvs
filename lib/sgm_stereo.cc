@@ -123,11 +123,10 @@ SGMStereo::run_sgm (float min_depth, float max_depth)
     return depth;
 }
 
-mve::Image<uint64_t>::Ptr
-SGMStereo::census_filter (mve::ByteImage::ConstPtr image)
+void
+SGMStereo::census_filter (mve::ByteImage::ConstPtr image,
+    mve::Image<uint64_t>::Ptr filtered)
 {
-    mve::Image<uint64_t>::Ptr filtered =
-        mve::Image<uint64_t>::create(image->width(), image->height(), 1);
     filtered->fill(0);
     for (int x = 4; x < image->width() - 5; ++x)
         for (int y = 3; y < image->height() - 4; ++y)
@@ -145,7 +144,6 @@ SGMStereo::census_filter (mve::ByteImage::ConstPtr image)
                 }
             filtered->at(x, y, 0) = census;
         }
-    return filtered;
 }
 
 void
@@ -194,10 +192,11 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
 
     mve::ByteImage::Ptr n_warped = mve::ByteImage::create(
         this->main_image->width(), this->main_image->height(), 1);
-    mve::Image<uint64_t>::Ptr n_warped_census;
-    mve::Image<uint64_t>::Ptr main_census =
-        this->census_filter(this->main_image);
-
+    mve::Image<uint64_t>::Ptr n_warped_census =
+        mve::Image<uint64_t>::create(n_warped->width(), n_warped->height(), 1);
+    mve::Image<uint64_t>::Ptr main_census = mve::Image<uint64_t>::create(
+        main_image->width(), main_image->height(), 1);
+    this->census_filter(main_image, main_census);
 
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     std::size_t const volume_size = main_census->width() *
@@ -212,7 +211,7 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
     for (int i = 0; i < num_steps; ++i)
     {
         this->warped_neighbor_for_depth(this->cost_volume_depths[i], n_warped);
-        n_warped_census = this->census_filter(n_warped);
+        this->census_filter(n_warped, n_warped_census);
         for (int p = 0; p < main_census->get_pixel_amount(); ++p)
         {
             if (n_warped->at(p) == 0)

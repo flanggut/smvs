@@ -44,7 +44,9 @@ public:
 
 private:
     void warped_neighbor_for_depth (float depth, mve::ByteImage::Ptr image);
-    mve::Image<uint64_t>::Ptr census_filter (mve::ByteImage::ConstPtr image);
+
+    void census_filter (mve::ByteImage::ConstPtr image,
+        mve::Image<uint64_t>::Ptr filtered);
 
     void create_cost_volume (float min_depth, float max_depth, int num_steps);
 
