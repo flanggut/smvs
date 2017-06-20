@@ -43,7 +43,7 @@ public:
     mve::FloatImage::Ptr run_sgm (float min_depth, float max_depth);
 
 private:
-    void warped_l_image_for_depth (float depth, mve::ByteImage::Ptr image);
+    void warped_neighbor_for_depth (float depth, mve::ByteImage::Ptr image);
     mve::Image<uint64_t>::Ptr census_filter (mve::ByteImage::ConstPtr image);
 
     void create_cost_volume (float min_depth, float max_depth, int num_steps);
@@ -68,9 +68,10 @@ private:
 private:
     Options opts;
 
-    StereoView::Ptr left;
-    StereoView::Ptr right;
-    mve::ByteImage::ConstPtr r_image;
+    StereoView::Ptr main;
+    StereoView::Ptr neighbor;
+    mve::ByteImage::ConstPtr main_image;
+    mve::ByteImage::ConstPtr neighbor_image;
 
     mve::ByteImage::Ptr cost_volume;
     mve::RawImage::Ptr sgm_volume;
