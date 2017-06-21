@@ -43,7 +43,8 @@ public:
     mve::FloatImage::Ptr run_sgm (float min_depth, float max_depth);
 
 private:
-    void warped_neighbor_for_depth (float depth, mve::ByteImage::Ptr image);
+    void warped_neighbors_for_depth (std::vector<float> const& depths,
+        mve::ByteImage::Ptr image);
 
     void census_filter (mve::ByteImage::ConstPtr image,
         mve::Image<uint64_t>::Ptr filtered);

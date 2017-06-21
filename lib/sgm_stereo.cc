@@ -130,50 +130,62 @@ SGMStereo::census_filter (mve::ByteImage::ConstPtr image,
     filtered->fill(0);
     for (int x = 4; x < image->width() - 5; ++x)
         for (int y = 3; y < image->height() - 4; ++y)
-        {
-            if (image->at(x, y, 0) == 0)
-                continue;
-
-            uint64_t census = 0;
-            for (int i = x - 4; i < x + 5; ++i)
-                for (int j = y - 3; j < y + 4; ++j)
-                {
-                    census *= 2;
-                    if (image->at(x, y, 0) < image->at(i, j, 0))
-                        census += 1;
-                }
-            filtered->at(x, y, 0) = census;
-        }
+            for (int d = 0; d < image->channels(); ++d)
+            {
+                if (image->at(x, y, d) == 0)
+                    continue;
+                uint8_t threshold = image->at(x, y, d);
+                uint64_t census = 0;
+                for (int i = x - 4; i < x + 5; ++i)
+                    for (int j = y - 3; j < y + 4; ++j)
+                    {
+                        census *= 2;
+                        if (threshold < image->at(i, j, d))
+                            census += 1;
+                    }
+                filtered->at(x, y, d) = census;
+            }
 }
 
 void
-SGMStereo::warped_neighbor_for_depth (float depth, mve::ByteImage::Ptr image)
+SGMStereo::warped_neighbors_for_depth (std::vector<float> const& depths,
+    mve::ByteImage::Ptr image)
 {
     math::Matrix3f M;
     math::Vec3f t;
+
     mve::CameraInfo n_cam = this->neighbor->get_camera();
     this->main->get_camera().fill_reprojection(n_cam,
         this->main_image->width(), this->main_image->height(),
         this->neighbor_image->width(), this->neighbor_image->height(), *M, *t);
 
+    image->fill(0);
     for (int x = 0; x < image->width(); ++x)
         for (int y = 0; y < image->height(); ++y)
         {
             math::Vec3f target_pixel(0.5f + x, 0.5f + y, 1.f);
-            math::Vec3f projected = M * target_pixel * depth + t;
-            projected[0] /= projected[2];
-            projected[1] /= projected[2];
-            projected[0] -= 0.5f;
-            projected[1] -= 0.5f;
+            target_pixel = M * target_pixel;
 
-            if (projected[0] < 0 || projected[1] < 0
-                || projected[0] > this->neighbor_image->width() - 1
-                || projected[1] > this->neighbor_image->height() - 1)
+            for (int d = 0; d < image->channels(); ++d)
+            {
+                math::Vec3f projected = target_pixel * depths[d] + t;
 
-                image->at(x,y,0) = 0;
-            else
-                image->at(x,y,0) = this->neighbor_image->linear_at(
+                if (projected[2] < 0)
+                    continue;
+
+                projected[0] /= projected[2];
+                projected[1] /= projected[2];
+                projected[0] -= 0.5f;
+                projected[1] -= 0.5f;
+
+                if (projected[0] < 0 || projected[1] < 0
+                    || projected[0] > this->neighbor_image->width() - 1
+                    || projected[1] > this->neighbor_image->height() - 1)
+                    continue;
+
+                image->at(x,y,d) = this->neighbor_image->linear_at(
                         projected[0], projected[1], 0);
+            }
         }
 }
 
@@ -191,9 +203,9 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
     }
 
     mve::ByteImage::Ptr n_warped = mve::ByteImage::create(
-        this->main_image->width(), this->main_image->height(), 1);
-    mve::Image<uint64_t>::Ptr n_warped_census =
-        mve::Image<uint64_t>::create(n_warped->width(), n_warped->height(), 1);
+        this->main_image->width(), this->main_image->height(), num_steps);
+    mve::Image<uint64_t>::Ptr n_warped_census = mve::Image<uint64_t>::create(
+        n_warped->width(), n_warped->height(), num_steps);
     mve::Image<uint64_t>::Ptr main_census = mve::Image<uint64_t>::create(
         main_image->width(), main_image->height(), 1);
     this->census_filter(main_image, main_census);
@@ -208,18 +220,19 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
         this->cost_volume->fill(255);
 #endif
 
-    for (int i = 0; i < num_steps; ++i)
+    this->warped_neighbors_for_depth(this->cost_volume_depths, n_warped);
+    this->census_filter(n_warped, n_warped_census);
+    
+    for (int p = 0; p < main_census->get_pixel_amount(); ++p)
     {
-        this->warped_neighbor_for_depth(this->cost_volume_depths[i], n_warped);
-        this->census_filter(n_warped, n_warped_census);
-        for (int p = 0; p < main_census->get_pixel_amount(); ++p)
+        for (int i = 0; i < num_steps; ++i)
         {
-            if (n_warped->at(p) == 0)
+            if (n_warped->at(p, i) == 0)
                 continue;
 
             /* hamming distance between census values */
             uint8_t count = _mm_popcnt_u64(
-                main_census->at(p) ^ n_warped_census->at(p));
+                main_census->at(p) ^ n_warped_census->at(p, i));
 
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
             this->sse_cost_volume.at(p * num_steps + i) = count;
