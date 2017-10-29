@@ -20,7 +20,7 @@
 #include "mve/mesh_io_ply.h"
 #include "util/arguments.h"
 #include "util/file_system.h"
-#include "util/string.h"
+#include "util/strings.h"
 #include "util/tokenizer.h"
 #include "util/system.h"
 #include "util/timer.h"
