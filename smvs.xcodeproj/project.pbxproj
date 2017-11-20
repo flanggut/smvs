@@ -44,7 +44,6 @@
 		132924511C0332C9007756D0 /* gtest_correspondence.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1352AF8B1BFA2B220023D277 /* gtest_correspondence.cc */; };
 		1329245C1C0332D1007756D0 /* libsmvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A657391BC0191500B509FE /* libsmvs.a */; };
 		132924641C0332F1007756D0 /* test_optimization.cc in Sources */ = {isa = PBXBuildFile; fileRef = 132924471C031843007756D0 /* test_optimization.cc */; };
-		132A32931D896FE70059D63F /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		13554C3E1DE5F0EF00029F4B /* gauss_newton_step.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13554C3C1DE5F0EF00029F4B /* gauss_newton_step.cc */; };
 		13554C3F1DE5F0EF00029F4B /* gauss_newton_step.h in Headers */ = {isa = PBXBuildFile; fileRef = 13554C3D1DE5F0EF00029F4B /* gauss_newton_step.h */; };
 		13554C421DE7364A00029F4B /* delaunay_2d.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13554C401DE7364A00029F4B /* delaunay_2d.cc */; };
@@ -54,7 +53,6 @@
 		137C375F1DF593CD00F4667E /* depth_triangulator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 137C375D1DF593CD00F4667E /* depth_triangulator.cc */; };
 		137C37601DF593CD00F4667E /* depth_triangulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 137C375E1DF593CD00F4667E /* depth_triangulator.h */; };
 		139B3D061DEC81EC00D603B0 /* quad_edge.h in Headers */ = {isa = PBXBuildFile; fileRef = 139B3D051DEC81EC00D603B0 /* quad_edge.h */; };
-		13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A5BF6E1D883743007B5AA3 /* gtest_main.a */; };
 		13A5C0191D883F2B007B5AA3 /* bundle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFE81D883F2B007B5AA3 /* bundle.cc */; };
 		13A5C01A1D883F2B007B5AA3 /* bundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A5BFE91D883F2B007B5AA3 /* bundle.h */; };
 		13A5C01B1D883F2B007B5AA3 /* bundle_io.cc in Sources */ = {isa = PBXBuildFile; fileRef = 13A5BFEA1D883F2B007B5AA3 /* bundle_io.cc */; };
@@ -242,7 +240,6 @@
 		138D57B41C6789B600C8B11E /* sgm_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sgm_stereo.h; path = lib/sgm_stereo.h; sourceTree = SOURCE_ROOT; };
 		139562EC1CBD254B0098E420 /* block_sparse_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = block_sparse_matrix.h; path = lib/block_sparse_matrix.h; sourceTree = SOURCE_ROOT; };
 		139B3D051DEC81EC00D603B0 /* quad_edge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quad_edge.h; path = lib/quad_edge.h; sourceTree = SOURCE_ROOT; };
-		13A5BF6E1D883743007B5AA3 /* gtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gtest_main.a; path = ../gtest/make/gtest_main.a; sourceTree = "<group>"; };
 		13A5BFE61D883F0E007B5AA3 /* libmve.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmve.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A5BFE81D883F2B007B5AA3 /* bundle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bundle.cc; sourceTree = "<group>"; };
 		13A5BFE91D883F2B007B5AA3 /* bundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bundle.h; sourceTree = "<group>"; };
@@ -338,7 +335,6 @@
 			files = (
 				13A5C0CA1D883FB1007B5AA3 /* libmve_util.a in Frameworks */,
 				13A5C04A1D883F57007B5AA3 /* libmve.a in Frameworks */,
-				13A5BF6F1D883743007B5AA3 /* gtest_main.a in Frameworks */,
 				1379AA761BC2D8A900A53173 /* libsmvs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,7 +368,6 @@
 				13C9B1D31DF1A73E008F42C9 /* libmve_util.a in Frameworks */,
 				13C9B1D21DF1A733008F42C9 /* libmve.a in Frameworks */,
 				13A6573E1BC0193500B509FE /* libsmvs.a in Frameworks */,
-				132A32931D896FE70059D63F /* gtest_main.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,7 +387,6 @@
 				13A5BF731D883EA7007B5AA3 /* mvelibs */,
 				130053101BBEF40900A98180 /* smvs */,
 				1300530F1BBEF40900A98180 /* Products */,
-				13A5BF6E1D883743007B5AA3 /* gtest_main.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -806,7 +800,7 @@
 		130053061BBEF40900A98180 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Fabian Langguth";
 				TargetAttributes = {
 					1300530D1BBEF40900A98180 = {
@@ -957,14 +951,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1008,14 +1008,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1141,13 +1147,18 @@
 		13A657311BC0189700B509FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../gtest/include",
+					/usr/local/include,
+				);
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
 					"-ltiff",
 					"-ljpeg",
 					"-lpng",
+					"-lgtest_main",
+					"-lgtest",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1156,13 +1167,18 @@
 		13A657321BC0189700B509FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gtest/include";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../gtest/include",
+					/usr/local/include,
+				);
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
 					"-ltiff",
 					"-ljpeg",
 					"-lpng",
+					"-lgtest_main",
+					"-lgtest",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
