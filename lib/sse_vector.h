@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -47,7 +47,9 @@ public:
 
     SSEVector multiply (double const rhs) const;
     SSEVector add (SSEVector const& rhs) const;
+    SSEVector multiply_add (SSEVector const& rhs, double const rhs_d) const;
     SSEVector subtract (SSEVector const& rhs) const;
+    SSEVector multiply_sub (SSEVector const& rhs, double const rhs_d) const;
 
 private:
     util::AlignedMemory<double> values;

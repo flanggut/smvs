@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -27,7 +27,7 @@ SSEVector::dot (SSEVector const& rhs) const
     std::size_t const dim = this->size() / 2;
     __m128d const* ptr = reinterpret_cast<__m128d const*>(this->begin());
     __m128d const* rhs_ptr =  reinterpret_cast<__m128d const*>(rhs.begin());
-    
+
     for (std::size_t i = 0; i < dim; ++i, ++ptr, ++rhs_ptr)
         ret += _mm_cvtsd_f64(_mm_dp_pd(*ptr, *rhs_ptr, 0xFF));
 
@@ -135,6 +135,71 @@ SSEVector::multiply (double const rhs) const
 #else
     for (std::size_t i = 0; i < this->size(); ++i)
         result[i] = this->values[i] * rhs;
+#endif
+    return result;
+}
+
+SSEVector
+SSEVector::multiply_add (smvs::SSEVector const& rhs, double const rhs_d) const
+{
+    SSEVector result(this->size());
+#if ENABLE_SSE_VECTOR && defined(__SSE4_1__)
+    __m128d const* ptr = reinterpret_cast<__m128d const*>(this->begin());
+    __m128d * res_ptr = reinterpret_cast<__m128d *>(result.begin());
+    __m128d const* rhs_ptr =  reinterpret_cast<__m128d const*>(rhs.begin());
+    __m128d const a = _mm_set_pd(rhs_d, rhs_d);
+
+    __m128d _dest1;
+    __m128d _dest2;
+
+    for (std::size_t i = 0; i < this->size() - 3;
+         i += 4, rhs_ptr += 2, ptr += 2, res_ptr+= 2)
+    {
+        _dest1 = _mm_add_pd(*ptr,  _mm_mul_pd(a, *rhs_ptr ));
+        _dest2 = _mm_add_pd(*(ptr + 1), _mm_mul_pd(a, *(rhs_ptr + 1)));
+
+        *res_ptr = _dest1;
+        *(res_ptr + 1) = _dest2;
+    }
+    for (std::size_t i = this->size() % 4; i > 0; --i)
+        result[this->size() - i] = this->values[this->size() - i]
+            + rhs.values[this->size() - i] * rhs_d;
+
+#else
+    for (std::size_t i = 0; i < this->size(); ++i)
+        result[i] = this->values[i] + rhs[i] * rhs_d;
+#endif
+    return result;
+}
+
+SSEVector
+SSEVector::multiply_sub (smvs::SSEVector const& rhs, double const rhs_d) const
+{
+    SSEVector result(this->size());
+#if ENABLE_SSE_VECTOR && defined(__SSE4_1__)
+    __m128d const* ptr = reinterpret_cast<__m128d const*>(this->begin());
+    __m128d * res_ptr = reinterpret_cast<__m128d *>(result.begin());
+    __m128d const* rhs_ptr =  reinterpret_cast<__m128d const*>(rhs.begin());
+    __m128d const a = _mm_set_pd(rhs_d, rhs_d);
+
+    __m128d _dest1;
+    __m128d _dest2;
+
+    for (std::size_t i = 0; i < this->size() - 3;
+         i += 4, rhs_ptr += 2, ptr += 2, res_ptr+= 2)
+    {
+        _dest1 = _mm_sub_pd(*ptr,  _mm_mul_pd(a, *rhs_ptr ));
+        _dest2 = _mm_sub_pd(*(ptr + 1), _mm_mul_pd(a, *(rhs_ptr + 1)));
+
+        *res_ptr = _dest1;
+        *(res_ptr + 1) = _dest2;
+    }
+    for (std::size_t i = this->size() % 4; i > 0; --i)
+        result[this->size() - i] = this->values[this->size() - i]
+            - rhs.values[this->size() - i] * rhs_d;
+#else
+    for (std::size_t i = 0; i < this->size(); ++i)
+        result[i] = this->values[i] - rhs[i] * rhs_d;
 #endif
     return result;
 }

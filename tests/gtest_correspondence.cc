@@ -260,7 +260,8 @@ TEST(CorrespondenceTest, Derivatives)
 }
 
 
-void compare_jacobian_deriv(math::Matrix2d const& jac_base, double delta,
+void compare_jacobian_deriv(math::Matrix2d const& jac_base,
+    double const delta, double const epsilon,
     math::Matrix2d const& jac_analytic, BicubicPatch::Ptr deriv_patch,
     math::Matrix3d const& M, math::Vec3d const& t, double u, double v)
 {
@@ -275,13 +276,14 @@ void compare_jacobian_deriv(math::Matrix2d const& jac_base, double delta,
 
     math::Matrix2d diff = (jac_new - jac_base) / delta;
 
-    EXPECT_NEAR(jac_analytic[0], diff[0], 1e-4);
-    EXPECT_NEAR(jac_analytic[1], diff[1], 1e-4);
-    EXPECT_NEAR(jac_analytic[2], diff[2], 1e-4);
-    EXPECT_NEAR(jac_analytic[3], diff[3], 1e-4);
+    EXPECT_NEAR(jac_analytic[0], diff[0], epsilon);
+    EXPECT_NEAR(jac_analytic[1], diff[1], epsilon);
+    EXPECT_NEAR(jac_analytic[2], diff[2], epsilon);
+    EXPECT_NEAR(jac_analytic[3], diff[3], epsilon);
 }
 
-void compare_jacobian_deriv_grad(math::Matrix2d const& jac_base, double delta,
+void compare_jacobian_deriv_grad(math::Matrix2d const& jac_base,
+    double const delta, double const epsilon,
     math::Vec2d const& jac_grad_analytic, math::Vec2d const& grad,
     BicubicPatch::Ptr deriv_patch,
     math::Matrix3d const& M, math::Vec3d const& t, double u, double v)
@@ -298,8 +300,8 @@ void compare_jacobian_deriv_grad(math::Matrix2d const& jac_base, double delta,
     math::Matrix2d diff = (jac_new - jac_base) / delta;
     math::Vec2d diff_grad = diff * grad;
 
-    EXPECT_NEAR(jac_grad_analytic[0], diff_grad[0], 1e-4);
-    EXPECT_NEAR(jac_grad_analytic[1], diff_grad[1], 1e-4);
+    EXPECT_NEAR(jac_grad_analytic[0], diff_grad[0], epsilon);
+    EXPECT_NEAR(jac_grad_analytic[1], diff_grad[1], epsilon);
 }
 
 
@@ -354,7 +356,8 @@ TEST(CorrespondenceJacobianTest, ValuesAndDerivatives)
     Correspondence C_new(M, t, x, y, 0.0);
     math::Vec2d diff;
     math::Vec2d corr_new;
-    double delta = 1e-9;
+    double const delta = 1e-8;
+    double const epsilon = 1e-5;
     double backup;
 
     backup = x;
@@ -365,8 +368,8 @@ TEST(CorrespondenceJacobianTest, ValuesAndDerivatives)
     corr_new[0] -= 0.5;
     corr_new[1] -= 0.5;
     diff = (corr_new - corr_base) / delta;
-    EXPECT_NEAR(corr_jac[0], diff[0], 1e-4);
-    EXPECT_NEAR(corr_jac[1], diff[1], 1e-4);
+    EXPECT_NEAR(corr_jac[0], diff[0], epsilon);
+    EXPECT_NEAR(corr_jac[1], diff[1], epsilon);
     x = backup;
 
     backup = y;
@@ -377,8 +380,8 @@ TEST(CorrespondenceJacobianTest, ValuesAndDerivatives)
     corr_new[0] -= 0.5;
     corr_new[1] -= 0.5;
     diff = (corr_new - corr_base) / delta;
-    EXPECT_NEAR(corr_jac[2], diff[0], 1e-4);
-    EXPECT_NEAR(corr_jac[3], diff[1], 1e-4);
+    EXPECT_NEAR(corr_jac[2], diff[0], epsilon);
+    EXPECT_NEAR(corr_jac[3], diff[1], epsilon);
     y = backup;
 
 #if 1
@@ -403,132 +406,148 @@ TEST(CorrespondenceJacobianTest, ValuesAndDerivatives)
     backup = n00->f;
     n00->f += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn00[0], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn00_grad[0], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn00[0], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn00_grad[0], grad, patch_2, M, t, x, y);
     n00->f = backup;
 
     backup = n00->dx;
     n00->dx += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn00[1], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn00_grad[1], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn00[1], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn00_grad[1], grad, patch_2, M, t, x, y);
     n00->dx = backup;
 
     backup = n00->dy;
     n00->dy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn00[2], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn00_grad[2], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn00[2], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn00_grad[2], grad, patch_2, M, t, x, y);
     n00->dy = backup;
 
     backup = n00->dxy;
     n00->dxy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn00[3], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn00_grad[3], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn00[3], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn00_grad[3], grad, patch_2, M, t, x, y);
     n00->dxy = backup;
 
     /* Node 10 */
     backup = n10->f;
     n10->f += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn10[0], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn10_grad[0], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn10[0], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn10_grad[0], grad, patch_2, M, t, x, y);
     n10->f = backup;
 
     backup = n10->dx;
     n10->dx += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn10[1], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn10_grad[1], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn10[1], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn10_grad[1], grad, patch_2, M, t, x, y);
     n10->dx = backup;
 
     backup = n10->dy;
     n10->dy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn10[2], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn10_grad[2], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn10[2], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn10_grad[2], grad, patch_2, M, t, x, y);
     n10->dy = backup;
 
     backup = n10->dxy;
     n10->dxy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn10[3], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn10_grad[3], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn10[3], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn10_grad[3], grad, patch_2, M, t, x, y);
     n10->dxy = backup;
 
     /* Node 01 */
     backup = n01->f;
     n01->f += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn01[0], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn01_grad[0], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn01[0], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn01_grad[0], grad, patch_2, M, t, x, y);
     n01->f = backup;
 
     backup = n01->dx;
     n01->dx += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn01[1], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn01_grad[1], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn01[1], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn01_grad[1], grad, patch_2, M, t, x, y);
     n01->dx = backup;
 
     backup = n01->dy;
     n01->dy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn01[2], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn01_grad[2], grad,
-                                patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn01[2], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn01_grad[2], grad, patch_2, M, t, x, y);
     n01->dy = backup;
 
     backup = n01->dxy;
     n01->dxy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn01[3], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn01_grad[3], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn01[3], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn01_grad[3], grad, patch_2, M, t, x, y);
     n01->dxy = backup;
 
     /* Node 11 */
     backup = n11->f;
     n11->f += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn11[0], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn11_grad[0], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn11[0], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn11_grad[0], grad, patch_2, M, t, x, y);
     n11->f = backup;
 
     backup = n11->dx;
     n11->dx += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn11[1], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn11_grad[1], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn11[1], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn11_grad[1], grad, patch_2, M, t, x, y);
     n11->dx = backup;
 
     backup = n11->dy;
     n11->dy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn11[2], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn11_grad[2], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn11[2], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn11_grad[2], grad, patch_2, M, t, x, y);
     n11->dy = backup;
 
     backup = n11->dxy;
     n11->dxy += delta;
     patch_2 = BicubicPatch::create(n00, n10, n01, n11);
-    compare_jacobian_deriv(jac_base, delta, j_dn11[3], patch_2, M, t, x, y);
-    compare_jacobian_deriv_grad(jac_base, delta, j_dn11_grad[3], grad,
-        patch_2, M, t, x, y);
+    compare_jacobian_deriv(
+        jac_base, delta, epsilon, j_dn11[3], patch_2, M, t, x, y);
+    compare_jacobian_deriv_grad(
+        jac_base, delta, epsilon, j_dn11_grad[3], grad, patch_2, M, t, x, y);
     n11->dxy = backup;
 #endif
 }

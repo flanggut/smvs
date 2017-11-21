@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Fabian Langguth
+ * Copyright (c) 2017, Fabian Langguth
  * TU Darmstadt - Graphics, Capture and Massively Parallel Computing
  * All rights reserved.
  *
@@ -129,10 +129,10 @@ ConjugateGradient::solve(Functor const& A, Vector const& b, Vector* x,
         double alpha = r_dot_r / d.dot(Ad);
 
         /* Update parameter vector. */
-        *x = (*x).add(d.multiply(alpha));
+        *x = (*x).multiply_add(d, alpha);
 
         /* Compute new residual and its norm. */
-        r = r.subtract(Ad.multiply(alpha));
+        r = r.multiply_sub(Ad, alpha);
         double new_r_dot_r = r.dot(r);
 
         /* Residual based termination. */
@@ -189,9 +189,9 @@ ConjugateGradient::solve(Functor const& A, Vector const& b, Vector* x,
          */
         double beta = new_r_dot_r / r_dot_r;
         if (P != nullptr)
-            d = z.add(d.multiply(beta));
+            d = z.multiply_add(d, beta);
         else
-            d = r.add(d.multiply(beta));
+            d = r.multiply_add(d, beta);
 
         /* Update residual norm. */
         r_dot_r = new_r_dot_r;
