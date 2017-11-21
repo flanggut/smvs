@@ -9,6 +9,14 @@ branches:
 
 before_install:
    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
+   - wget https://github.com/google/googletest/archive/master.zip -O /tmp/gtest.zip
+   - unzip /tmp/gtest.zip
+   - cd googletest-master/googletest
+   - cmake .
+   - make
+   - sudo cp -a include/gtest /usr/include
+   - sudo cp -a libgtest_main.a libgtest.a /usr/lib/
+   - cd "${TRAVIS_BUILD_DIR}"
 
 addons:
    apt:
@@ -18,10 +26,6 @@ addons:
        - g++-4.8
 
 before_script:
-   - wget https://github.com/google/googletest/archive/master.zip -O /tmp/gtest.zip
-   - unzip /tmp/gtest.zip
-   - make -C $PWD/googletest-master/googletest/make
-   - export GTEST_PATH=$PWD/googletest-master/googletest
    - git clone https://github.com/simonfuhrmann/mve ../mve
 
 script:
