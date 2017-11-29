@@ -86,7 +86,7 @@ SGMStereo::reconstruct (SGMStereo::Options sgm_opts, StereoView::Ptr main_view,
             float cdepth = c.get_depth();
             float ndepth = d_neig->at(coords[0], coords[1], 0);
             float ratio = std::min(cdepth, ndepth) / std::max(cdepth, ndepth);
-            if (ndepth == 0 || ratio < 0.93)
+            if (ndepth == 0 || ratio < 0.8)
                 d_main->at(x, y, 0) = 0;
         }
     if (sgm_opts.debug_lvl > 1)
@@ -213,7 +213,7 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     std::size_t const volume_size = main_census->width() *
         main_census->height() * num_steps;
-    this->sse_cost_volume.resize(volume_size, 256);
+    this->sse_cost_volume.resize(volume_size, 255);
 #else
     this->cost_volume = mve::ByteImage::create(
         main_census->width(), main_census->height(), num_steps);
@@ -363,12 +363,8 @@ SGMStereo::fill_path_cost_sse (int base, int pbase,
         util::AlignedMemory<uint16_t> * path)
 {
     int const d_stride = this->opts.num_steps;
-    int i1 = this->main_image->at(base / d_stride);
-    int i2 = this->main_image->at(pbase / d_stride);
-    uint16_t diff = std::abs(i1 - i2) + 1;
     uint16_t const penalty1 = this->opts.penalty1;
-    uint16_t const penalty2 = std::max(penalty1 * 3 / 2,
-        this->opts.penalty2 / diff);
+    uint16_t const penalty2 = this->opts.penalty2;
 
     /* Find minmal cost in prev */
     uint16_t min_prev_cost = sse_reduction_min(&path->at(pbase), d_stride);
@@ -534,17 +530,17 @@ SGMStereo::aggregate_sgm_costs (void)
     {
         int const x = width - 1;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
     }
     for (int y = 1; y < height; ++y)
         for (int x = 0; x < width; ++x)
         {
             if (x > 0)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y - 1) * y_stride + x - 1) * d_stride, &sse_local_volume);
+                    ((y - 1) * y_stride + x - 1) * d_stride, &sse_local_volume_d1);
             if (x < width - 1)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y - 1) * y_stride + x + 1) * d_stride, &sse_local_volume);
+                    ((y - 1) * y_stride + x + 1) * d_stride, &sse_local_volume_d2);
             this->fill_path_cost_sse((y * y_stride + x) * d_stride,
                     ((y - 1) * y_stride + x) * d_stride, &sse_local_volume);
         }
@@ -612,17 +608,17 @@ SGMStereo::aggregate_sgm_costs (void)
     {
         int const x = width - 1;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
     }
     for (int y = height - 2; y >= 0; --y)
         for (int x = 0; x < width; ++x)
         {
             if (x > 0)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y + 1) * y_stride + x - 1) * d_stride, &sse_local_volume);
+                    ((y + 1) * y_stride + x - 1) * d_stride, &sse_local_volume_d1);
             if (x < width - 1)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y + 1) * y_stride + x + 1) * d_stride, &sse_local_volume);
+                    ((y + 1) * y_stride + x + 1) * d_stride, &sse_local_volume_d2);
             this->fill_path_cost_sse((y * y_stride + x) * d_stride,
                     ((y + 1) * y_stride + x) * d_stride, &sse_local_volume);
         }
@@ -718,8 +714,8 @@ SGMStereo::fill_depth_range_for_view (mve::Bundle::ConstPtr bundle,
         range[1] = 1.1;
     } else
     {
-        range[0] = depth_values.front() * 0.8f;
-        range[1] = depth_values[(depth_values.size() * 9) / 10] * 1.2;
+        range[0] = depth_values.front() * 0.7f;
+        range[1] = depth_values[(depth_values.size() * 99) / 100] * 5.0;
     }
 }
 

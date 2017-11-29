@@ -372,13 +372,7 @@ void reconstruct_sgm_depth_for_view (AppSettings const& conf,
                 d1->at(p) = d2->at(p);
                 continue;
             }
-
-            float max = std::max(d1->at(p), d2->at(p));
-            float min = std::min(d1->at(p), d2->at(p));
-            if (min / max < 0.95)
-                d1->at(p) = 0.0f;
-            else
-                d1->at(p) = std::min(d1->at(p) , d2->at(p));
+            d1->at(p) = (d1->at(p) + d2->at(p)) * 0.5f;
         }
     }
 

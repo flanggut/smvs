@@ -26,11 +26,11 @@ public:
         Options (void) = default;
         int debug_lvl = 0;
         int scale = 1;
-        int num_steps = 64;
+        int num_steps = 128;
         float min_depth = 0.0f;
         float max_depth = 0.0f;
-        uint16_t penalty1 = 24;
-        uint16_t penalty2 = 4000;
+        uint16_t penalty1 = 6;
+        uint16_t penalty2 = 96;
     };
 
     SGMStereo (Options const& opts,
