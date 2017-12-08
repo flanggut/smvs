@@ -39,26 +39,6 @@ public:
 
     void fill_jacobian(double * jac) const;
 
-    void fill_jacobian_derivative (
-        double const* dn00, double const* dn10,
-        double const* dn01, double const* dn11,
-        math::Matrix2d * jac_dn00,
-        math::Matrix2d * jac_dn10,
-        math::Matrix2d * jac_dn01,
-        math::Matrix2d * jac_dn11) const;
-
-    void fill_jacobian_derivative(
-        double const* dn, math::Matrix2d * jac_dn) const;
-
-    void fill_jacobian_derivative_grad(
-        math::Vec2d const& grad,
-        double const* dn00, double const* dn10,
-        double const* dn01, double const* dn11,
-        math::Vec2d * jac_dn00,
-        math::Vec2d * jac_dn10,
-        math::Vec2d * jac_dn01,
-        math::Vec2d * jac_dn11) const;
-
     void fill_jacobian_derivative_grad(double const* grad,
         double const* dn, math::Vec2d * jac_dn) const;
 
