@@ -36,9 +36,12 @@ StereoView::set_scale(int scale, bool debug)
     {
         mve::ByteImage::Ptr blur = mve::image::float_to_byte_image(
             this->scaleimage);
-        this->view->set_image(blur, "smvs-image");
-        this->view->set_image(this->image_grad, "smvs-gradients");
-        this->view->set_image(this->image_hessian, "smvs-hessian");
+        this->view->set_image(blur, "smvs-image"
+            + util::string::get(scale));
+        this->view->set_image(this->image_grad, "smvs-gradients"
+            + util::string::get(scale));
+        this->view->set_image(this->image_hessian, "smvs-hessian"
+            + util::string::get(scale));
         this->view->save_view();
     }
 

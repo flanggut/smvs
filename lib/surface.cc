@@ -526,9 +526,9 @@ Surface::expand (void)
             node = Node::create();
             node->f = ((neighbors[3]->f + neighbors[3]->dx / 2.0) +
                 (neighbors[1]->f + neighbors[1]->dy / 2.0)) / 2.0;
-//            node->dx = neighbors[3]->dx;
-//            node->dy = neighbors[1]->dy;
-//            node->dxy = neighbors[0]->dxy;
+            node->dx = neighbors[3]->dx;
+            node->dy = neighbors[1]->dy;
+            node->dxy = neighbors[0]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* top right */
@@ -537,9 +537,9 @@ Surface::expand (void)
             node = Node::create();
             node->f = ((neighbors[4]->f - neighbors[4]->dx / 2.0) +
                        (neighbors[1]->f + neighbors[1]->dy / 2.0)) / 2.0;
-//            node->dx = neighbors[4]->dx;
-//            node->dy = neighbors[1]->dy;
-//            node->dxy = neighbors[2]->dxy;
+            node->dx = neighbors[4]->dx;
+            node->dy = neighbors[1]->dy;
+            node->dxy = neighbors[2]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* bottom left */
@@ -548,9 +548,9 @@ Surface::expand (void)
             node = Node::create();
             node->f = ((neighbors[3]->f + neighbors[3]->dx / 2.0) +
                        (neighbors[6]->f - neighbors[6]->dy / 2.0)) / 2.0;
-//            node->dx = neighbors[3]->dx;
-//            node->dy = neighbors[6]->dy;
-//            node->dxy = neighbors[5]->dxy;
+            node->dx = neighbors[3]->dx;
+            node->dy = neighbors[6]->dy;
+            node->dxy = neighbors[5]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* bottom right */
@@ -559,9 +559,9 @@ Surface::expand (void)
             node = Node::create();
             node->f = ((neighbors[4]->f - neighbors[4]->dx / 2.0) +
                        (neighbors[6]->f - neighbors[6]->dy / 2.0)) / 2.0;
-//            node->dx = neighbors[4]->dx;
-//            node->dy = neighbors[6]->dy;
-//            node->dxy = neighbors[7]->dxy;
+            node->dx = neighbors[4]->dx;
+            node->dy = neighbors[6]->dy;
+            node->dxy = neighbors[7]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* top */
@@ -571,9 +571,9 @@ Surface::expand (void)
             node->f = ((neighbors[0]->f + neighbors[0]->dy / 2.0) +
                        (neighbors[1]->f + neighbors[1]->dy / 2.0) +
                        (neighbors[2]->f + neighbors[2]->dy / 2.0)) / 3.0;
-//            node->dx = neighbors[1]->dx;
-//            node->dy = neighbors[1]->dy;
-//            node->dxy = neighbors[1]->dxy;
+            node->dx = neighbors[1]->dx;
+            node->dy = neighbors[1]->dy;
+            node->dxy = neighbors[1]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* left */
@@ -583,9 +583,9 @@ Surface::expand (void)
             node->f = ((neighbors[0]->f + neighbors[0]->dx / 2.0) +
                        (neighbors[3]->f + neighbors[3]->dx / 2.0) +
                        (neighbors[5]->f + neighbors[5]->dx / 2.0)) / 3.0;
-//            node->dx = neighbors[3]->dx;
-//            node->dy = neighbors[3]->dy;
-//            node->dxy = neighbors[3]->dxy;
+            node->dx = neighbors[3]->dx;
+            node->dy = neighbors[3]->dy;
+            node->dxy = neighbors[3]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* bottom */
@@ -595,9 +595,9 @@ Surface::expand (void)
             node->f = ((neighbors[5]->f - neighbors[5]->dy / 2.0) +
                        (neighbors[6]->f - neighbors[6]->dy / 2.0) +
                        (neighbors[7]->f - neighbors[7]->dy / 2.0)) / 3.0;
-//            node->dx = neighbors[6]->dx;
-//            node->dy = neighbors[6]->dy;
-//            node->dxy = neighbors[6]->dxy;
+            node->dx = neighbors[6]->dx;
+            node->dy = neighbors[6]->dy;
+            node->dxy = neighbors[6]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
         /* right */
@@ -607,9 +607,9 @@ Surface::expand (void)
             node->f = ((neighbors[2]->f - neighbors[2]->dx / 2.0) +
                        (neighbors[4]->f - neighbors[4]->dx / 2.0) +
                        (neighbors[7]->f - neighbors[7]->dx / 2.0)) / 3.0;
-//            node->dx = neighbors[4]->dx;
-//            node->dy = neighbors[4]->dy;
-//            node->dxy = neighbors[4]->dxy;
+            node->dx = neighbors[4]->dx;
+            node->dy = neighbors[4]->dy;
+            node->dxy = neighbors[4]->dxy;
             check_swap_nodes(new_nodes[node_id], node);
         }
     }

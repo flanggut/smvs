@@ -14,7 +14,7 @@
 #include "conjugate_gradient.h"
 
 // minimal value for reweighting linear system to optimize L1 norm
-#define R_FACTOR 1e-4
+#define R_FACTOR 1e-7
 
 SMVS_NAMESPACE_BEGIN
 
