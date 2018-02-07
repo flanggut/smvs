@@ -59,6 +59,7 @@ public:
 
     mve::FloatImage::Ptr get_depth (void);
     mve::FloatImage::Ptr get_normals (void);
+    mve::FloatImage::Ptr get_display_normals (void);
 
 private:
     /* Initial preparations */
@@ -145,6 +146,20 @@ mve::FloatImage::Ptr
 DepthOptimizer::get_normals (void)
 {
     return this->surface->get_normal_map(this->main_view->get_inverse_flen());
+}
+
+inline
+mve::FloatImage::Ptr
+DepthOptimizer::get_display_normals (void)
+{
+    mve::FloatImage::Ptr normals =
+        this->surface->get_normal_map(this->main_view->get_inverse_flen());
+    for (int i = 0; i < normals->get_pixel_amount(); ++i)
+    {
+        normals->at(i, 1) *= -1.0f;
+        normals->at(i, 2) *= -1.0f;
+    }
+    return normals;
 }
 
 inline

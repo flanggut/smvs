@@ -157,7 +157,7 @@ DepthOptimizer::optimize (void)
 
     this->main_view->write_depth_to_view(this->surface->get_depth_map(),
         this->opts.output_name);
-    this->main_view->write_image_to_view(this->get_normals(),
+    this->main_view->write_image_to_view(this->get_display_normals(),
         this->opts.output_name + "N");
 }
 

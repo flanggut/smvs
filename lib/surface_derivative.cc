@@ -20,13 +20,12 @@ fill_normal(double x, double y, double inv_flen, double w,
 {
     math::Vec3d normal;
     normal[0] = dx;
-    normal[1] = -dy;
-    normal[2] = x * dx + y * dy + w;
+    normal[1] = dy;
+    normal[2] = -(x * dx + y * dy + w);
     normal[2] *= inv_flen;
     normal.normalize();
     std::copy(normal.begin(), normal.end(), n);
 }
-
 
 void
 normal_derivative(double const* d_node, double x, double y, double f,
@@ -34,7 +33,7 @@ normal_derivative(double const* d_node, double x, double y, double f,
     double * deriv)
 {
     double f_sqr_inv = 1.0 / (f*f);
-    double a = w + x * dx + y * dy;
+    double a = -(w + x * dx + y * dy);
 
     double t = dx*dx + dy*dy + a * a * f_sqr_inv;;
     double n = std::sqrt(t);
@@ -47,14 +46,14 @@ normal_derivative(double const* d_node, double x, double y, double f,
             double w_prime = dn[0 + i];
             double dx_prime = dn[4 + i];
             double dy_prime = dn[8 + i];
-            double a_prime = w_prime + x * dx_prime + y * dy_prime;
+            double a_prime = -(w_prime + x * dx_prime + y * dy_prime);
 
             double t_prime_2 = (dx * dx_prime) + (dy * dy_prime) +
                 f_sqr_inv * a * a_prime;
             double n_prime = t_prime_2 / n;
 
             double nx_prime = (dx_prime * n - dx * n_prime) / t;
-            double ny_prime = (-dy_prime * n + dy * n_prime) / t;
+            double ny_prime = (dy_prime * n - dy * n_prime) / t;
             double nz_prime = (a_prime * n - a * n_prime) / (t * f);
 
             deriv[0 + node * 4 + i] = nx_prime;
@@ -64,16 +63,14 @@ normal_derivative(double const* d_node, double x, double y, double f,
     }
 }
 
-
-
 void
 normal_divergence (double x, double y, double f, double w,
     double dx, double dy, double dxy, double dxx, double dyy,
     double * div)
 {
-    double a = (w + x * dx + y * dy);
-    double ax = 2.0 * dx + x * dxx + y * dxy;
-    double ay = 2.0 * dy + y * dyy + x * dxy;
+    double a = -(w + x * dx + y * dy);
+    double ax = -(2.0 * dx + x * dxx + y * dxy);
+    double ay = -(2.0 * dy + y * dyy + x * dxy);
 
     double t = a / f;
     t = t * t;
@@ -99,10 +96,10 @@ normal_divergence (double x, double y, double f, double w,
     double zy = (ay * n - a * ny) / (t * f);
 
     div[0] = xx;
-    div[1] = -yx;
+    div[1] = yx;
     div[2] = zx;
     div[3] = xy;
-    div[4] = -yy;
+    div[4] = yy;
     div[5] = zy;
 }
 
@@ -112,16 +109,16 @@ normal_divergence_deriv (double const* d_node, double x, double y, double f,
     double * full_deriv)
 {
     double f_sqr_inv = 1.0 / (f*f);
-    double a = w + x * dx + y * dy;
-    double ax = 2.0 * dx + x * dxx + y * dxy;
-    double ay = 2.0 * dy + y * dyy + x * dxy;
+    double a = -(w + x * dx + y * dy);
+    double ax = -(2.0 * dx + x * dxx + y * dxy);
+    double ay = -(2.0 * dy + y * dyy + x * dxy);
 
     double a_f2 = a * f_sqr_inv;
     double t = dx*dx + dy*dy + a * a_f2;
     double n = std::sqrt(t);
 
-    double b = dx * dxx + dy * dxy + a_f2 * (2.0 * dx + x * dxx + y * dxy);
-    double c = dx * dxy + dy * dyy + a_f2 * (2.0 * dy + x * dxy + y * dyy);
+    double b = dx * dxx + dy * dxy + a_f2 * ax;
+    double c = dx * dxy + dy * dyy + a_f2 * ay;
     double nx = b / n;
     double ny = c / n;
 
@@ -137,9 +134,9 @@ normal_divergence_deriv (double const* d_node, double x, double y, double f,
             double dxx_prime = dn[16 + i];
             double dyy_prime = dn[20 + i];
 
-            double a_prime = w_prime + x * dx_prime + y * dy_prime;
-            double ax_prime = 2.0 * dx_prime + x * dxx_prime + y * dxy_prime;
-            double ay_prime = 2.0 * dy_prime + y * dyy_prime + x * dxy_prime;
+            double a_prime = -(w_prime + x * dx_prime + y * dy_prime);
+            double ax_prime = -(2.0 * dx_prime + x * dxx_prime + y * dxy_prime);
+            double ay_prime = -(2.0 * dy_prime + y * dyy_prime + x * dxy_prime);
 
             double t_prime_2 = (dx * dx_prime) + (dy * dy_prime) +
                 f_sqr_inv * a * a_prime;
@@ -180,10 +177,10 @@ normal_divergence_deriv (double const* d_node, double x, double y, double f,
                 - (ay * n - a * ny) * t_prime_2 * 2.0) / (t*t*f);
 
             full_deriv[0 + node * 4 + i] = xx_prime;
-            full_deriv[16 + node * 4 + i] = -yx_prime;
+            full_deriv[16 + node * 4 + i] = yx_prime;
             full_deriv[32 + node * 4 + i] = zx_prime;
             full_deriv[48 + node * 4 + i] = xy_prime;
-            full_deriv[64 + node * 4 + i] = -yy_prime;
+            full_deriv[64 + node * 4 + i] = yy_prime;
             full_deriv[80 + node * 4 + i] = zy_prime;
         }
     }
