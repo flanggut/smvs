@@ -91,7 +91,7 @@ SGMStereo::reconstruct (SGMStereo::Options sgm_opts, StereoView::Ptr main_view,
         }
     if (sgm_opts.debug_lvl > 1)
         std::cout << "SGM finished." << std::endl;
-    
+
     return d_main;
 }
 
@@ -222,7 +222,7 @@ SGMStereo::create_cost_volume (float min_depth, float max_depth, int num_steps)
 
     this->warped_neighbors_for_depth(this->cost_volume_depths, n_warped);
     this->census_filter(n_warped, n_warped_census);
-    
+
     for (int p = 0; p < main_census->get_pixel_amount(); ++p)
     {
         for (int i = 0; i < num_steps; ++i)
@@ -439,10 +439,6 @@ SGMStereo::aggregate_sgm_costs (void)
     this->mins.resize(8);
     util::AlignedMemory<uint16_t> sse_local_volume(
         this->sse_cost_volume.size(), 0);
-    util::AlignedMemory<uint16_t> sse_local_volume_d1(
-        this->sse_cost_volume.size(), 0);
-    util::AlignedMemory<uint16_t> sse_local_volume_d2(
-        this->sse_cost_volume.size(), 0);
 #else
     int const num_steps = this->cost_volume->channels();
     this->sgm_volume = mve::RawImage::create(width, height, num_steps);
@@ -510,40 +506,42 @@ SGMStereo::aggregate_sgm_costs (void)
     /* process top-to-bottom */
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
-    std::fill(sse_local_volume_d1.begin(), sse_local_volume_d1.end(), 0);
-    std::fill(sse_local_volume_d2.begin(), sse_local_volume_d2.end(), 0);
     for (int x = 0; x < width; ++x)
     {
         int const y = 0;
         int const base = (y * y_stride + x) * d_stride;
         this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
     }
+    for (int y = 1; y < height; ++y)
+        for (int x = 0; x < width; ++x)
+            this->fill_path_cost_sse((y * y_stride + x) * d_stride,
+                    ((y - 1) * y_stride + x) * d_stride, &sse_local_volume);
+
+    /* Diagonal 1 */
+    std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
     for (int y = 0; y < height; ++y)
     {
         int const x = 0;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
     }
+    for (int y = 1; y < height; ++y)
+        for (int x = 1; x < width; ++x)
+                this->fill_path_cost_sse((y * y_stride + x) * d_stride,
+                    ((y - 1) * y_stride + x - 1) * d_stride, &sse_local_volume);
+
+    /* Diagonal 2 */
+    std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
     for (int y = 0; y < height; ++y)
     {
         int const x = width - 1;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
     }
     for (int y = 1; y < height; ++y)
-        for (int x = 0; x < width; ++x)
-        {
-            if (x > 0)
+        for (int x = 0; x < width - 1; ++x)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y - 1) * y_stride + x - 1) * d_stride, &sse_local_volume_d1);
-            if (x < width - 1)
-                this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y - 1) * y_stride + x + 1) * d_stride, &sse_local_volume_d2);
-            this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y - 1) * y_stride + x) * d_stride, &sse_local_volume);
-        }
+                    ((y - 1) * y_stride + x + 1) * d_stride, &sse_local_volume);
 
 #else
     local_volume->fill(0);
@@ -588,40 +586,43 @@ SGMStereo::aggregate_sgm_costs (void)
     /* process bottom-to-top */
 #if SMVS_ENABLE_SSE && defined(__SSE4_1__)
     std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
-    std::fill(sse_local_volume_d1.begin(), sse_local_volume_d1.end(), 0);
-    std::fill(sse_local_volume_d2.begin(), sse_local_volume_d2.end(), 0);
     for (int x = 0; x < width; ++x)
     {
         int const y = height - 1;
         int const base = (y * y_stride + x) * d_stride;
         this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
     }
+    for (int y = height - 2; y >= 0; --y)
+        for (int x = 0; x < width; ++x)
+            this->fill_path_cost_sse((y * y_stride + x) * d_stride,
+                    ((y + 1) * y_stride + x) * d_stride, &sse_local_volume);
+
+    /* Diagonal 3 */
+    std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
     for (int y = 0; y < height; ++y)
     {
         int const x = 0;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d1, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
     }
+    for (int y = height - 2; y >= 0; --y)
+        for (int x = 1; x < width; ++x)
+                this->fill_path_cost_sse((y * y_stride + x) * d_stride,
+                    ((y + 1) * y_stride + x - 1) * d_stride, &sse_local_volume);
+
+    /* Diagonal 4 */
+    std::fill(sse_local_volume.begin(), sse_local_volume.end(), 0);
     for (int y = 0; y < height; ++y)
     {
         int const x = width - 1;
         int const base = (y * y_stride + x) * d_stride;
-        this->copy_cost_and_add_to_sgm(&sse_local_volume_d2, base);
+        this->copy_cost_and_add_to_sgm(&sse_local_volume, base);
     }
     for (int y = height - 2; y >= 0; --y)
-        for (int x = 0; x < width; ++x)
-        {
-            if (x > 0)
-                this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y + 1) * y_stride + x - 1) * d_stride, &sse_local_volume_d1);
+        for (int x = 0; x < width - 1; ++x)
             if (x < width - 1)
                 this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y + 1) * y_stride + x + 1) * d_stride, &sse_local_volume_d2);
-            this->fill_path_cost_sse((y * y_stride + x) * d_stride,
-                    ((y + 1) * y_stride + x) * d_stride, &sse_local_volume);
-        }
+                    ((y + 1) * y_stride + x + 1) * d_stride, &sse_local_volume);
 #else
     local_volume->fill(0);
     local_volume_diag1->fill(0);
