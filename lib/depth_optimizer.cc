@@ -817,7 +817,7 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         depths.emplace_back(corner_depths[1]);
         pixels.emplace_back(corners[2][0] - 1, corners[2][1] + 1);
         depths.emplace_back(corner_depths[2]);
-        pixels.emplace_back(corners[3][0] + 1, corners[0][1] + 1);
+        pixels.emplace_back(corners[3][0] + 1, corners[3][1] + 1);
         depths.emplace_back(corner_depths[3]);
     }
     for (std::size_t i = 0; i < pixels.size(); ++i)
