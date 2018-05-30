@@ -1,7 +1,7 @@
 # Shading-aware Multi-view Stereo 
 [![Build Status](https://travis-ci.org/flanggut/smvs.svg?branch=master)](https://travis-ci.org/flanggut/smvs)
 
-This repository contains an implementation of 'Shading-aware Multi-view Stereo' [1] [[pdf]](http://www.gcc.tu-darmstadt.de/media/gcc/papers/Langguth-2016-SMV.pdf). The framework itself is based on 'A New Variational Framework for Multiview Surface Reconstruction' [2].
+This repository contains an implementation of 'Shading-aware Multi-view Stereo' [1] [[pdf]](http://download.hrz.tu-darmstadt.de/media/FB20/GCC/paper/Langguth-2016-SMV.pdf). The framework itself is based on 'A New Variational Framework for Multiview Surface Reconstruction' [2] [[pdf]](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.674.9319&rep=rep1&type=pdf).
 
 ### How to compile
 
