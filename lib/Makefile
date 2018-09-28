@@ -1,7 +1,7 @@
 TARGET := libsmvs.a
 include ../Makefile.inc
 
-CXXFLAGS += -I${MVE_ROOT}/libs -I../lib -msse4.2 -pthread
+CXXFLAGS += -I${MVE_ROOT}/libs -I../lib -march=native -pthread
 LDLIBS += -lpng -ltiff -ljpeg -pthread
 
 SOURCES := $(wildcard [^_]*.cc)
