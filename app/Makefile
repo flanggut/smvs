@@ -1,7 +1,7 @@
 TARGET := smvsrecon
 include ../Makefile.inc
 
-CXXFLAGS += -I${MVE_ROOT}/libs -I../lib -msse4.2 -pthread -std=c++11
+CXXFLAGS += -I${MVE_ROOT}/libs -I../lib -march=native -pthread -std=c++11
 LDLIBS += -lpng -ltiff -ljpeg -lpthread
 
 SOURCES := $(wildcard [^_]*.cc)
