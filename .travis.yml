@@ -16,7 +16,7 @@ before_install:
    - cmake .
    - make
    - sudo cp -a include/gtest /usr/include
-   - sudo cp -a libgtest_main.a libgtest.a /usr/lib/
+   - sudo cp -a lib/libgtest_main.a lib/libgtest.a /usr/lib/
    - cd "${TRAVIS_BUILD_DIR}"
 
 addons:
