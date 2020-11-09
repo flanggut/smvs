@@ -12,10 +12,10 @@ before_install:
    - if [ "$CXX" = "g++" ]; then export CXX="g++-6"; fi
    - wget https://github.com/google/googletest/archive/master.zip -O /tmp/gtest.zip
    - unzip /tmp/gtest.zip
-   - cd googletest-master/googletest
+   - cd googletest-master
    - cmake .
    - make
-   - sudo cp -a include/gtest /usr/include
+   - sudo cp -a googletest/include/gtest /usr/include
    - sudo cp -a lib/libgtest_main.a lib/libgtest.a /usr/lib/
    - cd "${TRAVIS_BUILD_DIR}"
 
