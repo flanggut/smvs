@@ -25,7 +25,7 @@ Surface::Surface (mve::Bundle::ConstPtr bundle, StereoView::Ptr main_view,
     int const width = this->pixel_width;
     int const height = this->pixel_height;
 
-    this->patchsize = std::pow(2, this->scale);
+    this->patchsize = 1 << this->scale;
     this->num_patches_x = (width - 2) / this->patchsize - 1;
     this->num_patches_y = (height - 2) / this->patchsize - 1;
     this->node_stride = this->num_patches_x + 1;
@@ -59,7 +59,7 @@ Surface::initialize_planar (double depth)
     int const height = this->pixel_height;
 
     this->depth = mve::FloatImage::create(width, height, 1);
-    this->patchsize = std::pow(2, this->scale);
+    this->patchsize = 1 << this->scale;
     this->num_patches_x = (width - 2) / this->patchsize;
     this->num_patches_y = (height - 2) / this->patchsize;
     this->node_stride = this->num_patches_x + 1;
@@ -984,7 +984,7 @@ void
 Surface::subdivide_patches (void)
 {
     this->scale = this->scale - 1;
-    this->patchsize = std::pow(2, this->scale);
+    this->patchsize = 1 << this->scale;
 
     int new_num_patches_x = (this->pixel_width - 2) / this->patchsize;
     int new_num_patches_y = (this->pixel_height - 2) / this->patchsize;
