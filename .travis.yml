@@ -25,6 +25,7 @@ addons:
        - ubuntu-toolchain-r-test
      packages:
        - g++-6
+       - libopengl-dev
 
 before_script:
    - git clone https://github.com/simonfuhrmann/mve ../mve
