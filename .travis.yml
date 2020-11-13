@@ -25,7 +25,9 @@ addons:
        - ubuntu-toolchain-r-test
      packages:
        - g++-6
-       - libopengl-dev
+       - libglu1-mesa-dev
+       - freeglut3-dev
+       - mesa-common-dev
 
 before_script:
    - git clone https://github.com/simonfuhrmann/mve ../mve
