@@ -187,8 +187,8 @@ MeshGenerator::generate_mesh (mve::Scene::ViewList const& inputviews,
     load_and_convert.emplace_back(this->thread_pool.add_task(
         [i, this, &depthmaps, &normalmaps, &dm_name, &nm_name]
     {
-        depthmaps[i] = this->views[i]->get_float_image(dm_name);
-        normalmaps[i] = this->views[i]->get_float_image(nm_name);
+        depthmaps[i] = this->views[i]->get_float_image(dm_name)->duplicate();
+        normalmaps[i] = this->views[i]->get_float_image(nm_name)->duplicate();
         mve::FloatImage::Ptr normals = normalmaps[i];
         math::Matrix3f rot;
         this->views[i]->get_camera().fill_cam_to_world_rot(*rot);
