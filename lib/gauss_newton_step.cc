@@ -189,13 +189,13 @@ GaussNewtonStep::jacobian_entries_for_patch(int const scale,
             proj[0] -= 0.5;
             proj[1] -= 0.5;
 
-            grad_sub[0] = sub_gradients->linear_at(proj[0], proj[1], 0);
-            grad_sub[1] = sub_gradients->linear_at(proj[0], proj[1], 1);
+            grad_sub[0] = sub_gradients->linear_at(proj[0], proj[1], int64_t(0));
+            grad_sub[1] = sub_gradients->linear_at(proj[0], proj[1], int64_t(1));
 
-            hess_sub[0] = sub_hessian->linear_at(proj[0], proj[1], 0);
-            hess_sub[1] = sub_hessian->linear_at(proj[0], proj[1], 1);
+            hess_sub[0] = sub_hessian->linear_at(proj[0], proj[1], int64_t(0));
+            hess_sub[1] = sub_hessian->linear_at(proj[0], proj[1], int64_t(1));
             hess_sub[2] = hess_sub[1];
-            hess_sub[3] = sub_hessian->linear_at(proj[0], proj[1], 2);
+            hess_sub[3] = sub_hessian->linear_at(proj[0], proj[1], int64_t(2));
 
             j_grad_subs[j] = jac * grad_sub;
 

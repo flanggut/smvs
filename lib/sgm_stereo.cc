@@ -184,7 +184,7 @@ SGMStereo::warped_neighbors_for_depth (std::vector<float> const& depths,
                     continue;
 
                 image->at(x,y,d) = this->neighbor_image->linear_at(
-                        projected[0], projected[1], 0);
+                        projected[0], projected[1], int64_t(0));
             }
         }
 }

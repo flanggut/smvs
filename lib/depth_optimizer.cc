@@ -733,11 +733,11 @@ DepthOptimizer::reproject_neighbor (std::size_t neighbor)
                 proj[1] -= 0.5;
 
                 debug->at(pixels[i][0], pixels[i][1], 0) =
-                    subimage->linear_at(proj[0], proj[1], 0);
+                    subimage->linear_at(proj[0], proj[1], int64_t(0));
                 debug->at(pixels[i][0], pixels[i][1], 1) =
-                    subimage->linear_at(proj[0], proj[1], 0);
+                    subimage->linear_at(proj[0], proj[1], int64_t(0));
                 debug->at(pixels[i][0], pixels[i][1], 2) =
-                    subimage->linear_at(proj[0], proj[1], 0);
+                    subimage->linear_at(proj[0], proj[1], int64_t(0));
             }
         }
     }
@@ -776,8 +776,8 @@ DepthOptimizer::mse_for_patch (std::size_t patch_id)
             proj[0] -= 0.5;
             proj[1] -= 0.5;
 
-            grad_sub[0] = sub_gradients->linear_at(proj[0], proj[1], 0);
-            grad_sub[1] = sub_gradients->linear_at(proj[0], proj[1], 1);
+            grad_sub[0] = sub_gradients->linear_at(proj[0], proj[1], int64_t(0));
+            grad_sub[1] = sub_gradients->linear_at(proj[0], proj[1], int64_t(1));
 
             math::Vec2d diff = this->grad_main - (jac * grad_sub);
             error += diff.norm();
@@ -883,9 +883,9 @@ DepthOptimizer::ncc_for_patch (std::size_t patch_id, std::size_t sub_id)
         color_main[0] = main_image->at(pixels[i][0], pixels[i][1], 0);
         color_main[1] = main_image->at(pixels[i][0], pixels[i][1], 1);
         color_main[2] = main_image->at(pixels[i][0], pixels[i][1], 2);
-        color_sub[0] = sub_image->linear_at(proj[0], proj[1], 0);
-        color_sub[1] = sub_image->linear_at(proj[0], proj[1], 1);
-        color_sub[2] = sub_image->linear_at(proj[0], proj[1], 2);
+        color_sub[0] = sub_image->linear_at(proj[0], proj[1], int64_t(0));
+        color_sub[1] = sub_image->linear_at(proj[0], proj[1], int64_t(1));
+        color_sub[2] = sub_image->linear_at(proj[0], proj[1], int64_t(2));
 
         for (int c = 0; c < 3; ++c)
         {
